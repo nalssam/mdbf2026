@@ -46,16 +46,18 @@
         body: JSON.stringify({
           code, name, avatar: selectedAvatar,
           studentId: prev && prev.code === code ? prev.studentId : undefined,
+          secret: prev && prev.code === code ? prev.secret : undefined,
         }),
       });
       const data = await res.json();
       if (!res.ok) throw new Error(data.error || '입장에 실패했습니다.');
       localStorage.setItem('bq_name', name);
       localStorage.setItem('bq_student', JSON.stringify({
-        classId: data.classId, studentId: data.student.id, code, name, avatar: selectedAvatar,
+        classId: data.classId, studentId: data.student.id, secret: data.student.secret,
+        code, name, avatar: selectedAvatar,
       }));
       BQ.sound('start');
-      location.href = '/play.html';
+      location.href = '/world.html';
     } catch (err) {
       $('join-error').textContent = err.message;
     }

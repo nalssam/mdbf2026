@@ -129,6 +129,7 @@
         body: JSON.stringify({
           classId: session.classId,
           studentId: session.studentId,
+          secret: session.secret,
           quizId: quiz.id,
           questionIndex: currentQ,
           choiceIndex,
@@ -229,7 +230,8 @@
   }
 
   async function loadState() {
-    const res = await fetch(`/api/student/state?classId=${encodeURIComponent(session.classId)}&studentId=${encodeURIComponent(session.studentId)}`);
+    const qs = new URLSearchParams({ classId: session.classId, studentId: session.studentId, secret: session.secret || '' });
+    const res = await fetch(`/api/student/state?${qs}`);
     const data = await res.json();
     if (!res.ok) { localStorage.removeItem('bq_student'); location.href = '/'; return; }
     me = data.student;
@@ -258,7 +260,10 @@
 
   const socket = io();
   socket.on('connect', () => {
-    socket.emit('join', { classId: session.classId, role: 'student', studentId: session.studentId });
+    socket.emit('join', {
+      classId: session.classId, role: 'student',
+      studentId: session.studentId, secret: session.secret, mode: 'classic',
+    });
   });
   socket.on('quiz:launched', ({ quiz: q }) => {
     adoptQuiz(q, {});

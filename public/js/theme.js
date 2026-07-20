@@ -197,9 +197,17 @@
 
   // ---------- 8비트 사운드 (WebAudio) ----------
   let audioCtx = null;
+  // iOS/크롬은 사용자 제스처 전에는 오디오를 잠근다 — 첫 터치에서 해제
+  BQ.unlockAudio = function () {
+    try {
+      audioCtx = audioCtx || new (window.AudioContext || window.webkitAudioContext)();
+      if (audioCtx.state === 'suspended') audioCtx.resume();
+    } catch { /* 무시 */ }
+  };
   function beep(freq, dur, type, delay, vol) {
     try {
       audioCtx = audioCtx || new (window.AudioContext || window.webkitAudioContext)();
+      if (audioCtx.state === 'suspended') audioCtx.resume();
       const t0 = audioCtx.currentTime + (delay || 0);
       const osc = audioCtx.createOscillator();
       const gain = audioCtx.createGain();
@@ -218,6 +226,11 @@
     else if (name === 'click') { beep(700, 0.05, 'square', 0, 0.05); }
     else if (name === 'levelup') { [523, 587, 659, 784, 1047].forEach((f, i) => beep(f, 0.15, 'square', i * 0.09)); }
     else if (name === 'start') { beep(392, 0.15); beep(523, 0.25, 'square', 0.15); }
+    else if (name === 'break') { beep(240, 0.08, 'square', 0, 0.06); beep(160, 0.1, 'square', 0.05, 0.06); }
+    else if (name === 'place') { beep(300, 0.06, 'square', 0, 0.06); beep(420, 0.08, 'square', 0.05, 0.05); }
+    else if (name === 'explosion') { beep(80, 0.5, 'sawtooth', 0, 0.14); beep(60, 0.6, 'sawtooth', 0.05, 0.12); beep(110, 0.3, 'square', 0.02, 0.08); }
+    else if (name === 'shoot') { beep(980, 0.07, 'sawtooth', 0, 0.05); beep(620, 0.09, 'sawtooth', 0.04, 0.05); }
+    else if (name === 'pickup') { beep(880, 0.08, 'square', 0, 0.06); beep(1175, 0.12, 'square', 0.07, 0.06); }
   };
 
   // ---------- 기타 ----------

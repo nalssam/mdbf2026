@@ -21,6 +21,8 @@ const upload = multer({ storage: multer.memoryStorage(), limits: { fileSize: 25 
 
 app.use(express.json({ limit: '5mb' }));
 app.use(express.static(path.join(__dirname, '..', 'public')));
+// three.js 로컬 서빙 (학교망에서 CDN 의존 없이 3D 월드 구동)
+app.use('/vendor/three', express.static(path.join(__dirname, '..', 'node_modules', 'three', 'build')));
 
 // ---------- 공통 헬퍼 ----------
 
@@ -108,7 +110,7 @@ app.get('/api/teacher/classes/:id', (req, res) => {
   res.json({
     id: cls.id, code: cls.code, name: cls.name, teacherName: cls.teacherName,
     activeQuizId: cls.activeQuizId,
-    students: Object.values(cls.students),
+    students: Object.values(cls.students).map(publicStudent),
     quizzes: Object.values(cls.quizzes).sort((a, b) => b.createdAt - a.createdAt),
     leaderboard: leaderboard(cls),
   });
@@ -382,21 +384,33 @@ app.get('/api/teacher/classes/:id/insights', (req, res) => {
 
 // ---------- 학생 API ----------
 
+// 학생 응답에서 개인 비밀키(secret)를 제거한다 — secret은 본인에게만 전달
+function publicStudent(s) {
+  if (!s) return s;
+  const { secret, ...rest } = s;
+  return rest;
+}
+
 app.post('/api/join', (req, res) => {
-  const { code, name, avatar, studentId } = req.body || {};
+  const { code, name, avatar, studentId, secret } = req.body || {};
   const cls = findClassByCode(code);
   if (!cls) throw httpError(404, '해당 코드의 학급이 없습니다. 코드를 다시 확인해 주세요.');
   const trimmed = String(name || '').trim().slice(0, 16);
   if (!trimmed) throw httpError(400, '닉네임을 입력해 주세요.');
 
-  // 재접속: 같은 studentId 또는 같은 닉네임이면 기존 기록을 이어간다
+  // 재접속: 같은 studentId+secret이면 기존 기록을 이어가고,
+  // secret이 없으면 같은 닉네임의 "오프라인" 학생만 이어받을 수 있다 (접속 중 계정 탈취 방지)
   let student = (studentId && cls.students[studentId]) || null;
+  if (student && student.secret && secret !== student.secret) student = null;
   if (!student) {
-    student = Object.values(cls.students).find((s) => s.name === trimmed) || null;
+    const byName = Object.values(cls.students).find((s) => s.name === trimmed) || null;
+    if (byName && (!byName.secret || secret === byName.secret || !byName.online)) student = byName;
+    else if (byName && byName.online) throw httpError(409, '이미 접속 중인 닉네임입니다. 다른 닉네임을 사용해 주세요.');
   }
   if (!student) {
     student = {
       id: randomId('st'),
+      secret: randomId('sec'),
       name: trimmed,
       avatar: String(avatar || 'steve').slice(0, 20),
       points: 0, correct: 0, answered: 0,
@@ -404,8 +418,9 @@ app.post('/api/join', (req, res) => {
       joinedAt: Date.now(), online: false,
     };
     cls.students[student.id] = student;
-    io.to(`t:${cls.id}`).emit('student:joined', { student });
+    io.to(`t:${cls.id}`).emit('student:joined', { student: publicStudent(student) });
   } else {
+    if (!student.secret) student.secret = randomId('sec'); // 기존 데이터 마이그레이션
     student.name = trimmed;
     if (avatar) student.avatar = String(avatar).slice(0, 20);
   }
@@ -445,6 +460,7 @@ app.get('/api/student/state', (req, res) => {
   if (!cls) throw httpError(404, '학급을 찾을 수 없습니다.');
   const student = cls.students[req.query.studentId];
   if (!student) throw httpError(404, '학생 정보를 찾을 수 없습니다. 다시 접속해 주세요.');
+  if (student.secret && req.query.secret !== student.secret) throw httpError(404, '학생 인증에 실패했습니다. 다시 접속해 주세요.');
   const activeQuiz = cls.activeQuizId ? cls.quizzes[cls.activeQuizId] : null;
   res.json({
     className: cls.name,
@@ -457,11 +473,12 @@ app.get('/api/student/state', (req, res) => {
 
 // 답안 제출 → 서버에서 채점 + 포인트 계산
 app.post('/api/answer', (req, res) => {
-  const { classId, studentId, quizId, questionIndex, choiceIndex, timeMs } = req.body || {};
+  const { classId, studentId, secret, quizId, questionIndex, choiceIndex, timeMs } = req.body || {};
   const cls = getClass(classId);
   if (!cls) throw httpError(404, '학급을 찾을 수 없습니다.');
   const student = cls.students[studentId];
   if (!student) throw httpError(404, '학생 정보를 찾을 수 없습니다.');
+  if (student.secret && secret !== student.secret) throw httpError(403, '학생 인증에 실패했습니다. 다시 접속해 주세요.');
   const quiz = cls.quizzes[quizId];
   if (!quiz) throw httpError(404, '퀴즈를 찾을 수 없습니다.');
   if (quiz.status !== 'live') throw httpError(409, '이미 종료된 퀴즈입니다.');
@@ -546,32 +563,194 @@ app.use((err, req, res, next) => {
 
 // ---------- Socket.IO 실시간 ----------
 
+// 3D 월드 상태(블록 변경분)는 학급별 메모리로만 유지한다 — 서버 재시작 시 지형 리셋.
+const worlds = new Map(); // classId → { diffs, diffCount, players: Map<studentId, {id,name,avatar}> }
+const MAX_WORLD_DIFFS = 8000;
+const PLACEABLE_TYPES = new Set(['plank', 'brick']);
+const WORLD_R = 23; // 클라이언트 엔진과 동일한 아레나 반경
+
+// 학생별 동시 접속 소켓 수 (탭 2개/재접속 겹침에서 유령 퇴장 방지) — 전체/월드 모드 별도 집계
+const sockCounts = new Map(); // `${classId}:${studentId}` → { t: 전체, w: 월드 }
+
+function getWorld(classId) {
+  if (!worlds.has(classId)) worlds.set(classId, { diffs: {}, diffCount: 0, players: new Map() });
+  return worlds.get(classId);
+}
+
+function validKey(key) {
+  return typeof key === 'string' && key.length <= 20 && /^-?\d+,-?\d+,-?\d+$/.test(key);
+}
+
+// 바닥/외곽 벽은 어떤 경로로도 파괴 불가 (조작된 클라이언트 방어)
+function isProtectedCell(key) {
+  const [x, y, z] = key.split(',').map(Number);
+  if (y <= 0) return true;
+  if (y <= 2 && (Math.abs(x) >= WORLD_R || Math.abs(z) >= WORLD_R)) return true;
+  return false;
+}
+
+function setDiff(world, key, value) {
+  if (!(key in world.diffs)) {
+    if (world.diffCount >= MAX_WORLD_DIFFS) return false;
+    world.diffCount += 1;
+  }
+  world.diffs[key] = value;
+  return true;
+}
+
+// 초당 이벤트 상한 (플러딩 방어) — 초과분은 조용히 버린다
+const RATE_LIMITS = { 'p:move': 20, 'p:shoot': 6, 'w:break': 15, 'w:place': 15, 'w:bomb': 3, join: 5 };
+function allowRate(socket, evt) {
+  const now = Math.floor(Date.now() / 1000);
+  let rl = socket.data && socket.data.rl;
+  if (!rl || rl.sec !== now) {
+    rl = { sec: now, counts: {} };
+    socket.data = socket.data || {};
+    socket.data.rl = rl;
+  }
+  rl.counts[evt] = (rl.counts[evt] || 0) + 1;
+  return rl.counts[evt] <= (RATE_LIMITS[evt] || 10);
+}
+
+// 핸들러에서 예외가 나도 서버가 죽지 않도록 감싼다
+function safeOn(socket, evt, handler) {
+  socket.on(evt, (payload) => {
+    try {
+      if (!allowRate(socket, evt)) return;
+      handler(payload && typeof payload === 'object' ? payload : {});
+    } catch (err) {
+      console.error(`[socket:${evt}]`, err.message);
+    }
+  });
+}
+
 io.on('connection', (socket) => {
-  socket.on('join', ({ classId, role, studentId, teacherKey }) => {
+  safeOn(socket, 'join', ({ classId, role, studentId, teacherKey, secret, mode }) => {
     const cls = getClass(classId);
     if (!cls) return;
-    socket.join(`c:${classId}`);
-    if (role === 'teacher' && teacherKey === cls.teacherKey) {
+    if (role === 'teacher') {
+      if (teacherKey !== cls.teacherKey) return; // 검증 실패 시 어떤 룸에도 넣지 않는다
+      socket.join(`c:${classId}`);
       socket.join(`t:${classId}`);
-      socket.data = { classId, role: 'teacher' };
-    } else if (role === 'student' && cls.students[studentId]) {
-      const student = cls.students[studentId];
-      student.online = true;
-      socket.data = { classId, role: 'student', studentId };
-      io.to(`t:${classId}`).emit('student:presence', { studentId, online: true });
-      save();
+      socket.data = { ...socket.data, classId, role: 'teacher' };
+      return;
+    }
+    if (role !== 'student') return;
+    const student = cls.students[studentId];
+    if (!student) return;
+    if (student.secret && secret !== student.secret) return;
+
+    socket.join(`c:${classId}`);
+    const isWorld = mode === 'world';
+    socket.data = { ...socket.data, classId, role: 'student', studentId, world: isWorld };
+    const countKey = `${classId}:${studentId}`;
+    const counts = sockCounts.get(countKey) || { t: 0, w: 0 };
+    counts.t += 1;
+    if (isWorld) counts.w += 1;
+    sockCounts.set(countKey, counts);
+    student.online = true;
+    io.to(`t:${classId}`).emit('student:presence', { studentId, online: true });
+    save();
+
+    // 3D 월드 페이지만 월드 룸/플레이어 목록에 참여한다 (클래식 페이지의 유령 아바타 방지)
+    if (isWorld) {
+      socket.join(`w:${classId}`);
+      const world = getWorld(classId);
+      const already = world.players.has(studentId);
+      world.players.set(studentId, { id: studentId, name: student.name, avatar: student.avatar });
+      socket.emit('world:state', {
+        diffs: world.diffs,
+        players: [...world.players.values()].filter((p) => p.id !== studentId),
+      });
+      if (!already) {
+        socket.to(`w:${classId}`).emit('p:join', { id: studentId, name: student.name, avatar: student.avatar });
+      }
     }
   });
 
+  // 플레이어 이동 (volatile — 손실 허용, 10Hz 스로틀은 클라이언트 담당)
+  safeOn(socket, 'p:move', (pos) => {
+    const { classId, role, studentId, world } = socket.data || {};
+    if (role !== 'student' || !world) return;
+    socket.volatile.to(`w:${classId}`).emit('p:move', {
+      id: studentId,
+      x: Number(pos.x) || 0, y: Number(pos.y) || 0, z: Number(pos.z) || 0,
+      yaw: Number(pos.yaw) || 0, anim: pos.anim === 'walk' ? 'walk' : 'idle',
+    });
+  });
+
+  // 블록 파괴/설치/폭탄 — 변경분을 저장해 늦게 입장한 학생도 같은 지형을 본다
+  safeOn(socket, 'w:break', ({ key }) => {
+    const { classId, role, studentId, world } = socket.data || {};
+    if (role !== 'student' || !world || !validKey(key) || isProtectedCell(key)) return;
+    if (!setDiff(getWorld(classId), key, { removed: true })) return;
+    socket.to(`w:${classId}`).emit('w:break', { key, by: studentId });
+  });
+
+  safeOn(socket, 'w:place', ({ key, type }) => {
+    const { classId, role, studentId, world } = socket.data || {};
+    if (role !== 'student' || !world || !validKey(key) || !PLACEABLE_TYPES.has(type)) return;
+    if (!setDiff(getWorld(classId), key, { type })) {
+      socket.emit('w:reject', { key }); // 설치 한도 초과 — 클라이언트가 로컬 블록을 되돌린다
+      return;
+    }
+    socket.to(`w:${classId}`).emit('w:place', { key, type, by: studentId });
+  });
+
+  safeOn(socket, 'w:bomb', ({ x, y, z, keys }) => {
+    const { classId, role, studentId, world } = socket.data || {};
+    if (role !== 'student' || !world || !Array.isArray(keys)) return;
+    const w = getWorld(classId);
+    const destroyed = [];
+    for (const key of keys.slice(0, 200)) {
+      if (!validKey(key) || isProtectedCell(key)) continue;
+      if (setDiff(w, key, { removed: true })) destroyed.push(key);
+    }
+    socket.to(`w:${classId}`).emit('w:bomb', {
+      x: Number(x) || 0, y: Number(y) || 0, z: Number(z) || 0, keys: destroyed, by: studentId,
+    });
+  });
+
+  // 발사체(총) — 시각 효과 공유용
+  safeOn(socket, 'p:shoot', (shot) => {
+    const { classId, role, studentId, world } = socket.data || {};
+    if (role !== 'student' || !world) return;
+    socket.volatile.to(`w:${classId}`).emit('p:shoot', {
+      id: studentId,
+      x: Number(shot.x) || 0, y: Number(shot.y) || 0, z: Number(shot.z) || 0,
+      dx: Number(shot.dx) || 0, dy: Number(shot.dy) || 0, dz: Number(shot.dz) || 0,
+    });
+  });
+
   socket.on('disconnect', () => {
-    const { classId, role, studentId } = socket.data || {};
-    if (role === 'student' && classId) {
-      const cls = getClass(classId);
-      if (cls && cls.students[studentId]) {
-        cls.students[studentId].online = false;
-        io.to(`t:${classId}`).emit('student:presence', { studentId, online: false });
-        save();
+    try {
+      const { classId, role, studentId, world } = socket.data || {};
+      if (role !== 'student' || !classId) return;
+      const countKey = `${classId}:${studentId}`;
+      const counts = sockCounts.get(countKey) || { t: 1, w: world ? 1 : 0 };
+      counts.t = Math.max(0, counts.t - 1);
+      if (world) counts.w = Math.max(0, counts.w - 1);
+
+      // 마지막 "월드" 소켓이 끊기면 다른 플레이어 화면에서 아바타 제거
+      if (world && counts.w === 0) {
+        const w = worlds.get(classId);
+        if (w) w.players.delete(studentId);
+        socket.to(`w:${classId}`).emit('p:leave', { id: studentId });
       }
+      // 마지막 소켓이 끊기면 오프라인 처리
+      if (counts.t === 0) {
+        sockCounts.delete(countKey);
+        const cls = getClass(classId);
+        if (cls && cls.students[studentId]) {
+          cls.students[studentId].online = false;
+          io.to(`t:${classId}`).emit('student:presence', { studentId, online: false });
+          save();
+        }
+      } else {
+        sockCounts.set(countKey, counts);
+      }
+    } catch (err) {
+      console.error('[socket:disconnect]', err.message);
     }
   });
 });
