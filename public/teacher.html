@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>BlockQuest — 교사 대시보드</title>
+  <link rel="stylesheet" href="css/game.css" />
+  <style>
+    body { background: #e8eef7; }
+    .t-layout { display: flex; min-height: 100vh; }
+    .t-side {
+      width: 220px; flex-shrink: 0;
+      background: #2f2b26; color: #f4ead2;
+      padding: 18px 12px;
+      border-right: 4px solid var(--ink);
+    }
+    .t-side .logo { font-family: var(--font-pixel); font-size: 18px; color: var(--gold); margin-bottom: 4px; }
+    .t-side .cls { font-size: 14px; opacity: 0.85; margin-bottom: 18px; word-break: keep-all; }
+    .t-nav button {
+      display: block; width: 100%; text-align: left;
+      background: none; border: 3px solid transparent;
+      color: #f4ead2; font-family: var(--font-body); font-size: 16px;
+      padding: 10px 12px; margin-bottom: 6px; cursor: pointer;
+    }
+    .t-nav button:hover { background: rgba(255,255,255,0.08); }
+    .t-nav button.active { background: var(--grass); color: #fff; border-color: var(--ink); box-shadow: 3px 3px 0 rgba(0,0,0,.4); }
+    .t-main { flex: 1; padding: 22px; max-width: 1100px; }
+    .panel {
+      background: #fff; border: 3px solid var(--ink);
+      box-shadow: 5px 5px 0 var(--shadow);
+      padding: 18px; margin-bottom: 18px;
+    }
+    .code-display { font-family: var(--font-pixel); font-size: 44px; letter-spacing: 10px; color: var(--grass-dark); }
+    .stat-row { display: flex; gap: 12px; flex-wrap: wrap; margin-bottom: 16px; }
+    .q-editor { border: 2px solid #d0d0d0; padding: 12px; margin-bottom: 12px; background: #fafafa; }
+    .q-editor .choices input[type="text"] { font-size: 14px; padding: 8px; }
+    .q-editor .row-choice { display: flex; gap: 8px; align-items: center; margin-top: 6px; }
+    .material-tabs { display: flex; gap: 8px; margin-bottom: 12px; }
+    .material-tabs .btn.on { background: var(--gold); }
+    .note-item { background: #fff8e0; border-left: 5px solid var(--gold); padding: 10px 12px; margin-bottom: 8px; font-size: 15px; }
+    .quiz-item { display: flex; align-items: center; gap: 10px; border: 2px solid #d0d0d0; padding: 10px 12px; margin-bottom: 8px; background: #fafafa; flex-wrap: wrap; }
+    .quiz-item .ttl { flex: 1; min-width: 160px; font-size: 16px; }
+    .spinner { display: inline-block; animation: spin 1s steps(8) infinite; }
+    @keyframes spin { to { transform: rotate(360deg); } }
+    .chart-box { margin-top: 10px; }
+    .section-title { display: flex; align-items: center; justify-content: space-between; gap: 10px; flex-wrap: wrap; }
+    @media (max-width: 780px) {
+      .t-layout { flex-direction: column; }
+      .t-side { width: auto; display: flex; align-items: center; gap: 8px; overflow-x: auto; padding: 10px; }
+      .t-side .cls { display: none; }
+      .t-nav { display: flex; gap: 6px; }
+      .t-nav button { white-space: nowrap; margin: 0; }
+      .t-main { padding: 12px; }
+    }
+  </style>
+</head>
+<body>
+  <div class="t-layout">
+    <aside class="t-side">
+      <div class="logo">⛏ BlockQuest</div>
+      <div class="cls" id="side-class-name">-</div>
+      <nav class="t-nav">
+        <button data-tab="dash" class="active">🏠 대시보드</button>
+        <button data-tab="quiz">🤖 AI 퀴즈</button>
+        <button data-tab="live">📡 실시간 현황</button>
+        <button data-tab="insight">📊 인사이트</button>
+      </nav>
+    </aside>
+
+    <main class="t-main">
+      <!-- ===== 대시보드 ===== -->
+      <section id="tab-dash">
+        <div class="panel">
+          <div class="section-title">
+            <h2>🏠 학급 접속 정보</h2>
+            <span class="muted" id="dash-teacher"></span>
+          </div>
+          <div class="row wrap mt8">
+            <div class="center" style="min-width:260px">
+              <div class="muted">학급 코드</div>
+              <div class="code-display" id="dash-code">------</div>
+              <div class="muted mt8">학생들은 첫 화면에서 이 코드를 입력해요</div>
+            </div>
+            <div class="center">
+              <img id="dash-qr" alt="접속 QR 코드" width="200" height="200" style="border:3px solid var(--ink)" />
+              <div class="muted mt8">태블릿 카메라로 QR을 찍으면 바로 접속!</div>
+            </div>
+            <div class="grow" style="min-width:220px">
+              <div class="muted">접속 주소</div>
+              <input id="dash-url" class="input mt8" readonly style="font-size:14px" />
+              <button id="btn-copy-url" class="btn small gold mt8">주소 복사</button>
+            </div>
+          </div>
+        </div>
+        <div class="panel">
+          <div class="section-title">
+            <h2>👥 우리 반 학생 <span class="tag" id="dash-count">0명</span></h2>
+            <div class="muted">학급 총 포인트: <b id="dash-total">0</b>P</div>
+          </div>
+          <div id="dash-students" class="mt8"></div>
+        </div>
+      </section>
+
+      <!-- ===== AI 퀴즈 ===== -->
+      <section id="tab-quiz" class="hidden">
+        <div class="panel">
+          <h2>🤖 수업 자료로 퀴즈 만들기</h2>
+          <p class="muted">PPT(pptx)·PDF·엑셀(xlsx)·워드(docx)·텍스트 파일을 올리거나, 기사/유튜브 링크 또는 내용을 붙여넣으면 AI가 자료를 분석해서 <b>학습목표와 평가 문항</b>을 자동으로 만들어 드립니다.</p>
+          <div class="material-tabs mt8">
+            <button class="btn small on" data-mtab="file">📄 파일 업로드</button>
+            <button class="btn small" data-mtab="url">🔗 URL (기사·유튜브)</button>
+            <button class="btn small" data-mtab="text">📋 붙여넣기</button>
+          </div>
+          <div id="mtab-file">
+            <input type="file" id="material-file" class="input" accept=".pdf,.pptx,.xlsx,.xls,.csv,.docx,.txt,.md" />
+          </div>
+          <div id="mtab-url" class="hidden">
+            <input type="url" id="material-url" class="input" placeholder="https://... (뉴스 기사, 블로그, 유튜브 링크)" />
+          </div>
+          <div id="mtab-text" class="hidden">
+            <textarea id="material-text" class="input" rows="7" placeholder="수업 내용, 교과서 본문, 스크립트 등을 붙여넣으세요"></textarea>
+          </div>
+          <div class="row wrap mt16">
+            <label class="muted">문항 수
+              <select id="num-questions" class="input" style="width:90px;display:inline-block;margin-left:6px">
+                <option>5</option><option selected>8</option><option>10</option><option>12</option><option>15</option>
+              </select>
+            </label>
+            <button id="btn-generate" class="btn grass grow">⚡ AI 퀴즈 생성하기</button>
+          </div>
+          <div id="gen-status" class="muted mt8"></div>
+        </div>
+
+        <div class="panel hidden" id="quiz-editor-panel">
+          <div class="section-title">
+            <h2>✏️ 퀴즈 검토·수정</h2>
+            <span class="tag" id="editor-engine"></span>
+          </div>
+          <label class="muted">퀴즈 제목</label>
+          <input id="edit-title" class="input mt8" />
+          <h3 class="mt16">🎯 학습목표</h3>
+          <div id="edit-objectives"></div>
+          <h3 class="mt16">📝 문항 <span class="muted" id="edit-qcount"></span></h3>
+          <div id="edit-questions"></div>
+          <div class="row mt16">
+            <button id="btn-save-quiz" class="btn gold grow">💾 저장</button>
+            <button id="btn-launch-quiz" class="btn grass grow">🚀 학생들에게 퀴즈 시작!</button>
+          </div>
+        </div>
+
+        <div class="panel">
+          <h2>🗂 만든 퀴즈</h2>
+          <div id="quiz-list"></div>
+        </div>
+      </section>
+
+      <!-- ===== 실시간 현황 ===== -->
+      <section id="tab-live" class="hidden">
+        <div class="panel">
+          <div class="section-title">
+            <h2>📡 실시간 풀이 현황</h2>
+            <div class="row">
+              <span class="tag live hidden" id="live-badge">LIVE</span>
+              <button id="btn-close-quiz" class="btn small danger hidden">퀴즈 종료</button>
+            </div>
+          </div>
+          <div class="stat-row" id="live-stats"></div>
+          <div id="live-matrix" class="chart-box"></div>
+          <div class="muted mt8" id="live-empty"></div>
+        </div>
+        <div class="panel">
+          <h2>🏆 실시간 랭킹</h2>
+          <div id="live-board"></div>
+        </div>
+      </section>
+
+      <!-- ===== 인사이트 ===== -->
+      <section id="tab-insight" class="hidden">
+        <div class="panel">
+          <div class="section-title">
+            <h2>📊 학급 인사이트</h2>
+            <select id="insight-quiz-select" class="input" style="width:auto;min-width:200px"></select>
+          </div>
+          <div class="stat-row mt8" id="insight-stats"></div>
+          <div id="insight-notes"></div>
+        </div>
+        <div class="panel">
+          <h3>문항별 정답률</h3>
+          <div id="chart-questions" class="chart-box"></div>
+        </div>
+        <div class="panel">
+          <h3>학습목표 도달률</h3>
+          <div id="chart-objectives" class="chart-box"></div>
+        </div>
+        <div class="panel">
+          <h3>학생 성취 분포</h3>
+          <div id="chart-mastery" class="chart-box"></div>
+        </div>
+        <div class="panel">
+          <h3>학생별 풀이 결과</h3>
+          <div id="insight-matrix" class="chart-box"></div>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <script src="js/static-shim.js"></script>
+  <script src="socket.io/socket.io.js"></script>
+  <script src="js/theme.js"></script>
+  <script src="js/charts.js"></script>
+  <script src="js/teacher.js"></script>
+</body>
+</html>

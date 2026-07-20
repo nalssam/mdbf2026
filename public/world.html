@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <title>BlockQuest — 3D 월드</title>
+  <link rel="stylesheet" href="css/game.css" />
+  <style>
+    html, body { overflow: hidden; height: 100%; overscroll-behavior: none; }
+    #game-canvas { position: fixed; inset: 0; width: 100%; height: 100%; display: block; touch-action: none; }
+    .hud { position: fixed; z-index: 10; user-select: none; -webkit-user-select: none; touch-action: none; }
+    .overlay { touch-action: manipulation; } /* 오버레이는 스크롤 허용, 더블탭 확대만 차단 */
+
+    /* 상단 상태바 */
+    #hud-top {
+      top: 8px; left: 8px; right: 8px;
+      display: flex; align-items: center; gap: 10px;
+      background: rgba(0, 0, 0, 0.4);
+      border: 3px solid var(--ink);
+      padding: 6px 10px; color: #fff;
+      box-shadow: 3px 3px 0 rgba(0,0,0,.35);
+    }
+    #hud-top .nm { font-size: 15px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    #hud-top .pts { font-family: var(--font-pixel); font-size: 15px; color: var(--gold); text-shadow: 1px 1px 0 #000; white-space: nowrap; }
+    #hud-hearts { display: flex; gap: 3px; }
+    #hud-hearts .h { width: 14px; height: 14px; border: 2px solid var(--ink); background: #d7d7d7; }
+    #hud-hearts .h.ok { background: var(--ok); }
+    #hud-hearts .h.bad { background: var(--danger); }
+    #hud-hearts .h.pending { background: var(--gold); }
+    #btn-classic { margin-left: auto; }
+
+    /* 조이스틱 */
+    #joy {
+      left: 18px; bottom: 22px;
+      width: 128px; height: 128px;
+      border: 4px solid rgba(0,0,0,0.55);
+      border-radius: 50%;
+      background: rgba(255,255,255,0.14);
+      touch-action: none;
+    }
+    #joy-knob {
+      position: absolute; left: 50%; top: 50%;
+      width: 56px; height: 56px; margin: -28px 0 0 -28px;
+      border-radius: 50%;
+      background: rgba(255, 207, 63, 0.9);
+      border: 4px solid var(--ink);
+      box-shadow: inset -3px -3px 0 rgba(0,0,0,.3), inset 3px 3px 0 rgba(255,255,255,.4);
+      pointer-events: none;
+    }
+
+    /* 버튼들 */
+    .game-btn {
+      width: 76px; height: 76px;
+      border-radius: 50%;
+      border: 4px solid var(--ink);
+      font-size: 30px;
+      display: flex; align-items: center; justify-content: center;
+      box-shadow: inset -4px -4px 0 rgba(0,0,0,.3), inset 4px 4px 0 rgba(255,255,255,.4), 3px 3px 0 rgba(0,0,0,.4);
+      cursor: pointer;
+      touch-action: none;
+      background: #d7d7d7;
+    }
+    .game-btn:active { transform: scale(0.93); }
+    #btn-jump { right: 22px; bottom: 26px; background: var(--grass); }
+    #btn-act { right: 112px; bottom: 66px; background: var(--gold); }
+
+    /* 핫바 */
+    #hotbar {
+      left: 50%; bottom: 14px; transform: translateX(-50%);
+      display: flex; gap: 6px;
+    }
+    .slot {
+      width: 58px; height: 58px;
+      border: 3px solid var(--ink);
+      background: rgba(0,0,0,0.45);
+      color: #fff;
+      display: flex; flex-direction: column; align-items: center; justify-content: center;
+      font-size: 22px; cursor: pointer;
+      box-shadow: 2px 2px 0 rgba(0,0,0,.4);
+      touch-action: none;
+    }
+    .slot .cnt { font-size: 11px; font-family: var(--font-pixel); color: var(--gold); }
+    .slot.sel { outline: 4px solid var(--gold); background: rgba(255, 207, 63, 0.25); }
+
+    /* 크로스헤어 */
+    #crosshair {
+      left: 50%; top: 50%; transform: translate(-50%, -50%);
+      color: #fff; font-size: 22px; text-shadow: 1px 1px 0 #000;
+      pointer-events: none; display: none;
+    }
+
+    /* 퀴즈 프롬프트 */
+    #quiz-prompt {
+      left: 50%; bottom: 96px; transform: translateX(-50%);
+      display: none;
+    }
+    #quiz-prompt .btn { font-size: 20px; }
+
+    #toast {
+      top: 64px; left: 50%; transform: translateX(-50%);
+      background: rgba(0,0,0,0.65); color: #fff;
+      border: 3px solid var(--ink);
+      padding: 8px 16px; font-size: 16px;
+      display: none; max-width: 86vw; text-align: center;
+      box-shadow: 3px 3px 0 rgba(0,0,0,.4);
+      pointer-events: none; /* 입력을 가로채지 않는다 */
+    }
+
+    .overlay { z-index: 40; }
+    .qtext { font-size: 19px; line-height: 1.5; white-space: pre-wrap; word-break: keep-all; }
+    .fb-inline { border: 3px solid var(--ink); padding: 10px; margin-top: 12px; font-size: 15px; }
+    .fb-inline.good { background: #d9f2d9; }
+    .fb-inline.bad { background: #f9dcdc; }
+    .result-score { font-family: var(--font-pixel); font-size: 38px; color: var(--gold); text-shadow: 3px 3px 0 var(--shadow); }
+    .help-grid { display: grid; grid-template-columns: auto 1fr; gap: 8px 14px; font-size: 15px; align-items: center; }
+    .help-grid .k { font-size: 22px; text-align: center; }
+  </style>
+</head>
+<body>
+  <canvas id="game-canvas"></canvas>
+
+  <!-- HUD -->
+  <div id="hud-top" class="hud">
+    <canvas id="me-avatar" class="avatar-canvas" width="34" height="34"></canvas>
+    <div class="nm" id="me-name">-</div>
+    <div class="pts"><span id="me-points">0</span>P</div>
+    <div id="streak" class="streak-flame">🔥0</div>
+    <div id="hud-hearts"></div>
+    <button id="btn-help" class="btn small stone">?</button>
+    <button id="btn-classic" class="btn small stone">클래식</button>
+  </div>
+
+  <div id="joy" class="hud"><div id="joy-knob"></div></div>
+  <button id="btn-jump" class="hud game-btn" title="점프 (스페이스, 공중에서 한 번 더 = 이중 점프)">⬆️</button>
+  <button id="btn-act" class="hud game-btn" title="도구 사용 (F)">⛏️</button>
+  <div id="hotbar" class="hud"></div>
+  <div id="crosshair" class="hud">＋</div>
+  <div id="quiz-prompt" class="hud"><button class="btn gold big">❓ 문제 풀기!</button></div>
+  <div id="toast" class="hud"></div>
+
+  <!-- 퀴즈 오버레이 -->
+  <div id="quiz-overlay" class="overlay hidden">
+    <div class="block-panel">
+      <div class="row">
+        <span class="tag live" id="qz-no">1번</span>
+        <span class="tag" id="qz-diff">보통</span>
+        <span class="grow"></span>
+        <button id="qz-close" class="btn small stone">✕</button>
+      </div>
+      <div class="qtext mt16" id="qz-text"></div>
+      <div class="choice-grid mt16" id="qz-choices"></div>
+      <div id="qz-feedback" class="fb-inline hidden"></div>
+      <button id="qz-done" class="btn gold big mt16 hidden">확인 ▶</button>
+    </div>
+  </div>
+
+  <!-- 퀴즈 시작 안내 -->
+  <div id="intro-overlay" class="overlay hidden">
+    <div class="block-panel">
+      <span class="tag live">QUEST</span>
+      <h2 class="mt8" id="intro-title"></h2>
+      <p class="muted" id="intro-summary"></p>
+      <h3 class="mt8">🎯 학습목표</h3>
+      <ul id="intro-objectives" style="padding-left:20px"></ul>
+      <p class="muted" id="intro-desc"></p>
+      <button id="intro-go" class="btn grass big mt8">⚔️ 퀘스트 시작!</button>
+    </div>
+  </div>
+
+  <!-- 결과 오버레이 -->
+  <div id="result-overlay" class="overlay hidden">
+    <div class="block-panel center">
+      <h2>🎉 퀘스트 클리어!</h2>
+      <div class="result-score"><span id="result-score">0</span>P</div>
+      <div class="muted" id="result-detail"></div>
+      <div class="podium mt16" id="result-podium"></div>
+      <div id="result-board" class="mt16" style="max-height:180px;overflow:auto"></div>
+      <button id="result-close" class="btn grass big mt16">월드로 돌아가기</button>
+    </div>
+  </div>
+
+  <!-- 조작법 -->
+  <div id="help-overlay" class="overlay hidden">
+    <div class="block-panel">
+      <h2>🎮 조작법</h2>
+      <div class="help-grid mt8">
+        <div class="k">🕹️</div><div>왼쪽 조이스틱(또는 <b>WASD</b>)으로 이동</div>
+        <div class="k">⬆️</div><div>점프 버튼(또는 <b>스페이스바</b>) — 공중에서 한 번 더 누르면 <b>이중 점프!</b></div>
+        <div class="k">👆</div><div>화면을 드래그하면 카메라 회전, 블록을 탭하면 도구 사용</div>
+        <div class="k">⛏️</div><div>곡괭이: 벽돌·판자·상자를 부숴요 (상자에서 아이템이 나와요!)</div>
+        <div class="k">🧱</div><div>블록: 탭한 곳에 블록을 쌓아 나만의 공간을 만들어요</div>
+        <div class="k">🔫</div><div>블래스터: 멀리 있는 블록을 쏴서 부숴요 (탄약 필요)</div>
+        <div class="k">💣</div><div>폭탄: 주변 블록을 한꺼번에 폭파!</div>
+        <div class="k">👢</div><div>부츠를 먹으면 잠시 빠르게 달려요</div>
+        <div class="k">❓</div><div><b>황금 퀴즈 블록</b>에 다가가 문제를 맞히면 포인트를 얻어요!</div>
+      </div>
+      <button id="help-close" class="btn grass big mt16">알겠어요!</button>
+    </div>
+  </div>
+
+  <script src="js/static-shim.js"></script>
+  <script src="socket.io/socket.io.js"></script>
+  <script src="js/theme.js"></script>
+  <script type="importmap">
+    { "imports": { "three": "./vendor/three/three.module.min.js" } }
+  </script>
+  <script type="module" src="js/game/main.js"></script>
+</body>
+</html>

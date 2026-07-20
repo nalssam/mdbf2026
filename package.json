@@ -1,0 +1,29 @@
+{
+  "name": "blockquest-edu",
+  "version": "1.0.0",
+  "description": "BlockQuest — 마인크래프트/로블록스 스타일 게이미피케이션 에듀테크 플랫폼 (AI 퀴즈 자동 생성 + 실시간 랭킹 + 교사 인사이트)",
+  "main": "server/index.js",
+  "scripts": {
+    "start": "node server/index.js",
+    "dev": "node --watch server/index.js"
+  },
+  "engines": {
+    "node": ">=18"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/nalssam/mdbf2026"
+  },
+  "license": "MIT",
+  "dependencies": {
+    "@anthropic-ai/sdk": "^0.112.3",
+    "express": "^5.2.1",
+    "jszip": "^3.10.1",
+    "multer": "^2.2.0",
+    "pdf-parse": "^1.1.1",
+    "qrcode": "^1.5.4",
+    "socket.io": "^4.8.3",
+    "three": "^0.185.1",
+    "xlsx": "^0.18.5"
+  }
+}
