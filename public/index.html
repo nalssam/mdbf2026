@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>BlockQuest — 게임으로 배우는 우리 반 퀴즈</title>
+  <link rel="stylesheet" href="/css/game.css" />
+  <style>
+    .landing-wrap { max-width: 1020px; margin: 0 auto; padding: 28px 16px 140px; }
+    .logo { font-size: clamp(28px, 6vw, 52px); color: #fff; text-align: center; margin: 18px 0 6px; }
+    .logo .pick { display: inline-block; animation: bob 1.6s ease-in-out infinite; }
+    @keyframes bob { 50% { transform: translateY(-8px) rotate(-8deg); } }
+    .tagline { text-align: center; color: #fff; text-shadow: 2px 2px 0 var(--shadow); font-size: 18px; margin-bottom: 28px; }
+    .cards { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
+    @media (max-width: 820px) { .cards { grid-template-columns: 1fr; } }
+    .feature-strip { display: flex; gap: 10px; flex-wrap: wrap; justify-content: center; margin-top: 28px; }
+    .feature-strip .tag { font-size: 13px; padding: 6px 12px; }
+  </style>
+</head>
+<body>
+  <div class="landing-wrap">
+    <h1 class="logo pixel-title"><span class="pick">⛏</span> BlockQuest</h1>
+    <p class="tagline">수업이 끝나면, 게임이 시작된다! 퀴즈를 깨고 블록을 캐서 우리 반 랭킹에 도전하세요.</p>
+
+    <div class="cards">
+      <!-- 학생 입장 -->
+      <section class="block-panel">
+        <h2>🎮 학생 입장</h2>
+        <p class="muted">선생님이 알려준 6자리 코드를 입력하거나 QR을 찍고 들어오세요. (갤럭시탭·크롬북·아이패드 모두 OK)</p>
+        <input id="join-code" class="input code-input mt8" maxlength="6" placeholder="ABC123" autocomplete="off" />
+        <input id="join-name" class="input mt16" maxlength="16" placeholder="닉네임 (예: 번개토끼)" autocomplete="off" />
+        <div class="mt16">
+          <div class="muted">내 캐릭터 고르기</div>
+          <div id="avatar-pick" class="avatar-pick mt8"></div>
+        </div>
+        <button id="btn-join" class="btn grass big mt24">입장하기 ▶</button>
+        <div id="join-error" class="muted mt8" style="color:#b3261e"></div>
+      </section>
+
+      <!-- 교사 -->
+      <section class="block-panel plank">
+        <h2>🧑‍🏫 선생님 (관리자)</h2>
+        <p class="muted">PPT·PDF·엑셀·기사·유튜브 링크만 올리면 AI가 학습목표와 퀴즈를 자동으로 만들어 드립니다. 실시간 풀이 현황과 학급 인사이트까지!</p>
+        <div class="mt16">
+          <input id="new-class-name" class="input" maxlength="40" placeholder="학급 이름 (예: 5학년 2반 과학)" />
+          <input id="new-teacher-name" class="input mt8" maxlength="30" placeholder="선생님 성함 (선택)" />
+          <button id="btn-create-class" class="btn gold big mt16">＋ 새 학급 만들기</button>
+        </div>
+        <div id="my-classes" class="mt24"></div>
+        <div id="teacher-error" class="muted mt8" style="color:#b3261e"></div>
+      </section>
+    </div>
+
+    <div class="feature-strip">
+      <span class="tag">🤖 AI 퀴즈 자동 생성</span>
+      <span class="tag">📱 QR 접속</span>
+      <span class="tag">⚡ 실시간 랭킹</span>
+      <span class="tag">🏆 개인·학급 포인트</span>
+      <span class="tag">📊 교사 인사이트</span>
+    </div>
+  </div>
+
+  <script src="/js/theme.js"></script>
+  <script src="/js/landing.js"></script>
+</body>
+</html>

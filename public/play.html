@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>BlockQuest — 퀴즈 플레이</title>
+  <link rel="stylesheet" href="/css/game.css" />
+  <style>
+    .play-wrap { max-width: 860px; margin: 0 auto; padding: 14px 12px 130px; }
+    .topbar { display: flex; align-items: center; gap: 12px; background: rgba(0,0,0,0.35); border: 3px solid var(--ink); padding: 8px 12px; color: #fff; box-shadow: 4px 4px 0 var(--shadow); }
+    .topbar .who { display: flex; align-items: center; gap: 8px; min-width: 0; }
+    .topbar .who .nm { font-size: 16px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .topbar .pts { font-family: var(--font-pixel); font-size: 16px; color: var(--gold); text-shadow: 1px 1px 0 #000; white-space: nowrap; }
+    .topbar .xpwrap { flex: 1; min-width: 90px; }
+    .qcard { background: var(--paper); border: 4px solid var(--ink); box-shadow: 6px 6px 0 var(--shadow); padding: 18px; }
+    .qtext { font-size: 21px; line-height: 1.5; white-space: pre-wrap; word-break: keep-all; }
+    .qmeta { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; font-size: 14px; }
+    .objective-list { margin: 8px 0 0; padding-left: 20px; }
+    .objective-list li { margin-bottom: 6px; }
+    .result-score { font-family: var(--font-pixel); font-size: 42px; color: var(--gold); text-shadow: 3px 3px 0 var(--shadow); }
+    .fb-panel.good { outline: 6px solid var(--ok); }
+    .fb-panel.bad { outline: 6px solid var(--danger); }
+    .fb-emoji { font-size: 56px; }
+    .lobby-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+    @media (max-width: 720px) { .lobby-grid { grid-template-columns: 1fr; } }
+  </style>
+</head>
+<body>
+  <div class="play-wrap">
+    <div class="topbar">
+      <div class="who">
+        <canvas id="me-avatar" class="avatar-canvas" width="40" height="40"></canvas>
+        <div>
+          <div class="nm" id="me-name">-</div>
+          <div class="muted" id="class-name" style="font-size:12px;color:#dfe9ff">-</div>
+        </div>
+      </div>
+      <div class="xpwrap">
+        <div class="xpbar"><div class="fill" id="xp-fill" style="width:0%"></div><div class="lbl" id="xp-lbl">Lv.1</div></div>
+      </div>
+      <div class="pts"><span id="me-points">0</span>P</div>
+      <div class="streak-flame" id="streak" title="연속 정답">🔥0</div>
+    </div>
+
+    <!-- 대기실 -->
+    <section id="view-lobby" class="mt16">
+      <div class="lobby-grid">
+        <div class="block-panel center">
+          <h2>⏳ 퀴즈 대기 중</h2>
+          <p class="muted">선생님이 퀴즈를 시작하면<br/>자동으로 게임이 시작돼요!</p>
+          <div style="font-size:64px" class="mt16">⛏️</div>
+          <div class="muted mt8" id="lobby-msg">광질 준비 완료...</div>
+        </div>
+        <div class="block-panel">
+          <h3>🏆 우리 반 랭킹</h3>
+          <div class="xpbar mt8">
+            <div class="fill" id="class-xp-fill" style="width:0%"></div>
+            <div class="lbl" id="class-xp-lbl">학급 포인트 0</div>
+          </div>
+          <div id="lobby-board" class="mt16"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 퀴즈 소개 -->
+    <section id="view-intro" class="mt16 hidden">
+      <div class="block-panel plank">
+        <span class="tag live">LIVE</span>
+        <h2 class="mt8" id="intro-title">퀴즈</h2>
+        <p class="muted" id="intro-summary"></p>
+        <h3 class="mt16">🎯 오늘의 학습목표</h3>
+        <ul class="objective-list" id="intro-objectives"></ul>
+        <div class="muted mt8" id="intro-count"></div>
+        <button id="btn-start" class="btn grass big mt16">⚔️ 모험 시작!</button>
+      </div>
+    </section>
+
+    <!-- 문제 풀이 -->
+    <section id="view-question" class="mt16 hidden">
+      <div class="qmeta">
+        <div class="hearts" id="q-hearts"></div>
+        <div class="tag" id="q-no">1 / 8</div>
+      </div>
+      <div class="timerbar" id="timerbar"><div class="fill" id="timer-fill" style="width:100%"></div></div>
+      <div class="muted center" id="timer-msg" style="color:#fff;text-shadow:1px 1px 0 #000;margin-top:4px">⚡ 빨리 맞히면 보너스 포인트!</div>
+      <div class="qcard mt8">
+        <div class="qtext" id="q-text"></div>
+      </div>
+      <div class="choice-grid mt16" id="q-choices"></div>
+    </section>
+
+    <!-- 결과 -->
+    <section id="view-result" class="mt16 hidden">
+      <div class="block-panel center">
+        <h2>🎉 퀴즈 클리어!</h2>
+        <div class="result-score"><span id="result-score">0</span>P</div>
+        <div class="muted" id="result-detail"></div>
+        <div class="podium mt24" id="result-podium"></div>
+        <h3 class="mt24">🏆 최종 랭킹</h3>
+        <div id="result-board"></div>
+        <div class="xpbar mt16">
+          <div class="fill" id="result-class-fill" style="width:0%"></div>
+          <div class="lbl" id="result-class-lbl">학급 포인트</div>
+        </div>
+        <button id="btn-back-lobby" class="btn stone mt16">대기실로 돌아가기</button>
+      </div>
+    </section>
+  </div>
+
+  <!-- 정답/오답 피드백 -->
+  <div id="fb-overlay" class="overlay hidden">
+    <div class="block-panel fb-panel center" id="fb-panel">
+      <div class="fb-emoji" id="fb-emoji">💎</div>
+      <h2 id="fb-title">정답!</h2>
+      <div class="pixel-title" id="fb-points" style="font-size:26px;color:var(--grass-dark)"></div>
+      <p class="muted" id="fb-explain"></p>
+      <button id="btn-next" class="btn gold big mt8">다음 ▶</button>
+    </div>
+  </div>
+
+  <script src="/socket.io/socket.io.js"></script>
+  <script src="/js/theme.js"></script>
+  <script src="/js/student.js"></script>
+</body>
+</html>
