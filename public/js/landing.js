@@ -11,6 +11,14 @@
   const savedName = localStorage.getItem('bq_name');
   if (savedName) $('join-name').value = savedName;
 
+  // GitHub Pages 체험판 안내
+  if (window.BQ_DEMO) {
+    if (!$('join-code').value) $('join-code').value = 'DEMO01';
+    $('join-error').style.color = '#1d1a16';
+    $('join-error').textContent = '🌐 체험판: 아무 코드나 입력해도 데모 학급에 입장돼요!';
+    $('teacher-error').textContent = '🌐 체험판에서는 교사 기능이 동작하지 않아요. 전체 기능은 서버 실행이 필요합니다 (README 참고).';
+  }
+
   // 아바타 선택 그리드
   const pick = $('avatar-pick');
   for (const [key, av] of Object.entries(BQ.AVATARS)) {
@@ -40,7 +48,7 @@
     if (!name) return ($('join-error').textContent = '닉네임을 입력해 주세요.');
     try {
       const prev = JSON.parse(localStorage.getItem('bq_student') || 'null');
-      const res = await fetch('/api/join', {
+      const res = await fetch('api/join', {
         method: 'POST',
         headers: { 'content-type': 'application/json' },
         body: JSON.stringify({
@@ -57,7 +65,7 @@
         code, name, avatar: selectedAvatar,
       }));
       BQ.sound('start');
-      location.href = '/world.html';
+      location.href = 'world.html';
     } catch (err) {
       $('join-error').textContent = err.message;
     }
@@ -83,7 +91,7 @@
       open.className = 'btn small gold';
       open.textContent = '열기';
       open.addEventListener('click', () => {
-        location.href = `/teacher.html?class=${encodeURIComponent(c.classId)}`;
+        location.href = `teacher.html?class=${encodeURIComponent(c.classId)}`;
       });
       row.appendChild(open);
       box.appendChild(row);
@@ -96,7 +104,7 @@
     $('teacher-error').textContent = '';
     if (!className) return ($('teacher-error').textContent = '학급 이름을 입력해 주세요.');
     try {
-      const res = await fetch('/api/teacher/classes', {
+      const res = await fetch('api/teacher/classes', {
         method: 'POST',
         headers: { 'content-type': 'application/json' },
         body: JSON.stringify({ className, teacherName: $('new-teacher-name').value.trim() }),
@@ -107,7 +115,7 @@
       list.unshift({ classId: data.classId, teacherKey: data.teacherKey, name: data.name, code: data.code });
       localStorage.setItem('bq_teacher_classes', JSON.stringify(list));
       BQ.sound('levelup');
-      location.href = `/teacher.html?class=${encodeURIComponent(data.classId)}`;
+      location.href = `teacher.html?class=${encodeURIComponent(data.classId)}`;
     } catch (err) {
       $('teacher-error').textContent = err.message;
     }

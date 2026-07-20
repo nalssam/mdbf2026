@@ -3,7 +3,7 @@
   const classId = new URLSearchParams(location.search).get('class');
   const saved = JSON.parse(localStorage.getItem('bq_teacher_classes') || '[]');
   const session = saved.find((c) => c.classId === classId);
-  if (!session) { alert('학급 정보를 찾을 수 없습니다. 첫 화면에서 학급을 만들거나 열어 주세요.'); location.href = '/'; return; }
+  if (!session) { alert('학급 정보를 찾을 수 없습니다. 첫 화면에서 학급을 만들거나 열어 주세요.'); location.href = './'; return; }
 
   const $ = (id) => document.getElementById(id);
   let cls = null;              // GET /api/teacher/classes/:id 결과
@@ -13,7 +13,7 @@
 
   async function api(path, opts = {}) {
     opts.headers = Object.assign({ 'x-teacher-key': session.teacherKey }, opts.headers || {});
-    const res = await fetch(`/api/teacher/classes/${encodeURIComponent(classId)}${path}`, opts);
+    const res = await fetch(`api/teacher/classes/${encodeURIComponent(classId)}${path}`, opts);
     const data = await res.json().catch(() => ({}));
     if (!res.ok) throw new Error(data.error || '요청에 실패했습니다.');
     return data;
@@ -43,7 +43,7 @@
     $('dash-teacher').textContent = `${cls.teacherName} 선생님`;
     $('dash-code').textContent = cls.code;
     $('dash-url').value = joinUrl();
-    $('dash-qr').src = `/api/qr?text=${encodeURIComponent(joinUrl())}`;
+    $('dash-qr').src = `api/qr?text=${encodeURIComponent(joinUrl())}`;
     renderStudents();
   }
 
@@ -435,6 +435,6 @@
 
   loadClass().catch((err) => {
     alert(err.message);
-    location.href = '/';
+    location.href = './';
   });
 })();

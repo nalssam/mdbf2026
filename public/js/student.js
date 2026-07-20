@@ -1,7 +1,7 @@
 // 학생 퀴즈 플레이 화면
 (function () {
   const session = JSON.parse(localStorage.getItem('bq_student') || 'null');
-  if (!session) { location.href = '/'; return; }
+  if (!session) { location.href = './'; return; }
 
   BQ.buildWorld();
   const $ = (id) => document.getElementById(id);
@@ -123,7 +123,7 @@
     stopTimer();
     document.querySelectorAll('#q-choices .choice').forEach((b) => (b.disabled = true));
     try {
-      const res = await fetch('/api/answer', {
+      const res = await fetch('api/answer', {
         method: 'POST',
         headers: { 'content-type': 'application/json' },
         body: JSON.stringify({
@@ -231,9 +231,9 @@
 
   async function loadState() {
     const qs = new URLSearchParams({ classId: session.classId, studentId: session.studentId, secret: session.secret || '' });
-    const res = await fetch(`/api/student/state?${qs}`);
+    const res = await fetch(`api/student/state?${qs}`);
     const data = await res.json();
-    if (!res.ok) { localStorage.removeItem('bq_student'); location.href = '/'; return; }
+    if (!res.ok) { localStorage.removeItem('bq_student'); location.href = './'; return; }
     me = data.student;
     board = data.leaderboard;
     $('class-name').textContent = data.className;

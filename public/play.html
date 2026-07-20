@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>BlockQuest — 퀴즈 플레이</title>
-  <link rel="stylesheet" href="/css/game.css" />
+  <link rel="stylesheet" href="css/game.css" />
   <style>
     .play-wrap { max-width: 860px; margin: 0 auto; padding: 14px 12px 130px; }
     .topbar { display: flex; align-items: center; gap: 12px; background: rgba(0,0,0,0.35); border: 3px solid var(--ink); padding: 8px 12px; color: #fff; box-shadow: 4px 4px 0 var(--shadow); }
@@ -40,7 +40,7 @@
       </div>
       <div class="pts"><span id="me-points">0</span>P</div>
       <div class="streak-flame" id="streak" title="연속 정답">🔥0</div>
-      <button class="btn small gold" onclick="location.href='/world.html'" title="3D 월드에서 플레이">🧊 3D 월드</button>
+      <button class="btn small gold" onclick="location.href='world.html'" title="3D 월드에서 플레이">🧊 3D 월드</button>
     </div>
 
     <!-- 대기실 -->
@@ -119,8 +119,9 @@
     </div>
   </div>
 
-  <script src="/socket.io/socket.io.js"></script>
-  <script src="/js/theme.js"></script>
-  <script src="/js/student.js"></script>
+  <script src="js/static-shim.js"></script>
+  <script src="socket.io/socket.io.js"></script>
+  <script src="js/theme.js"></script>
+  <script src="js/student.js"></script>
 </body>
 </html>

@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
   <title>BlockQuest — 3D 월드</title>
-  <link rel="stylesheet" href="/css/game.css" />
+  <link rel="stylesheet" href="css/game.css" />
   <style>
     html, body { overflow: hidden; height: 100%; overscroll-behavior: none; }
     #game-canvas { position: fixed; inset: 0; width: 100%; height: 100%; display: block; touch-action: none; }
@@ -198,11 +198,12 @@
     </div>
   </div>
 
-  <script src="/socket.io/socket.io.js"></script>
-  <script src="/js/theme.js"></script>
+  <script src="js/static-shim.js"></script>
+  <script src="socket.io/socket.io.js"></script>
+  <script src="js/theme.js"></script>
   <script type="importmap">
-    { "imports": { "three": "/vendor/three/three.module.min.js" } }
+    { "imports": { "three": "./vendor/three/three.module.min.js" } }
   </script>
-  <script type="module" src="/js/game/main.js"></script>
+  <script type="module" src="js/game/main.js"></script>
 </body>
 </html>

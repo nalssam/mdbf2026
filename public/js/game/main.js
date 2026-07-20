@@ -3,7 +3,7 @@ import { createEngine, BLOCK_TYPES } from './engine.js';
 import { createControls } from './controls.js';
 
 const session = JSON.parse(localStorage.getItem('bq_student') || 'null');
-if (!session) location.href = '/';
+if (!session) location.href = './';
 
 const $ = (id) => document.getElementById(id);
 function hashStr(s) {
@@ -281,7 +281,7 @@ async function submitAnswer(index, choiceIndex) {
   if (!submittedQuiz) return;
   document.querySelectorAll('#qz-choices .choice').forEach((b) => (b.disabled = true));
   try {
-    const res = await fetch('/api/answer', {
+    const res = await fetch('api/answer', {
       method: 'POST',
       headers: { 'content-type': 'application/json' },
       body: JSON.stringify({
@@ -402,7 +402,7 @@ $('help-close').addEventListener('click', () => {
   hideOverlay('help-overlay');
   localStorage.setItem('bq_help_seen', '1');
 });
-$('btn-classic').addEventListener('click', () => { location.href = '/play.html'; });
+$('btn-classic').addEventListener('click', () => { location.href = 'play.html'; });
 if (!localStorage.getItem('bq_help_seen')) showOverlay('help-overlay');
 
 // iOS/크롬 오디오 잠금 해제 (첫 사용자 제스처)
@@ -515,11 +515,11 @@ async function refreshState({ silent } = {}) {
   const qs = new URLSearchParams({
     classId: session.classId, studentId: session.studentId, secret: session.secret || '',
   });
-  const res = await fetch(`/api/student/state?${qs}`);
+  const res = await fetch(`api/student/state?${qs}`);
   if (res.status === 404) {
     // 세션이 무효(학급/학생 삭제 또는 인증 실패)일 때만 세션을 버린다
     localStorage.removeItem('bq_student');
-    location.href = '/';
+    location.href = './';
     return;
   }
   const data = await res.json();
