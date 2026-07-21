@@ -2,6 +2,10 @@ name: Fetch game assets
 
 on:
   workflow_dispatch:
+  push:
+    paths:
+      - 'assets/sources.json'
+      - '.github/workflows/fetch-assets.yml'
 
 permissions:
   contents: write
