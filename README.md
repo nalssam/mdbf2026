@@ -114,8 +114,38 @@ npm start
 | 프론트 | 바닐라 JS + 캔버스 픽셀 텍스처/복셀 아바타/파티클/8비트 사운드(WebAudio), 반응형(태블릿 최적화) |
 | 시각화 | 경량 SVG 차트 (접근성 검증 팔레트, 색+기호 이중 표기) |
 
-## 배포 메모
+## 배포
+
+| 방식 | 주소 | 제공 범위 |
+|---|---|---|
+| **정식 서비스 (Render)** | 아래 버튼으로 배포 | ✅ 전체 기능 — 교사 관리자·AI 퀴즈 생성·실시간 멀티플레이·인사이트 |
+| 체험판 (GitHub Pages) | <https://nalssam.github.io/mdbf2026/> | 학생용 데모 (3D 월드 + 데모 퀴즈, 서버 없음) |
+| 체험판 미러 (Vercel) | main 푸시 시 자동 배포 | 학생용 데모 (위와 동일) |
+
+### 🚀 정식 서비스 원클릭 배포 (Render, 무료)
+
+[![Deploy to Render](https://render.com/images/deploy-to-render-button.svg)](https://render.com/deploy?repo=https://github.com/nalssam/mdbf2026)
+
+1. 위 버튼 클릭 → [Render](https://render.com) 로그인(구글 계정 가능) → **Deploy** 클릭
+2. 배포 화면에서 `ANTHROPIC_API_KEY` 입력 (선택 — [platform.claude.com](https://platform.claude.com)에서 발급. 비워 두면 규칙 기반 폴백 생성기로 동작)
+3. 몇 분 뒤 발급되는 `https://blockquest-****.onrender.com` 주소가 정식 서비스 주소입니다 — 교사·학생 모두 이 주소로 접속
+
+무료 플랜 참고사항:
+- 15분간 접속이 없으면 잠들었다가 다음 접속 때 깨어납니다(약 1분 소요). **수업 시작 5분 전에 교사가 먼저 접속**해 깨워 두면 학생들은 바로 들어올 수 있어요.
+- 서버가 재시작되면 학급·포인트 데이터가 초기화됩니다(무료 플랜은 디스크가 임시 저장소). 수업 차시 단위로 학급을 새로 만들어 쓰는 흐름에는 문제가 없고, 데이터를 계속 보존하려면 Render 유료 디스크를 붙이면 됩니다.
+
+### 다른 곳에 배포 (Docker)
+
+`Dockerfile`이 포함되어 있어 Railway·Fly.io·학교 서버 등 어디서든 동일하게 실행할 수 있습니다:
+
+```bash
+docker build -t blockquest .
+docker run -p 3000:3000 -e ANTHROPIC_API_KEY=sk-ant-... blockquest
+```
+
+### 배포 메모
 
 - 데이터는 `data/db.json`에 저장됩니다 (`DATA_DIR` 환경변수로 위치 변경 가능).
 - 포트는 `PORT` 환경변수로 변경할 수 있습니다.
+- 헬스체크 엔드포인트: `GET /healthz`
 - 학생 QR은 `서버주소/?code=학급코드` 로 연결되므로, 배포 시 학생 기기에서 접근 가능한 주소로 서비스해야 합니다.

@@ -17,12 +17,16 @@ const server = http.createServer(app);
 const io = new Server(server, { cors: { origin: true } });
 
 const PORT = process.env.PORT || 3000;
-const upload = multer({ storage: multer.memoryStorage(), limits: { fileSize: 25 * 1024 * 1024 } });
+// defParamCharset: busboy가 한글 파일명을 latin-1로 잘못 해석하지 않도록 UTF-8 지정
+const upload = multer({ storage: multer.memoryStorage(), limits: { fileSize: 25 * 1024 * 1024 }, defParamCharset: 'utf8' });
 
 app.use(express.json({ limit: '5mb' }));
 app.use(express.static(path.join(__dirname, '..', 'public')));
 // three.js 로컬 서빙 (학교망에서 CDN 의존 없이 3D 월드 구동)
 app.use('/vendor/three', express.static(path.join(__dirname, '..', 'node_modules', 'three', 'build')));
+
+// 배포 환경(Render 등) 헬스체크용
+app.get('/healthz', (req, res) => res.json({ ok: true }));
 
 // ---------- 공통 헬퍼 ----------
 

@@ -1,0 +1,16 @@
+# Render.com 원클릭 배포 블루프린트
+# https://render.com/deploy?repo=https://github.com/nalssam/mdbf2026
+services:
+  - type: web
+    name: blockquest
+    runtime: node
+    plan: free
+    buildCommand: npm ci --omit=dev
+    startCommand: npm start
+    healthCheckPath: /healthz
+    envVars:
+      # Claude API 키 — 대시보드에서 직접 입력 (없으면 규칙 기반 폴백 생성기로 동작)
+      - key: ANTHROPIC_API_KEY
+        sync: false
+      - key: NODE_VERSION
+        value: "22"

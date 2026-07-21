@@ -1,10 +1,11 @@
-// GitHub Pages(정적 호스팅) 체험판 심(shim)
-// github.io처럼 서버가 없는 환경에서 api/* fetch와 socket.io를 클라이언트 데모로 대체한다.
+// 정적 호스팅(GitHub Pages·Vercel) 체험판 심(shim)
+// 서버가 없는 환경에서 api/* fetch와 socket.io를 클라이언트 데모로 대체한다.
 // Node 서버에서 실행 중일 때는 아무 것도 하지 않는다.
 (function () {
   if (new URLSearchParams(location.search).get('demo') === '1') sessionStorage.setItem('bq_demo', '1');
   const isStatic =
     /\.github\.io$/.test(location.hostname) ||
+    /\.vercel\.app$/.test(location.hostname) ||
     location.protocol === 'file:' ||
     sessionStorage.getItem('bq_demo') === '1';
   window.BQ_DEMO = isStatic;
@@ -102,7 +103,7 @@
       }
       saveState(s);
       return json({
-        classId: 'demo-class', className: '체험 학급 (GitHub Pages 데모)', teacherName: 'BlockQuest',
+        classId: 'demo-class', className: '체험 학급 (온라인 데모)', teacherName: 'BlockQuest',
         student: s.student, activeQuiz: publicQuiz(), myAnswers: myAnswersPayload(s), leaderboard: leaderboard(s),
       });
     }
@@ -110,7 +111,7 @@
     if (route === 'student/state') {
       if (!s.student) return json({ error: '데모 세션이 없습니다. 다시 입장해 주세요.' }, 404);
       return json({
-        className: '체험 학급 (GitHub Pages 데모)', student: s.student,
+        className: '체험 학급 (온라인 데모)', student: s.student,
         activeQuiz: publicQuiz(), myAnswers: myAnswersPayload(s), leaderboard: leaderboard(s),
       });
     }
