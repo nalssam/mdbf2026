@@ -24,6 +24,9 @@ app.use(express.static(path.join(__dirname, '..', 'public')));
 // three.js 로컬 서빙 (학교망에서 CDN 의존 없이 3D 월드 구동)
 app.use('/vendor/three', express.static(path.join(__dirname, '..', 'node_modules', 'three', 'build')));
 
+// 배포 환경(Render 등) 헬스체크용
+app.get('/healthz', (req, res) => res.json({ ok: true }));
+
 // ---------- 공통 헬퍼 ----------
 
 function httpError(status, message) {
