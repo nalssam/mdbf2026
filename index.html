@@ -369,6 +369,7 @@
   .lib-desc{font-size:12.5px;color:var(--dim);padding:10px 16px 4px;}
   .lib-list{flex:1;overflow-y:auto;padding:10px 14px 20px;display:flex;flex-direction:column;gap:12px;}
   .lib-card{
+    flex:0 0 auto;
     background:var(--panel2);border:1px solid var(--line);border-radius:12px;
     overflow:hidden;text-align:left;color:var(--text);padding:0;
     transition:border-color .15s,transform .15s;
@@ -930,14 +931,14 @@ $$('[data-video]').forEach(b=>b.addEventListener('click', openVideo));
 
 /* ================= 6·25전쟁 학습콘텐츠 (유튜브 라이브러리) ================= */
 const TUBE_VIDEOS = [
-  { id:'_S4YaMv2lfg' },
-  { id:'-ECci4sNuYc' },
-  { id:'u1yyyHTDHnk' },
-  { id:'_zojHBvJe4w' },
-  { id:'EMArZ4xkOvE' },
-  { id:'8nh9tWS2YBA' },
-  { id:'kH3Zvc_k6as' },
-  { id:'Eh6PMQFkFuM' },
+  { id:'_S4YaMv2lfg', title:'오늘은 무슨 날이에요? 6.25 전쟁일', author:'몽당오늘' },
+  { id:'-ECci4sNuYc', title:'[국가보훈처] 6.25전쟁, 잊을 수 없는 상처', author:'EBS Learning' },
+  { id:'u1yyyHTDHnk', title:'45초만에 보는 6.25전쟁 #shorts', author:'우주펭귄' },
+  { id:'_zojHBvJe4w', title:'6·25 전쟁 이야기', author:'국가보훈부' },
+  { id:'EMArZ4xkOvE', title:'6·25 전쟁 학습 영상', author:'' },
+  { id:'8nh9tWS2YBA', title:'6.25 전쟁에 대해 알아봐요 (한국전쟁, 휴전선, 38선, 분단)', author:'초등도서관' },
+  { id:'kH3Zvc_k6as', title:'지도로 보는 6.25 전쟁 (The Korean War 1950-1953)', author:'Fantanium Graph' },
+  { id:'Eh6PMQFkFuM', title:'한국인이라면 꼭 알아야 할 6.25 전쟁 제대로 알기 (최태성 강사 1부)', author:'지식인사이드' },
 ];
 function renderLib(){
   const list = $('#libList');
