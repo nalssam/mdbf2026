@@ -105,6 +105,21 @@
     });
   }
 
+  // 추출된 자료를 접이식 패널로 보여줘 교사가 AI에 전달될 내용을 확인할 수 있게 한다
+  function showMaterialPreview(mat) {
+    const status = $('gen-status');
+    let pv = document.getElementById('material-preview');
+    if (!pv) {
+      pv = document.createElement('details');
+      pv.id = 'material-preview';
+      pv.className = 'muted mt8';
+      status.parentNode.insertBefore(pv, status.nextSibling);
+    }
+    pv.innerHTML =
+      `<summary>📄 추출된 자료 확인 — 「${BQ.esc(mat.title)}」 · ${BQ.esc(mat.kind)} · ${BQ.fmt(mat.chars)}자</summary>` +
+      `<pre style="white-space:pre-wrap;max-height:180px;overflow:auto;margin-top:6px">${BQ.esc(mat.preview || '')}${mat.chars > (mat.preview || '').length ? '\n…(이하 생략)' : ''}</pre>`;
+  }
+
   $('btn-generate').addEventListener('click', async () => {
     const btn = $('btn-generate');
     const status = $('gen-status');
@@ -112,6 +127,7 @@
     try {
       status.innerHTML = '<span class="spinner">⛏</span> 자료에서 텍스트를 추출하는 중...';
       currentMaterial = await extractMaterial();
+      showMaterialPreview(currentMaterial);
       status.innerHTML = `<span class="spinner">🤖</span> AI가 「${BQ.esc(currentMaterial.title)}」(${BQ.fmt(currentMaterial.chars)}자)를 분석해 학습목표와 문항을 만드는 중...`;
       const { quiz, engine } = await api('/quizzes', {
         method: 'POST',
@@ -414,8 +430,15 @@
   }
 
   // ---------- 데이터 로드 + 소켓 ----------
+  let lbUpdatedAt = 0; // 소켓 리더보드가 마지막으로 갱신된 시각
+
   async function loadClass() {
-    cls = await api('');
+    const startedAt = Date.now();
+    const fresh = await api('');
+    // 조회가 진행되는 사이 소켓으로 더 새로운 리더보드가 도착했다면,
+    // 오래된 스냅숏이 최신 점수를 덮어쓰지 않게 유지한다 (동시 입장·제출 경쟁 상태 방지)
+    if (cls && lbUpdatedAt > startedAt) fresh.leaderboard = cls.leaderboard;
+    cls = fresh;
     renderDash();
     renderQuizList();
   }
@@ -427,6 +450,7 @@
   socket.on('student:joined', () => loadClass().catch(() => {}));
   socket.on('student:presence', () => loadClass().catch(() => {}));
   socket.on('leaderboard:update', (data) => {
+    lbUpdatedAt = Date.now();
     if (cls) { cls.leaderboard = data; renderStudents(); renderLiveBoard(); }
   });
   socket.on('progress:update', () => scheduleLiveReload());

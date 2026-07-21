@@ -17,7 +17,8 @@ const server = http.createServer(app);
 const io = new Server(server, { cors: { origin: true } });
 
 const PORT = process.env.PORT || 3000;
-const upload = multer({ storage: multer.memoryStorage(), limits: { fileSize: 25 * 1024 * 1024 } });
+// defParamCharset: busboy가 한글 파일명을 latin-1로 잘못 해석하지 않도록 UTF-8 지정
+const upload = multer({ storage: multer.memoryStorage(), limits: { fileSize: 25 * 1024 * 1024 }, defParamCharset: 'utf8' });
 
 app.use(express.json({ limit: '5mb' }));
 app.use(express.static(path.join(__dirname, '..', 'public')));

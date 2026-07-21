@@ -82,9 +82,15 @@ const STOPWORDS = new Set([
   'the', 'a', 'an', 'is', 'are', 'was', 'were', 'and', 'or', 'of', 'to', 'in', 'on', 'for', 'with', 'that', 'this',
 ]);
 
+// 어절 끝 조사(긴 것부터 검사) — 제거 후 어간이 2자 이상 남을 때만 벗긴다
+const JOSA_RE = /(에서부터|으로부터|이라고는|이라고|이라는|라고는|에게서|한테서|으로써|으로서|처럼|보다|부터|까지|에서|에게|한테|으로|이나|이란|이며|은|는|이|가|을|를|의|에|와|과|도|만|랑|로|란|며)$/;
+// 서술어·용언 활용형으로 끝나는 어절은 핵심 용어(명사) 후보에서 제외한다
+const PREDICATE_RE = /(습니다|입니다|합니다|됩니다|있습니다|없습니다|었습니다|았습니다|했습니다|하였다|되었다|한다|된다|이다|하다|되다|하며|되며|하고|되고|하여|되어|해서|면서|지만|려고|어요|아요|해요|지요|네요|는데|다는|라는|거나|나면)$/;
+
 function splitSentences(text) {
+  // 문장 부호 또는 줄바꿈에서만 나눈다 ('~보다 ' 같은 문중 어절에서 잘리지 않도록)
   return text
-    .split(/(?<=[.!?다요])\s+|\n+/)
+    .split(/(?<=[.!?])\s+|\n+/)
     .map((s) => s.trim())
     .filter((s) => s.length >= 15 && s.length <= 200 && !/^\[/.test(s));
 }
@@ -93,19 +99,48 @@ function tokenize(sentence) {
   return (sentence.match(/[가-힣A-Za-z0-9]{2,}/g) || []).filter((w) => !STOPWORDS.has(w.toLowerCase()));
 }
 
+// 어절 → 명사형 어간 (서술어형이면 null). 겹조사('태양에서의' 등)까지 반복 제거한다.
+function stemOf(word) {
+  if (PREDICATE_RE.test(word)) return null;
+  let stem = word;
+  for (let i = 0; i < 3; i++) {
+    const m = stem.match(JOSA_RE);
+    if (!m || stem.length - m[0].length < 2) break;
+    stem = stem.slice(0, stem.length - m[0].length);
+  }
+  if (stem.length < 2 || STOPWORDS.has(stem.toLowerCase())) return null;
+  return stem;
+}
+
+function sentenceStems(sentence) {
+  return new Set(tokenize(sentence).map(stemOf).filter(Boolean));
+}
+
 function keywordFrequency(sentences) {
   const freq = new Map();
   for (const s of sentences) {
-    for (const w of tokenize(s)) freq.set(w, (freq.get(w) || 0) + 1);
+    for (const w of tokenize(s)) {
+      const stem = stemOf(w);
+      if (stem) freq.set(stem, (freq.get(stem) || 0) + 1);
+    }
   }
   return freq;
 }
 
-function pickBlankWord(sentence, freq) {
-  const words = tokenize(sentence);
-  if (!words.length) return null;
-  // 자료 전체에서 자주 나오는(=핵심 개념일 확률이 높은) 긴 단어를 빈칸으로 뽑는다
-  return words.sort((a, b) => (freq.get(b) || 0) * b.length - (freq.get(a) || 0) * a.length)[0];
+// 문장에서 빈칸으로 만들 어절을 고른다: 자료 전체에서 자주 나오는(=핵심 개념) 어간 우선.
+// 조사는 빈칸 밖에 남겨 문법 단서 없이 자연스러운 문장을 유지하고,
+// 이미 다른 문항의 정답으로 쓴 어간은 피해서 문항이 단조로워지지 않게 한다.
+function pickBlank(sentence, freq, usedStems) {
+  let best = null;
+  let bestFresh = null;
+  for (const w of tokenize(sentence)) {
+    const stem = stemOf(w);
+    if (!stem || !freq.has(stem)) continue;
+    const cand = { word: w, stem, josa: w.slice(stem.length), score: (freq.get(stem) || 0) * stem.length };
+    if (!best || cand.score > best.score) best = cand;
+    if (usedStems && !usedStems.has(stem) && (!bestFresh || cand.score > bestFresh.score)) bestFresh = cand;
+  }
+  return bestFresh || best;
 }
 
 function shuffle(arr) {
@@ -145,41 +180,50 @@ function generateHeuristic({ sourceText, title, numQuestions }) {
 
   const questions = [];
   const usedSentences = new Set();
+  const usedBlankStems = new Set();
   const mcqCount = Math.max(1, numQuestions - Math.min(2, Math.floor(numQuestions / 4)));
 
   for (const { s, i } of scored) {
     if (questions.length >= mcqCount) break;
     if (usedSentences.has(i)) continue;
-    const blank = pickBlankWord(s, freq);
+    const blank = pickBlank(s, freq, usedBlankStems);
     if (!blank) continue;
-    const distractorPool = topKeywords.filter((w) => w !== blank && !s.includes(w));
+    const stems = sentenceStems(s);
+    const distractorPool = topKeywords.filter((k) => k !== blank.stem && !stems.has(k));
     if (distractorPool.length < 3) continue;
     usedSentences.add(i);
+    usedBlankStems.add(blank.stem);
     const distractors = shuffle(distractorPool).slice(0, 3);
-    const choices = shuffle([blank, ...distractors]);
+    const choices = shuffle([blank.stem, ...distractors]);
     questions.push({
       type: 'mcq',
-      prompt: `다음 빈칸에 들어갈 알맞은 말은?\n"${s.replace(blank, '( ____ )')}"`,
+      prompt: `다음 빈칸에 들어갈 알맞은 말은?\n"${s.replace(blank.word, `( ____ )${blank.josa}`)}"`,
       choices,
-      answerIndex: choices.indexOf(blank),
+      answerIndex: choices.indexOf(blank.stem),
       explanation: `자료 원문: "${s}"`,
       objectiveIndex: questions.length % 2,
       difficulty: ['easy', 'medium', 'hard'][questions.length % 3],
     });
   }
 
-  // OX 문항: 원문 그대로(O) 또는 키워드를 바꿔치기한 문장(X)
+  // OX 문항: 원문 그대로(O) 또는 핵심 어간을 다른 개념으로 바꾼 문장(X).
+  // 조사를 보존해 문법만으로 정답이 드러나지 않게 하고, 안전한 치환이 없으면 O 문항으로 폴백한다.
   for (const { s, i } of scored) {
     if (questions.length >= numQuestions) break;
     if (usedSentences.has(i)) continue;
+    if (!/[.!?]$|[다요]$/.test(s)) continue; // 완결된 문장만 OX 지문으로 사용
     usedSentences.add(i);
-    const makeFalse = questions.length % 2 === 1;
+    let makeFalse = questions.length % 2 === 1;
     let prompt = s;
     if (makeFalse) {
-      const blank = pickBlankWord(s, freq);
-      const swap = topKeywords.find((w) => w !== blank && !s.includes(w));
-      if (!blank || !swap) continue;
-      prompt = s.replace(blank, swap);
+      const blank = pickBlank(s, freq);
+      const stems = blank ? sentenceStems(s) : null;
+      const swap = blank ? topKeywords.find((k) => k !== blank.stem && !stems.has(k)) : null;
+      if (blank && swap) {
+        // 치환어 끝의 주제격 조사(은/는)가 원래 조사와 겹치면 벗겨서 비문을 막는다 ('물은'+'을' → '물을')
+        const swapForm = blank.josa && /[은는]$/.test(swap) && swap.length >= 2 ? swap.slice(0, -1) : swap;
+        prompt = s.replace(blank.word, `${swapForm}${blank.josa}`);
+      } else makeFalse = false;
     }
     questions.push({
       type: 'ox',
