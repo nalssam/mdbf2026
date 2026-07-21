@@ -1,0 +1,61 @@
+name: Fetch game assets
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  fetch:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Download and convert assets listed in assets/sources.json
+        run: |
+          set -euo pipefail
+          mkdir -p assets/img assets/audio assets/video
+          tmp=$(mktemp -d)
+
+          fetch_group() {
+            local group="$1" outdir="$2"
+            for name in $(jq -r ".${group} | keys[]" assets/sources.json); do
+              url=$(jq -r ".${group}[\"${name}\"]" assets/sources.json)
+              src="$tmp/$name.src"
+              echo "downloading $group/$name"
+              curl -sSfL --retry 3 -o "$src" "$url"
+              case "$name" in
+                *.jpg)
+                  # source is a large PNG; recompress to a lean JPEG
+                  ffmpeg -y -loglevel error -i "$src" -vf "scale=1280:-2" -q:v 4 "$outdir/$name"
+                  ;;
+                *.mp3)
+                  if [[ "$url" == *.mp3 ]]; then
+                    cp "$src" "$outdir/$name"
+                  else
+                    # m4a/wav source -> mp3
+                    ffmpeg -y -loglevel error -i "$src" -codec:a libmp3lame -q:a 4 "$outdir/$name"
+                  fi
+                  ;;
+                *)
+                  cp "$src" "$outdir/$name"
+                  ;;
+              esac
+            done
+          }
+
+          fetch_group images assets/img
+          fetch_group audio assets/audio
+          fetch_group video assets/video
+
+          ls -la assets/img assets/audio assets/video
+
+      - name: Commit assets
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -A assets/
+          git diff --cached --quiet && echo "no changes" && exit 0
+          git commit -m "Add generated game assets (images, audio, video)"
+          git push

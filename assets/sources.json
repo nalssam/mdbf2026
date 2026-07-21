@@ -1,0 +1,24 @@
+{
+  "comment": "Generated media sources (Higgsfield). The fetch-assets workflow downloads these into assets/ and commits them.",
+  "images": {
+    "intro.jpg": "https://d8j0ntlcm91z4.cloudfront.net/user_2yTdILg9Q4rMO0h5HFRWvJ51FB1/hf_20260720_235118_96652897-088e-4481-bd3d-a13ed2b3612f.png",
+    "room1.jpg": "https://d8j0ntlcm91z4.cloudfront.net/user_2yTdILg9Q4rMO0h5HFRWvJ51FB1/hf_20260720_235121_0ff22584-527d-437f-a0bf-087bf938fe9b.png",
+    "room2.jpg": "https://d8j0ntlcm91z4.cloudfront.net/user_2yTdILg9Q4rMO0h5HFRWvJ51FB1/hf_20260720_235125_76ed2717-a00b-4fc9-84d3-6d34be02c97f.png",
+    "room3.jpg": "https://d8j0ntlcm91z4.cloudfront.net/user_2yTdILg9Q4rMO0h5HFRWvJ51FB1/hf_20260720_235129_df63e9fe-67b9-4505-99a1-144d5a2d75aa.png",
+    "room4.jpg": "https://d8j0ntlcm91z4.cloudfront.net/user_2yTdILg9Q4rMO0h5HFRWvJ51FB1/hf_20260720_235131_baf22b1d-7cdc-44d1-a3a2-58250d0b7c04.png",
+    "room5.jpg": "https://d8j0ntlcm91z4.cloudfront.net/user_2yTdILg9Q4rMO0h5HFRWvJ51FB1/hf_20260721_000110_bc3a634f-79e7-4e4a-a844-7fbf74fa0275.png",
+    "end.jpg": "https://d8j0ntlcm91z4.cloudfront.net/user_2yTdILg9Q4rMO0h5HFRWvJ51FB1/hf_20260720_235137_2024ce07-1dc9-4a4a-8bf1-019917974942.png"
+  },
+  "audio": {
+    "bgm-main.mp3": "https://d8j0ntlcm91z4.cloudfront.net/user_2yTdILg9Q4rMO0h5HFRWvJ51FB1/hf_20260720_235148_f615d5ef-730c-4a2f-99ba-1da96935f192.m4a",
+    "bgm-end.mp3": "https://d8j0ntlcm91z4.cloudfront.net/user_2yTdILg9Q4rMO0h5HFRWvJ51FB1/hf_20260720_235149_972815ec-70ce-42fe-83d7-70a4673774d4.m4a",
+    "sfx-unlock.mp3": "https://d8j0ntlcm91z4.cloudfront.net/user_2yTdILg9Q4rMO0h5HFRWvJ51FB1/hf_20260720_235150_47b7eea7-750d-43fd-b1c0-f8f9ac5daf96.mp3",
+    "sfx-wrong.mp3": "https://d8j0ntlcm91z4.cloudfront.net/user_2yTdILg9Q4rMO0h5HFRWvJ51FB1/hf_20260720_235151_557e6f1d-d66a-4f98-bec9-f95aa0d080c1.mp3",
+    "sfx-chime.mp3": "https://d8j0ntlcm91z4.cloudfront.net/user_2yTdILg9Q4rMO0h5HFRWvJ51FB1/hf_20260720_235152_4d222755-cc68-4859-b6d9-97275b5c4d1b.mp3",
+    "sfx-door.mp3": "https://d8j0ntlcm91z4.cloudfront.net/user_2yTdILg9Q4rMO0h5HFRWvJ51FB1/hf_20260720_235153_9b91948f-f914-4257-9de9-475a15c817f4.mp3",
+    "sfx-page.mp3": "https://d8j0ntlcm91z4.cloudfront.net/user_2yTdILg9Q4rMO0h5HFRWvJ51FB1/hf_20260720_235229_740788de-d562-4fc2-a745-fa0f5feefbfc.mp3"
+  },
+  "video": {
+    "story.mp4": "https://d8j0ntlcm91z4.cloudfront.net/user_2yTdILg9Q4rMO0h5HFRWvJ51FB1/hf_20260721_000734_7aaa6108-4f69-44a7-b247-9b3289de83a3.mp4"
+  }
+}
