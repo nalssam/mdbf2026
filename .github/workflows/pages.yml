@@ -1,0 +1,59 @@
+name: Deploy demo to GitHub Pages
+
+# main에 푸시될 때마다 정적 체험판을 GitHub Pages로 배포한다.
+# (실시간 멀티플레이·AI 생성 등 전체 기능은 Node 서버 실행이 필요 — README 참고)
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: true
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Install dependencies (three.js 번들용)
+        run: npm ci --omit=dev
+
+      - name: Build static site
+        run: |
+          mkdir -p _site/vendor/three
+          cp -r public/* _site/
+          cp node_modules/three/build/three.module.min.js _site/vendor/three/
+          cp node_modules/three/build/three.core.min.js _site/vendor/three/
+
+      - name: Add Korean War escape-room game at /korean-war-escape/
+        run: |
+          mkdir -p _site/korean-war-escape
+          cp index.html _site/korean-war-escape/
+          cp -r assets _site/korean-war-escape/assets
+
+      - name: Setup Pages
+        uses: actions/configure-pages@v5
+        with:
+          enablement: true
+
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: _site
+
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
