@@ -39,6 +39,12 @@ jobs:
           cp node_modules/three/build/three.module.min.js _site/vendor/three/
           cp node_modules/three/build/three.core.min.js _site/vendor/three/
 
+      - name: Add Korean War escape-room game at /korean-war-escape/
+        run: |
+          mkdir -p _site/korean-war-escape
+          cp index.html _site/korean-war-escape/
+          cp -r assets _site/korean-war-escape/assets
+
       - name: Setup Pages
         uses: actions/configure-pages@v5
         with:
