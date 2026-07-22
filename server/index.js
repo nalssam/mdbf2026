@@ -86,10 +86,69 @@ function getSubmission(cls, quizId, studentId) {
   return cls.submissions[quizId][studentId];
 }
 
+// ---------- 맵/인벤토리 공통 ----------
+
+// 교사가 선택할 수 있는 맵(테마) 키 — 클라이언트 engine.js MAP_DEFS와 동일
+const MAP_KEYS = ['classic', 'desert', 'snow', 'volcano', 'sky', 'ocean'];
+// 복습 보상으로 얻는 장식 블록 종류 — 설치 시 학생 재고에서 차감된다
+const DECOR_TYPES = ['sand', 'snow', 'ice', 'glass', 'gold', 'tramp', 'fan'];
+const DECOR_SET = new Set(DECOR_TYPES);
+// 코스메틱(모자/펫) — 보유 목록에는 'hat:키'/'pet:키' 형식으로 저장
+const HAT_KEYS = new Set(['cap', 'crown', 'wizard', 'leaf']);
+const PET_KEYS = new Set(['chick', 'slime', 'ghost', 'star']);
+const COSMETIC_POOL = [
+  'hat:cap', 'hat:crown', 'hat:wizard', 'hat:leaf',
+  'pet:chick', 'pet:slime', 'pet:ghost', 'pet:star',
+];
+const PRACTICE_DAILY_LIMIT = 3; // 문항당 하루 복습 보상 횟수 제한
+
+// 기존 학생 데이터에 인벤토리가 없으면 게으르게 초기화한다
+function ensureInventory(student) {
+  if (!student.inventory || typeof student.inventory !== 'object') {
+    student.inventory = { coins: 0, decors: {}, cosmetics: [], hat: null, pet: null };
+  }
+  const inv = student.inventory;
+  if (typeof inv.coins !== 'number') inv.coins = 0;
+  if (!inv.decors || typeof inv.decors !== 'object') inv.decors = {};
+  if (!Array.isArray(inv.cosmetics)) inv.cosmetics = [];
+  if (inv.hat === undefined) inv.hat = null;
+  if (inv.pet === undefined) inv.pet = null;
+  return inv;
+}
+
+// 복습 보상 횟수 제한용 — 서버 로컬 날짜 문자열
+function todayStr() {
+  const d = new Date();
+  return `${d.getFullYear()}-${d.getMonth() + 1}-${d.getDate()}`;
+}
+
+// 복습 정답 보상 롤: 코인 +3 (55%) / 장식 블록 +2 (30%) / 코스메틱 1종 (15%, 미보유 우선)
+function rollPracticeReward(inv) {
+  const r = Math.random();
+  if (r < 0.55) {
+    inv.coins += 3;
+    return { kind: 'coins', type: null, qty: 3 };
+  }
+  if (r < 0.85) {
+    const type = DECOR_TYPES[Math.floor(Math.random() * DECOR_TYPES.length)];
+    inv.decors[type] = (inv.decors[type] || 0) + 2;
+    return { kind: 'decor', type, qty: 2 };
+  }
+  const unowned = COSMETIC_POOL.filter((c) => !inv.cosmetics.includes(c));
+  if (!unowned.length) {
+    // 코스메틱을 전부 모았다면 코인으로 대체
+    inv.coins += 5;
+    return { kind: 'coins', type: null, qty: 5 };
+  }
+  const type = unowned[Math.floor(Math.random() * unowned.length)];
+  inv.cosmetics.push(type);
+  return { kind: 'cosmetic', type, qty: 1 };
+}
+
 // ---------- 교사(관리자) API ----------
 
 app.post('/api/teacher/classes', (req, res) => {
-  const { className, teacherName } = req.body || {};
+  const { className, teacherName, mapKey } = req.body || {};
   if (!className || !String(className).trim()) throw httpError(400, '학급 이름을 입력해 주세요.');
   const id = randomId('cls');
   const cls = {
@@ -98,6 +157,8 @@ app.post('/api/teacher/classes', (req, res) => {
     name: String(className).trim().slice(0, 40),
     teacherName: String(teacherName || '선생님').trim().slice(0, 30),
     teacherKey: randomId('tk'),
+    // 맵(테마)은 목록에 있는 키만 허용 — 없거나 잘못되면 기본 'classic'
+    mapKey: MAP_KEYS.includes(mapKey) ? mapKey : 'classic',
     createdAt: Date.now(),
     students: {},
     quizzes: {},
@@ -106,18 +167,36 @@ app.post('/api/teacher/classes', (req, res) => {
   };
   db.classes[id] = cls;
   save();
-  res.json({ classId: id, code: cls.code, name: cls.name, teacherName: cls.teacherName, teacherKey: cls.teacherKey });
+  res.json({ classId: id, code: cls.code, name: cls.name, teacherName: cls.teacherName, teacherKey: cls.teacherKey, mapKey: cls.mapKey });
 });
 
 app.get('/api/teacher/classes/:id', (req, res) => {
   const cls = requireTeacher(req);
   res.json({
     id: cls.id, code: cls.code, name: cls.name, teacherName: cls.teacherName,
+    mapKey: cls.mapKey || 'classic',
     activeQuizId: cls.activeQuizId,
     students: Object.values(cls.students).map(publicStudent),
     quizzes: Object.values(cls.quizzes).sort((a, b) => b.createdAt - a.createdAt),
     leaderboard: leaderboard(cls),
   });
+});
+
+// 맵(테마) 변경 — 지형 변경분을 초기화하고 접속 중인 학급 전체에 알린다
+app.put('/api/teacher/classes/:id/map', (req, res) => {
+  const cls = requireTeacher(req);
+  const { mapKey } = req.body || {};
+  if (!MAP_KEYS.includes(mapKey)) throw httpError(400, '맵 종류가 올바르지 않습니다.');
+  cls.mapKey = mapKey;
+  // 이전 맵 기준의 블록 변경분은 새 맵과 맞지 않으므로 초기화
+  const world = worlds.get(cls.id);
+  if (world) {
+    world.diffs = {};
+    world.diffCount = 0;
+  }
+  save();
+  io.to(`c:${cls.id}`).emit('world:map', { mapKey });
+  res.json({ mapKey });
 });
 
 // 자료 업로드/URL/붙여넣기 → 텍스트 추출
@@ -389,10 +468,12 @@ app.get('/api/teacher/classes/:id/insights', (req, res) => {
 // ---------- 학생 API ----------
 
 // 학생 응답에서 개인 비밀키(secret)를 제거한다 — secret은 본인에게만 전달
+// 꾸미기(모자/펫)는 다른 화면에서도 보여야 하므로 최상위로 노출한다
 function publicStudent(s) {
   if (!s) return s;
   const { secret, ...rest } = s;
-  return rest;
+  const inv = s.inventory || {};
+  return { ...rest, hat: inv.hat || null, pet: inv.pet || null };
 }
 
 app.post('/api/join', (req, res) => {
@@ -419,6 +500,7 @@ app.post('/api/join', (req, res) => {
       avatar: String(avatar || 'steve').slice(0, 20),
       points: 0, correct: 0, answered: 0,
       streak: 0, bestStreak: 0,
+      inventory: { coins: 0, decors: {}, cosmetics: [], hat: null, pet: null },
       joinedAt: Date.now(), online: false,
     };
     cls.students[student.id] = student;
@@ -428,6 +510,7 @@ app.post('/api/join', (req, res) => {
     student.name = trimmed;
     if (avatar) student.avatar = String(avatar).slice(0, 20);
   }
+  const inventory = ensureInventory(student); // 기존 학생 데이터 마이그레이션 포함
   save();
   broadcastLeaderboard(cls);
   const activeQuiz = cls.activeQuizId ? cls.quizzes[cls.activeQuizId] : null;
@@ -435,7 +518,9 @@ app.post('/api/join', (req, res) => {
     classId: cls.id,
     className: cls.name,
     teacherName: cls.teacherName,
+    mapKey: cls.mapKey || 'classic',
     student,
+    inventory,
     activeQuiz: publicQuiz(activeQuiz),
     myAnswers: activeQuiz ? answersFor(cls, activeQuiz.id, student.id) : null,
     leaderboard: leaderboard(cls),
@@ -468,7 +553,9 @@ app.get('/api/student/state', (req, res) => {
   const activeQuiz = cls.activeQuizId ? cls.quizzes[cls.activeQuizId] : null;
   res.json({
     className: cls.name,
+    mapKey: cls.mapKey || 'classic',
     student,
+    inventory: ensureInventory(student),
     activeQuiz: publicQuiz(activeQuiz),
     myAnswers: activeQuiz ? answersFor(cls, activeQuiz.id, student.id) : null,
     leaderboard: leaderboard(cls),
@@ -543,6 +630,54 @@ app.post('/api/answer', (req, res) => {
   });
 });
 
+// 복습 풀이 → 포인트 없이 보상만 지급 (정식 제출한 문항만 허용)
+app.post('/api/practice-answer', (req, res) => {
+  const { classId, studentId, secret, quizId, questionIndex, choiceIndex } = req.body || {};
+  const cls = getClass(classId);
+  if (!cls) throw httpError(404, '학급을 찾을 수 없습니다.');
+  const student = cls.students[studentId];
+  if (!student) throw httpError(404, '학생 정보를 찾을 수 없습니다.');
+  if (student.secret && secret !== student.secret) throw httpError(403, '학생 인증에 실패했습니다. 다시 접속해 주세요.');
+  const quiz = cls.quizzes[quizId];
+  if (!quiz) throw httpError(404, '퀴즈를 찾을 수 없습니다.');
+  const qi = Number(questionIndex);
+  const question = quiz.questions[qi];
+  if (!question) throw httpError(400, '문항 번호가 올바르지 않습니다.');
+  const ci = Number(choiceIndex);
+  if (!(ci >= 0 && ci < question.choices.length)) throw httpError(400, '보기 번호가 올바르지 않습니다.');
+
+  // 정식 퀘스트로 제출한 문항만 복습할 수 있다
+  const sub = cls.submissions[quizId] && cls.submissions[quizId][studentId];
+  if (!sub || !sub.answers[qi]) throw httpError(409, '먼저 퀘스트로 풀어야 해요');
+
+  const correct = ci === question.answerIndex;
+  const inventory = ensureInventory(student);
+  let reward = null;
+  if (correct) {
+    // 문항당 하루 3회까지만 보상 — 초과 시 reward:null로 정오답만 알려준다
+    student.practice ||= {};
+    const pk = `${quizId}:${qi}`;
+    const day = todayStr();
+    let rec = student.practice[pk];
+    if (!rec || rec.day !== day) {
+      rec = { count: 0, day };
+      student.practice[pk] = rec;
+    }
+    if (rec.count < PRACTICE_DAILY_LIMIT) {
+      rec.count += 1;
+      reward = rollPracticeReward(inventory);
+    }
+  }
+  save();
+  res.json({
+    correct,
+    answerIndex: question.answerIndex,
+    explanation: question.explanation,
+    reward,
+    inventory,
+  });
+});
+
 app.get('/api/leaderboard', (req, res) => {
   const cls = getClass(req.query.classId);
   if (!cls) throw httpError(404, '학급을 찾을 수 없습니다.');
@@ -568,10 +703,10 @@ app.use((err, req, res, next) => {
 // ---------- Socket.IO 실시간 ----------
 
 // 3D 월드 상태(블록 변경분)는 학급별 메모리로만 유지한다 — 서버 재시작 시 지형 리셋.
-const worlds = new Map(); // classId → { diffs, diffCount, players: Map<studentId, {id,name,avatar}> }
-const MAX_WORLD_DIFFS = 8000;
-const PLACEABLE_TYPES = new Set(['plank', 'brick']);
-const WORLD_R = 23; // 클라이언트 엔진과 동일한 아레나 반경
+const worlds = new Map(); // classId → { diffs, diffCount, players: Map<studentId, {id,name,avatar,hat,pet}> }
+const MAX_WORLD_DIFFS = 20000;
+const PLACEABLE_TYPES = new Set(['plank', 'brick', 'wood', 'leaf', 'crate', 'sand', 'snow', 'ice', 'glass', 'gold', 'tramp', 'fan']);
+const WORLD_R = 72; // 클라이언트 엔진과 동일한 아레나 반경
 
 // 학생별 동시 접속 소켓 수 (탭 2개/재접속 겹침에서 유령 퇴장 방지) — 전체/월드 모드 별도 집계
 const sockCounts = new Map(); // `${classId}:${studentId}` → { t: 전체, w: 월드 }
@@ -603,7 +738,7 @@ function setDiff(world, key, value) {
 }
 
 // 초당 이벤트 상한 (플러딩 방어) — 초과분은 조용히 버린다
-const RATE_LIMITS = { 'p:move': 20, 'p:shoot': 6, 'w:break': 15, 'w:place': 15, 'w:bomb': 3, join: 5 };
+const RATE_LIMITS = { 'p:move': 20, 'p:shoot': 6, 'w:break': 15, 'w:place': 15, 'w:bomb': 3, 'p:style': 2, 'p:emote': 2, join: 5 };
 function allowRate(socket, evt) {
   const now = Math.floor(Date.now() / 1000);
   let rl = socket.data && socket.data.rl;
@@ -661,13 +796,14 @@ io.on('connection', (socket) => {
       socket.join(`w:${classId}`);
       const world = getWorld(classId);
       const already = world.players.has(studentId);
-      world.players.set(studentId, { id: studentId, name: student.name, avatar: student.avatar });
+      const inv = ensureInventory(student);
+      world.players.set(studentId, { id: studentId, name: student.name, avatar: student.avatar, hat: inv.hat, pet: inv.pet });
       socket.emit('world:state', {
         diffs: world.diffs,
         players: [...world.players.values()].filter((p) => p.id !== studentId),
       });
       if (!already) {
-        socket.to(`w:${classId}`).emit('p:join', { id: studentId, name: student.name, avatar: student.avatar });
+        socket.to(`w:${classId}`).emit('p:join', { id: studentId, name: student.name, avatar: student.avatar, hat: inv.hat, pet: inv.pet });
       }
     }
   });
@@ -694,9 +830,25 @@ io.on('connection', (socket) => {
   safeOn(socket, 'w:place', ({ key, type }) => {
     const { classId, role, studentId, world } = socket.data || {};
     if (role !== 'student' || !world || !validKey(key) || !PLACEABLE_TYPES.has(type)) return;
+    // 장식 블록은 복습 보상으로 얻은 재고에서 차감 — 재고가 없으면 거부 (plank 등 기본 블록은 무제한)
+    const isDecor = DECOR_SET.has(type);
+    let inv = null;
+    if (isDecor) {
+      const cls = getClass(classId);
+      const student = cls && cls.students[studentId];
+      inv = student ? ensureInventory(student) : null;
+      if (!inv || !(inv.decors[type] > 0)) {
+        socket.emit('w:reject', { key });
+        return;
+      }
+    }
     if (!setDiff(getWorld(classId), key, { type })) {
       socket.emit('w:reject', { key }); // 설치 한도 초과 — 클라이언트가 로컬 블록을 되돌린다
       return;
+    }
+    if (isDecor) {
+      inv.decors[type] -= 1; // 설치가 확정된 뒤에만 차감한다
+      save();
     }
     socket.to(`w:${classId}`).emit('w:place', { key, type, by: studentId });
   });
@@ -713,6 +865,39 @@ io.on('connection', (socket) => {
     socket.to(`w:${classId}`).emit('w:bomb', {
       x: Number(x) || 0, y: Number(y) || 0, z: Number(z) || 0, keys: destroyed, by: studentId,
     });
+  });
+
+  // 스타일(모자/펫) 장착 — 보유한 코스메틱만 허용, null은 해제
+  safeOn(socket, 'p:style', ({ hat, pet }) => {
+    const { classId, role, studentId, world } = socket.data || {};
+    if (role !== 'student' || !world) return;
+    const cls = getClass(classId);
+    const student = cls && cls.students[studentId];
+    if (!student) return;
+    const inv = ensureInventory(student);
+    const h = hat == null ? null : String(hat);
+    const p = pet == null ? null : String(pet);
+    if (h !== null && !(HAT_KEYS.has(h) && inv.cosmetics.includes(`hat:${h}`))) return;
+    if (p !== null && !(PET_KEYS.has(p) && inv.cosmetics.includes(`pet:${p}`))) return;
+    inv.hat = h;
+    inv.pet = p;
+    save();
+    // 월드 플레이어 목록에도 반영해 늦게 입장한 학생도 같은 모습을 본다
+    const w = worlds.get(classId);
+    const entry = w && w.players.get(studentId);
+    if (entry) {
+      entry.hat = h;
+      entry.pet = p;
+    }
+    socket.to(`w:${classId}`).emit('p:style', { id: studentId, hat: h, pet: p });
+  });
+
+  // 이모지 표시 — 문자열 8바이트 이하(grapheme 2자 내외)만 전달
+  safeOn(socket, 'p:emote', ({ e }) => {
+    const { classId, role, studentId, world } = socket.data || {};
+    if (role !== 'student' || !world) return;
+    if (typeof e !== 'string' || !e.length || Buffer.byteLength(e, 'utf8') > 8) return;
+    socket.to(`w:${classId}`).emit('p:emote', { id: studentId, e });
   });
 
   // 발사체(총) — 시각 효과 공유용

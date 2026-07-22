@@ -44,6 +44,15 @@
         <div class="mt16">
           <input id="new-class-name" class="input" maxlength="40" placeholder="학급 이름 (예: 5학년 2반 과학)" />
           <input id="new-teacher-name" class="input mt8" maxlength="30" placeholder="선생님 성함 (선택)" />
+          <div class="muted mt8">월드 맵 고르기 (나중에 대시보드에서 바꿀 수 있어요)</div>
+          <select id="new-class-map" class="input mt8">
+            <option value="classic" selected>초원 왕국</option>
+            <option value="desert">사막 대탐험</option>
+            <option value="snow">눈의 왕국</option>
+            <option value="volcano">화산 모험</option>
+            <option value="sky">하늘 섬</option>
+            <option value="ocean">바다 마을</option>
+          </select>
           <button id="btn-create-class" class="btn gold big mt16">＋ 새 학급 만들기</button>
         </div>
         <div id="my-classes" class="mt24"></div>
@@ -58,6 +67,7 @@
       <span class="tag">⚡ 실시간 랭킹</span>
       <span class="tag">🏆 개인·학급 포인트</span>
       <span class="tag">📊 교사 인사이트</span>
+      <span class="tag">🗺 테마 맵 6종 · 🚀 제트팩 · 🎨 월드 꾸미기</span>
     </div>
   </div>
 

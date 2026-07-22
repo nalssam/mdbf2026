@@ -6,6 +6,13 @@
   if (!session) { alert('학급 정보를 찾을 수 없습니다. 첫 화면에서 학급을 만들거나 열어 주세요.'); location.href = './'; return; }
 
   const $ = (id) => document.getElementById(id);
+
+  // 맵(테마) 라벨 — engine.js MAP_DEFS와 같은 키를 쓴다
+  const MAP_LABELS = {
+    classic: '초원 왕국', desert: '사막 대탐험', snow: '눈의 왕국',
+    volcano: '화산 모험', sky: '하늘 섬', ocean: '바다 마을',
+  };
+
   let cls = null;              // GET /api/teacher/classes/:id 결과
   let editingQuiz = null;      // 편집 중인 퀴즈
   let currentMaterial = null;  // 추출된 자료 텍스트
@@ -44,6 +51,8 @@
     $('dash-code').textContent = cls.code;
     $('dash-url').value = joinUrl();
     $('dash-qr').src = `api/qr?text=${encodeURIComponent(joinUrl())}`;
+    $('dash-map-label').textContent = MAP_LABELS[cls.mapKey] || MAP_LABELS.classic;
+    $('map-select').value = MAP_LABELS[cls.mapKey] ? cls.mapKey : 'classic';
     renderStudents();
   }
 
@@ -68,6 +77,38 @@
     catch { $('dash-url').select(); document.execCommand('copy'); }
     setTimeout(() => ($('btn-copy-url').textContent = '주소 복사'), 1500);
   });
+
+  // ---------- 맵(테마) 변경 ----------
+  $('btn-change-map').addEventListener('click', async () => {
+    const mapKey = $('map-select').value;
+    const label = MAP_LABELS[mapKey] || mapKey;
+    if (cls && (cls.mapKey || 'classic') === mapKey) return alert(`이미 「${label}」 맵을 사용 중이에요.`);
+    if (!confirm(`맵을 「${label}」(으)로 변경할까요?\n\n· 학생들이 설치한 블록은 초기화됩니다.\n· 접속 중인 학생 화면은 자동으로 새로고침됩니다.`)) return;
+    try {
+      await api('/map', {
+        method: 'PUT',
+        headers: { 'content-type': 'application/json' },
+        body: JSON.stringify({ mapKey }),
+      });
+      await loadClass();
+      BQ.sound('levelup');
+      alert(`맵이 「${label}」(으)로 변경되었습니다. 접속 중인 학생 화면은 자동으로 새로고침돼요.`);
+    } catch (err) { alert(err.message); }
+  });
+
+  // ---------- QR 전체화면 모달 (프로젝터용) ----------
+  function openQrModal() {
+    if (!cls) return;
+    // 기존 /api/qr 라우트 재사용 (서버가 480px PNG 반환 — CSS로 크게 표시)
+    $('qr-modal-img').src = `api/qr?text=${encodeURIComponent(joinUrl())}`;
+    $('qr-modal-code').textContent = cls.code;
+    $('qr-modal').classList.remove('hidden');
+  }
+  function closeQrModal() { $('qr-modal').classList.add('hidden'); }
+  $('btn-qr-full').addEventListener('click', openQrModal);
+  $('qr-modal-close').addEventListener('click', closeQrModal);
+  $('qr-modal').addEventListener('click', (e) => { if (e.target === $('qr-modal')) closeQrModal(); });
+  document.addEventListener('keydown', (e) => { if (e.key === 'Escape') closeQrModal(); });
 
   // ---------- 자료 입력 탭 ----------
   document.querySelectorAll('.material-tabs .btn').forEach((btn) => {

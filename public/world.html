@@ -22,6 +22,7 @@
     }
     #hud-top .nm { font-size: 15px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
     #hud-top .pts { font-family: var(--font-pixel); font-size: 15px; color: var(--gold); text-shadow: 1px 1px 0 #000; white-space: nowrap; }
+    #coin-count { font-family: var(--font-pixel); font-size: 14px; color: #ffd94f; text-shadow: 1px 1px 0 #000; white-space: nowrap; }
     #hud-hearts { display: flex; gap: 3px; }
     #hud-hearts .h { width: 14px; height: 14px; border: 2px solid var(--ink); background: #d7d7d7; }
     #hud-hearts .h.ok { background: var(--ok); }
@@ -106,6 +107,78 @@
       pointer-events: none; /* 입력을 가로채지 않는다 */
     }
 
+    /* 로딩 오버레이 (부팅: 상태 로드 → 맵 생성 동안 표시) */
+    #loading-overlay {
+      position: fixed; inset: 0; z-index: 100;
+      background: #87b7f2;
+      display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 16px;
+    }
+    #loading-overlay.hidden { display: none; }
+    #loading-overlay .cube {
+      width: 44px; height: 44px;
+      background: var(--gold);
+      border: 4px solid var(--ink);
+      box-shadow: inset -5px -5px 0 rgba(0,0,0,.25), inset 5px 5px 0 rgba(255,255,255,.4);
+      animation: bq-spin 1.1s ease-in-out infinite;
+    }
+    @keyframes bq-spin { 50% { transform: rotate(180deg) scale(0.82); } 100% { transform: rotate(360deg); } }
+    #loading-msg {
+      font-family: var(--font-pixel); font-size: 15px; color: #fff;
+      text-shadow: 2px 2px 0 rgba(0,0,0,.45); text-align: center;
+    }
+
+    /* 제트 연료 게이지 (jet 보유 시에만 표시) */
+    #fuel-bar {
+      left: 50%; bottom: 84px; transform: translateX(-50%);
+      width: 150px; height: 13px;
+      border: 3px solid var(--ink);
+      background: rgba(0,0,0,0.45);
+      box-shadow: 2px 2px 0 rgba(0,0,0,.4);
+    }
+    #fuel-bar.hidden { display: none; }
+    #fuel-fill { height: 100%; width: 0%; background: #ff8c1a; box-shadow: inset 0 3px 0 rgba(255,255,255,.35); }
+
+    /* 타임어택 타이머 */
+    #course-timer {
+      top: 104px; left: 50%; transform: translateX(-50%);
+      font-family: var(--font-pixel); font-size: 16px; color: #fff;
+      background: rgba(0,0,0,0.6); border: 3px solid var(--ink);
+      padding: 6px 14px; display: none;
+      box-shadow: 3px 3px 0 rgba(0,0,0,.4);
+      pointer-events: none;
+    }
+
+    /* 이모지 픽커 */
+    #emote-picker {
+      top: 62px; right: 8px;
+      display: flex; gap: 6px;
+      background: rgba(0,0,0,0.6); border: 3px solid var(--ink);
+      padding: 6px; z-index: 30;
+      box-shadow: 3px 3px 0 rgba(0,0,0,.4);
+    }
+    #emote-picker.hidden { display: none; }
+    #emote-picker .em {
+      width: 46px; height: 46px; font-size: 26px;
+      border: 3px solid var(--ink); background: #fff;
+      cursor: pointer; display: flex; align-items: center; justify-content: center;
+      box-shadow: 2px 2px 0 rgba(0,0,0,.35);
+    }
+    #emote-picker .em:active { transform: scale(0.92); }
+
+    /* 가방(인벤토리) 오버레이 */
+    .bag-grid { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 6px; }
+    .bag-item {
+      min-width: 72px; padding: 8px 6px;
+      border: 3px solid var(--ink); background: #fff;
+      text-align: center; font-size: 22px; cursor: pointer;
+      box-shadow: 2px 2px 0 rgba(0,0,0,.25);
+    }
+    .bag-item .bag-nm { font-size: 12px; margin-top: 2px; }
+    .bag-item .bag-cnt { font-family: var(--font-pixel); font-size: 13px; color: #a06a00; }
+    .bag-item.none { opacity: 0.35; cursor: default; }
+    .bag-item.sel { outline: 4px solid var(--gold); background: #fff4d6; }
+    .bag-chip { display: inline-block; width: 16px; height: 16px; border: 2px solid var(--ink); vertical-align: -2px; }
+
     .overlay { z-index: 40; }
     .qtext { font-size: 19px; line-height: 1.5; white-space: pre-wrap; word-break: keep-all; }
     .fb-inline { border: 3px solid var(--ink); padding: 10px; margin-top: 12px; font-size: 15px; }
@@ -119,21 +192,43 @@
 <body>
   <canvas id="game-canvas"></canvas>
 
+  <!-- 로딩 오버레이 (부팅: 상태 로드 → 맵 생성) -->
+  <div id="loading-overlay">
+    <div class="cube"></div>
+    <div id="loading-msg">월드를 만드는 중...</div>
+  </div>
+
   <!-- HUD -->
   <div id="hud-top" class="hud">
     <canvas id="me-avatar" class="avatar-canvas" width="34" height="34"></canvas>
     <div class="nm" id="me-name">-</div>
     <div class="pts"><span id="me-points">0</span>P</div>
+    <div id="coin-count">⭐0</div>
     <div id="streak" class="streak-flame">🔥0</div>
     <div id="hud-hearts"></div>
+    <button id="btn-music" class="btn small stone" title="배경음 켜기/끄기">🔊</button>
+    <button id="btn-emote" class="btn small stone" title="이모지">😊</button>
+    <button id="btn-bag" class="btn small stone" title="가방">🎒</button>
     <button id="btn-help" class="btn small stone">?</button>
     <button id="btn-classic" class="btn small stone">클래식</button>
   </div>
 
+  <!-- 이모지 픽커 -->
+  <div id="emote-picker" class="hud hidden">
+    <button class="em" data-e="😀">😀</button>
+    <button class="em" data-e="😂">😂</button>
+    <button class="em" data-e="😮">😮</button>
+    <button class="em" data-e="👍">👍</button>
+    <button class="em" data-e="❤️">❤️</button>
+    <button class="em" data-e="🎉">🎉</button>
+  </div>
+
   <div id="joy" class="hud"><div id="joy-knob"></div></div>
-  <button id="btn-jump" class="hud game-btn" title="점프 (스페이스, 공중에서 한 번 더 = 이중 점프)">⬆️</button>
+  <button id="btn-jump" class="hud game-btn" title="점프 (스페이스) · 꾹 누르면 제트팩 🚀">⬆️</button>
   <button id="btn-act" class="hud game-btn" title="도구 사용 (F)">⛏️</button>
   <div id="hotbar" class="hud"></div>
+  <div id="fuel-bar" class="hud hidden"><div id="fuel-fill"></div></div>
+  <div id="course-timer" class="hud">⏱ 0.0초</div>
   <div id="crosshair" class="hud">＋</div>
   <div id="quiz-prompt" class="hud"><button class="btn gold big">❓ 문제 풀기!</button></div>
   <div id="toast" class="hud"></div>
@@ -144,6 +239,7 @@
       <div class="row">
         <span class="tag live" id="qz-no">1번</span>
         <span class="tag" id="qz-diff">보통</span>
+        <span class="tag hidden" id="qz-practice-tag">📚 복습</span>
         <span class="grow"></span>
         <button id="qz-close" class="btn small stone">✕</button>
       </div>
@@ -179,6 +275,24 @@
     </div>
   </div>
 
+  <!-- 가방(인벤토리) -->
+  <div id="bag-overlay" class="overlay hidden">
+    <div class="block-panel">
+      <div class="row">
+        <h2>🎒 내 가방</h2>
+        <span class="grow"></span>
+        <button id="bag-close" class="btn small stone">✕</button>
+      </div>
+      <div class="mt8" id="bag-coins">⭐ 0 코인</div>
+      <h3 class="mt16">🎨 장식 블록 <span class="muted" style="font-size:12px">복습 보상으로 모아요 · 핫바 🎨 슬롯으로 설치</span></h3>
+      <div class="bag-grid" id="bag-decors"></div>
+      <h3 class="mt16">🎩 모자 <span class="muted" style="font-size:12px">탭하면 장착/해제</span></h3>
+      <div class="bag-grid" id="bag-hats"></div>
+      <h3 class="mt16">🐾 펫 <span class="muted" style="font-size:12px">탭하면 장착/해제</span></h3>
+      <div class="bag-grid" id="bag-pets"></div>
+    </div>
+  </div>
+
   <!-- 조작법 -->
   <div id="help-overlay" class="overlay hidden">
     <div class="block-panel">
@@ -186,13 +300,18 @@
       <div class="help-grid mt8">
         <div class="k">🕹️</div><div>왼쪽 조이스틱(또는 <b>WASD</b>)으로 이동</div>
         <div class="k">⬆️</div><div>점프 버튼(또는 <b>스페이스바</b>) — 공중에서 한 번 더 누르면 <b>이중 점프!</b></div>
-        <div class="k">👆</div><div>화면을 드래그하면 카메라 회전, 블록을 탭하면 도구 사용</div>
+        <div class="k">🚀</div><div>🚀 제트엔진을 먹은 뒤 점프 버튼을 <b>꾹 누르면</b> 하늘을 날아요 (연료 게이지 확인!)</div>
+        <div class="k">👆</div><div>화면을 드래그하면 카메라 회전, 블록을 탭하면 도구 사용 · 탭할 곳이 없으면 <b>내 앞</b>에 설치돼요</div>
         <div class="k">⛏️</div><div>곡괭이: 벽돌·판자·상자를 부숴요 (상자에서 아이템이 나와요!)</div>
         <div class="k">🧱</div><div>블록: 탭한 곳에 블록을 쌓아 나만의 공간을 만들어요</div>
+        <div class="k">🎨</div><div>장식 블록: 복습 보상으로 받은 모래·얼음·유리 등을 설치! 슬롯을 다시 탭하면 종류가 바뀌어요</div>
         <div class="k">🔫</div><div>블래스터: 멀리 있는 블록을 쏴서 부숴요 (탄약 필요)</div>
         <div class="k">💣</div><div>폭탄: 주변 블록을 한꺼번에 폭파!</div>
-        <div class="k">👢</div><div>부츠를 먹으면 잠시 빠르게 달려요</div>
-        <div class="k">❓</div><div><b>황금 퀴즈 블록</b>에 다가가 문제를 맞히면 포인트를 얻어요!</div>
+        <div class="k">🎆</div><div>폭죽: 하늘에 불꽃을 쏘아 올려요 (보물상자·복습 보상에서 획득)</div>
+        <div class="k">⭐</div><div>월드 곳곳의 코인을 모아요 — 가끔 찾아오는 <b>✨ 황금 시간</b>엔 2배!</div>
+        <div class="k">❓</div><div><b>황금 퀴즈 블록</b>에 다가가 문제를 맞히면 포인트를 얻어요! 이미 푼 문제는 <b>📚 복습</b>으로 다시 풀고 보상을 받아요 (하루 3번)</div>
+        <div class="k">🗺️</div><div>존마다 배경음악이 달라져요 · 포털을 밟으면 순간이동, 초록 링은 <b>타임어택</b> 출발점!</div>
+        <div class="k">😊</div><div>😊 버튼으로 이모지를 보내고, 🎒 가방에서 모자·펫을 장착해요</div>
       </div>
       <button id="help-close" class="btn grass big mt16">알겠어요!</button>
     </div>
