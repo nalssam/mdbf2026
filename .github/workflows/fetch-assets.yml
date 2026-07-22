@@ -67,7 +67,12 @@ jobs:
           tmp=$(mktemp -d)
           n=$(jq '.video_build.clips | length' assets/sources.json)
           for i in $(seq 0 $((n-1))); do
-            curl -sSfL --retry 3 -o "$tmp/clip$i.mp4" "$(jq -r ".video_build.clips[$i]" assets/sources.json)"
+            clip=$(jq -r ".video_build.clips[$i]" assets/sources.json)
+            if [[ "$clip" == http* ]]; then
+              curl -sSfL --retry 3 -o "$tmp/clip$i.mp4" "$clip"
+            else
+              cp "$clip" "$tmp/clip$i.mp4"   # local repo clip (e.g. hand-built scene)
+            fi
             curl -sSfL --retry 3 -o "$tmp/voice$i.mp3" "$(jq -r ".video_build.voices[$i]" assets/sources.json)"
           done
           : > "$tmp/list.txt"
