@@ -201,7 +201,8 @@
   BQ.unlockAudio = function () {
     try {
       audioCtx = audioCtx || new (window.AudioContext || window.webkitAudioContext)();
-      if (audioCtx.state === 'suspended') audioCtx.resume();
+      if (audioCtx.state === 'suspended') audioCtx.resume().then(musicKick).catch(() => { /* 무시 */ });
+      else musicKick(); // 이미 해제됨 — 대기 중인 배경음이 있으면 시작
     } catch { /* 무시 */ }
   };
   function beep(freq, dur, type, delay, vol) {
@@ -231,6 +232,167 @@
     else if (name === 'explosion') { beep(80, 0.5, 'sawtooth', 0, 0.14); beep(60, 0.6, 'sawtooth', 0.05, 0.12); beep(110, 0.3, 'square', 0.02, 0.08); }
     else if (name === 'shoot') { beep(980, 0.07, 'sawtooth', 0, 0.05); beep(620, 0.09, 'sawtooth', 0.04, 0.05); }
     else if (name === 'pickup') { beep(880, 0.08, 'square', 0, 0.06); beep(1175, 0.12, 'square', 0.07, 0.06); }
+    else if (name === 'bounce') { beep(220, 0.08, 'square', 0, 0.07); beep(440, 0.1, 'square', 0.05, 0.07); beep(660, 0.12, 'square', 0.1, 0.05); }
+    else if (name === 'teleport') { beep(880, 0.08, 'sine', 0, 0.07); beep(587, 0.08, 'sine', 0.06, 0.07); beep(880, 0.08, 'sine', 0.12, 0.06); beep(1175, 0.16, 'sine', 0.18, 0.06); }
+    else if (name === 'coin') { beep(988, 0.07, 'square', 0, 0.06); beep(1319, 0.22, 'square', 0.07, 0.06); }
+    else if (name === 'firework') { beep(392, 0.06, 'triangle', 0, 0.05); beep(587, 0.06, 'triangle', 0.06, 0.05); beep(784, 0.06, 'triangle', 0.12, 0.05); beep(90, 0.45, 'sawtooth', 0.24, 0.1); beep(1568, 0.2, 'square', 0.28, 0.04); }
+    else if (name === 'splash') { beep(520, 0.08, 'sine', 0, 0.05); beep(300, 0.15, 'sawtooth', 0.03, 0.05); beep(180, 0.2, 'sawtooth', 0.09, 0.04); }
+    else if (name === 'jet') { beep(110, 0.12, 'sawtooth', 0, 0.04); beep(90, 0.14, 'sawtooth', 0.06, 0.03); }
+    else if (name === 'crown') { beep(523, 0.12, 'square', 0, 0.07); beep(659, 0.12, 'square', 0.1, 0.07); beep(784, 0.12, 'square', 0.2, 0.07); beep(1047, 0.35, 'square', 0.3, 0.08); }
+    else if (name === 'chicken') { beep(1047, 0.06, 'square', 0, 0.05); beep(1319, 0.06, 'square', 0.08, 0.05); beep(1175, 0.09, 'square', 0.16, 0.05); }
+    else if (name === 'pig') { beep(150, 0.1, 'sawtooth', 0, 0.07); beep(120, 0.13, 'sawtooth', 0.09, 0.07); }
+    else if (name === 'reward') { beep(784, 0.09, 'square', 0, 0.06); beep(988, 0.09, 'square', 0.07, 0.06); beep(1175, 0.09, 'square', 0.14, 0.06); beep(1568, 0.24, 'square', 0.21, 0.07); }
+  };
+
+  // ---------- 존별 배경음 (WebAudio 루프 시퀀서) ----------
+  // 존마다 음계·템포가 다른 짧은 루프를 오디오 시계 기준 lookahead 방식으로 예약한다.
+  // seq/bass: 8분음표 단위 스텝(주파수 Hz, 0은 쉼표). vol은 아주 작게(0.03~0.05).
+  const MUSIC_DEFS = {
+    plaza: { // 밝은 장조 120bpm
+      bpm: 120, wave: 'triangle', vol: 0.045,
+      seq: [523, 0, 659, 0, 784, 0, 659, 0, 587, 0, 698, 0, 659, 587, 523, 0],
+      bass: [131, 0, 0, 0, 196, 0, 0, 0, 175, 0, 0, 0, 196, 0, 0, 0],
+    },
+    snowfield: { // 느린 벨소리 80bpm
+      bpm: 80, wave: 'sine', vol: 0.05, noteLen: 1.4,
+      seq: [988, 0, 0, 0, 784, 0, 0, 0, 880, 0, 0, 0, 659, 0, 0, 0],
+      bass: [165, 0, 0, 0, 0, 0, 0, 0, 131, 0, 0, 0, 0, 0, 0, 0],
+    },
+    desert: { // 이국풍 단조 100bpm
+      bpm: 100, wave: 'triangle', vol: 0.04,
+      seq: [294, 311, 370, 0, 294, 0, 466, 440, 370, 311, 294, 0, 233, 0, 294, 0],
+      bass: [147, 0, 0, 0, 110, 0, 0, 0, 147, 0, 0, 0, 110, 0, 0, 0],
+    },
+    forest: { // 아르페지오 110bpm
+      bpm: 110, wave: 'triangle', vol: 0.04,
+      seq: [220, 262, 330, 440, 175, 220, 262, 349, 262, 330, 392, 523, 196, 247, 294, 392],
+      bass: [110, 0, 0, 0, 87, 0, 0, 0, 131, 0, 0, 0, 98, 0, 0, 0],
+    },
+    volcano: { // 낮은 긴장감 90bpm
+      bpm: 90, wave: 'sawtooth', vol: 0.03,
+      seq: [131, 0, 139, 0, 131, 0, 123, 0, 131, 0, 156, 0, 147, 0, 123, 0],
+      bass: [65, 0, 0, 0, 0, 0, 0, 0, 65, 0, 0, 0, 0, 0, 0, 0],
+    },
+  };
+
+  let musicMaster = null; // 배경음 전체 게인 (음소거용)
+  let musicTrack = null;  // 현재 재생 중인 트랙 { def, gain, i, next, timer, stopped }
+  let musicZone = null;   // 현재(또는 잠금 해제 대기 중인) 존 키
+  let musicMuted = false;
+  try { musicMuted = localStorage.getItem('bq_muted') === '1'; } catch { /* 무시 */ }
+
+  function musicReady() {
+    return !!(audioCtx && audioCtx.state === 'running');
+  }
+
+  function ensureMusicMaster() {
+    if (!musicMaster) {
+      musicMaster = audioCtx.createGain();
+      musicMaster.gain.value = musicMuted ? 0 : 1;
+      musicMaster.connect(audioCtx.destination);
+    }
+    return musicMaster;
+  }
+
+  // 음표 하나 예약 (짧은 어택 + 지수 감쇠)
+  function musicNote(freq, t, dur, wave, dest, vel) {
+    const osc = audioCtx.createOscillator();
+    const g = audioCtx.createGain();
+    osc.type = wave;
+    osc.frequency.value = freq;
+    g.gain.setValueAtTime(0.0001, t);
+    g.gain.linearRampToValueAtTime(vel, t + 0.02);
+    g.gain.exponentialRampToValueAtTime(0.0001, t + dur);
+    osc.connect(g).connect(dest);
+    osc.start(t);
+    osc.stop(t + dur + 0.05);
+  }
+
+  // lookahead 스케줄러: 타이머는 깨우기 용도일 뿐, 실제 박자는 오디오 시계로
+  // 0.4초 앞까지 미리 예약한다 (setInterval 박자 방식 아님)
+  function musicTick(track) {
+    if (track.stopped) return;
+    const step = 30 / track.def.bpm; // 8분음표 길이(초)
+    const ahead = audioCtx.currentTime + 0.4;
+    // 백그라운드 탭 등으로 예약 시각이 밀렸으면 현재 시각으로 재정렬 (몰아치기 방지)
+    if (track.next < audioCtx.currentTime - 0.1) track.next = audioCtx.currentTime + 0.05;
+    while (track.next < ahead) {
+      if (!musicMuted) { // 음소거 중엔 오실레이터를 만들지 않고 박자만 진행
+        const d = track.def;
+        const m = d.seq[track.i % d.seq.length];
+        const b = d.bass[track.i % d.bass.length];
+        if (m) musicNote(m, track.next, d.noteLen || step * 0.9, d.wave, track.gain, 1);
+        if (b) musicNote(b, track.next, step * 3.2, 'triangle', track.gain, 0.8);
+      }
+      track.i += 1;
+      track.next += step;
+    }
+    track.timer = setTimeout(() => musicTick(track), 100);
+  }
+
+  // 트랙 페이드아웃 후 정리 (크로스페이드의 나가는 쪽)
+  function musicFadeOut(track, sec) {
+    if (!track) return;
+    track.stopped = true;
+    clearTimeout(track.timer);
+    try {
+      const t = audioCtx.currentTime;
+      const g = track.gain;
+      g.gain.cancelScheduledValues(t);
+      g.gain.setValueAtTime(g.gain.value, t);
+      g.gain.linearRampToValueAtTime(0.0001, t + sec);
+      setTimeout(() => { try { g.disconnect(); } catch { /* 무시 */ } }, sec * 1000 + 200);
+    } catch { /* 무시 */ }
+  }
+
+  function musicStartTrack(zoneKey) {
+    const def = MUSIC_DEFS[zoneKey] || MUSIC_DEFS.plaza;
+    ensureMusicMaster();
+    const gain = audioCtx.createGain();
+    const t = audioCtx.currentTime;
+    // 크로스페이드 1초: 새 트랙 0 → vol, 이전 트랙 vol → 0
+    gain.gain.setValueAtTime(0.0001, t);
+    gain.gain.linearRampToValueAtTime(def.vol, t + 1);
+    gain.connect(musicMaster);
+    musicFadeOut(musicTrack, 1);
+    musicTrack = { def, gain, i: 0, next: t + 0.1, timer: null, stopped: false };
+    musicTick(musicTrack);
+  }
+
+  // 오디오 잠금 해제 후 대기 중인 배경음 시작 (unlockAudio에서 호출)
+  function musicKick() {
+    if (musicZone && !musicTrack && musicReady()) musicStartTrack(musicZone);
+  }
+
+  BQ.music = {
+    // 존 배경음 시작/전환 — 잠금 해제 전이면 대기했다가 해제 후 자동 시작
+    start(zoneKey) {
+      if (zoneKey === musicZone && musicTrack && !musicTrack.stopped) return;
+      musicZone = zoneKey;
+      if (!musicReady()) {
+        // beep 쪽 resume 등으로 상태가 바뀌어도 이어받도록 보험 리스너 (musicKick은 중복 호출에 안전)
+        if (audioCtx) audioCtx.addEventListener('statechange', musicKick, { once: true });
+        return;
+      }
+      musicStartTrack(zoneKey);
+    },
+    stop() {
+      musicZone = null;
+      musicFadeOut(musicTrack, 0.4);
+      musicTrack = null;
+    },
+    toggleMute() {
+      musicMuted = !musicMuted;
+      try { localStorage.setItem('bq_muted', musicMuted ? '1' : '0'); } catch { /* 무시 */ }
+      if (musicMaster) {
+        const t = audioCtx.currentTime;
+        musicMaster.gain.cancelScheduledValues(t);
+        musicMaster.gain.setValueAtTime(musicMaster.gain.value, t);
+        musicMaster.gain.linearRampToValueAtTime(musicMuted ? 0 : 1, t + 0.2);
+      }
+      return musicMuted;
+    },
+    get muted() { return musicMuted; },
   };
 
   // ---------- 기타 ----------

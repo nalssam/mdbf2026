@@ -1,7 +1,7 @@
 // 입력 컨트롤: 가상 조이스틱(터치) + 카메라 드래그 + 키보드(WASD/스페이스) + 액션 버튼
 // 태블릿(멀티터치)과 데스크톱(마우스+키보드)을 모두 지원한다.
 export function createControls({ canvas, joystickEl, knobEl, jumpBtn, actionBtn, callbacks }) {
-  const cb = Object.assign({ move() {}, jump() {}, drag() {}, tap() {}, action() {}, slot() {} }, callbacks);
+  const cb = Object.assign({ move() {}, jump() {}, jumpHold() {}, drag() {}, tap() {}, action() {}, slot() {} }, callbacks);
 
   // ---------- 가상 조이스틱 ----------
   let joyPointer = null;
@@ -80,7 +80,16 @@ export function createControls({ canvas, joystickEl, knobEl, jumpBtn, actionBtn,
   function bindButton(el, fn) {
     el.addEventListener('pointerdown', (e) => { e.preventDefault(); e.stopPropagation(); fn(); });
   }
-  bindButton(jumpBtn, () => cb.jump());
+  // 점프 버튼: 짧게 누르면 점프/이중 점프, 꾹 누르면 제트팩 (press/release 모두 전달)
+  jumpBtn.addEventListener('pointerdown', (e) => {
+    e.preventDefault(); e.stopPropagation();
+    cb.jump();
+    cb.jumpHold(true);
+  });
+  const jumpRelease = (e) => { e.preventDefault(); cb.jumpHold(false); };
+  jumpBtn.addEventListener('pointerup', jumpRelease);
+  jumpBtn.addEventListener('pointercancel', jumpRelease);
+  jumpBtn.addEventListener('pointerleave', jumpRelease);
   bindButton(actionBtn, () => cb.action());
 
   // ---------- 키보드 ----------
@@ -100,15 +109,16 @@ export function createControls({ canvas, joystickEl, knobEl, jumpBtn, actionBtn,
     if (e.target && /INPUT|TEXTAREA|SELECT/.test(e.target.tagName)) return;
     if (e.code === 'Space') {
       e.preventDefault();
-      if (!e.repeat) cb.jump();
+      if (!e.repeat) { cb.jump(); cb.jumpHold(true); }
       return;
     }
-    if (/^Digit[1-4]$/.test(e.code)) { cb.slot(Number(e.code.slice(5)) - 1); return; }
+    if (/^Digit[1-6]$/.test(e.code)) { cb.slot(Number(e.code.slice(5)) - 1); return; }
     if (e.code === 'KeyF' && !e.repeat) { cb.action(); return; }
     keys.add(e.code);
     updateKeyMove();
   });
   addEventListener('keyup', (e) => {
+    if (e.code === 'Space') cb.jumpHold(false); // 스페이스를 떼면 제트팩도 끈다
     keys.delete(e.code);
     if (enabled) updateKeyMove();
   });
@@ -116,6 +126,7 @@ export function createControls({ canvas, joystickEl, knobEl, jumpBtn, actionBtn,
     keys.clear();
     camPointer = null; camState = null;
     cb.move(0, 0);
+    cb.jumpHold(false);
   });
 
   return {
@@ -126,6 +137,7 @@ export function createControls({ canvas, joystickEl, knobEl, jumpBtn, actionBtn,
         joyEnd();
         camPointer = null; camState = null;
         cb.move(0, 0);
+        cb.jumpHold(false); // 오버레이가 열리면 제트팩 홀드도 해제
       }
     },
   };

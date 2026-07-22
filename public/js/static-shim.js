@@ -40,6 +40,15 @@
     { id: 'bot4', name: '뼈다귀궁수', avatar: 'skeleton', points: 250, correct: 2, answered: 5, bestStreak: 1, online: true },
   ];
 
+  // ---------- 인벤토리/복습 보상 (서버 계약과 동일 값) ----------
+  const DECOR_TYPES = ['sand', 'snow', 'ice', 'glass', 'gold', 'tramp', 'fan'];
+  // 코스메틱(모자/펫) — 보유 목록에는 'hat:키'/'pet:키' 형식으로 저장
+  const COSMETIC_POOL = [
+    'hat:cap', 'hat:crown', 'hat:wizard', 'hat:leaf',
+    'pet:chick', 'pet:slime', 'pet:ghost', 'pet:star',
+  ];
+  const PRACTICE_DAILY_LIMIT = 3; // 문항당 하루 복습 보상 횟수 제한 (서버와 동일)
+
   // ---------- 데모 상태 (localStorage) ----------
   function loadState() {
     try {
@@ -47,6 +56,49 @@
     } catch { return { student: null, answers: {} }; }
   }
   function saveState(s) { localStorage.setItem('bq_demo_state', JSON.stringify(s)); }
+
+  // 기존 저장 상태에 인벤토리가 없으면 게으르게 초기화한다 (서버 ensureInventory와 동일 형태)
+  function ensureInventory(s) {
+    if (!s.inventory || typeof s.inventory !== 'object') {
+      s.inventory = { coins: 0, decors: {}, cosmetics: [], hat: null, pet: null };
+    }
+    const inv = s.inventory;
+    if (typeof inv.coins !== 'number') inv.coins = 0;
+    if (!inv.decors || typeof inv.decors !== 'object') inv.decors = {};
+    if (!Array.isArray(inv.cosmetics)) inv.cosmetics = [];
+    if (inv.hat === undefined) inv.hat = null;
+    if (inv.pet === undefined) inv.pet = null;
+    return inv;
+  }
+
+  // 복습 보상 횟수 제한용 — 로컬 날짜 문자열
+  function todayStr() {
+    const d = new Date();
+    return `${d.getFullYear()}-${d.getMonth() + 1}-${d.getDate()}`;
+  }
+
+  // 복습 정답 보상 롤: 코인 +3 (55%) / 장식 블록 +2 (30%) / 코스메틱 1종 (15%, 미보유 우선) — 서버와 동일 확률
+  function rollPracticeReward(inv) {
+    const r = Math.random();
+    if (r < 0.55) {
+      inv.coins += 3;
+      return { kind: 'coins', type: null, qty: 3 };
+    }
+    if (r < 0.85) {
+      const type = DECOR_TYPES[Math.floor(Math.random() * DECOR_TYPES.length)];
+      inv.decors[type] = (inv.decors[type] || 0) + 2;
+      return { kind: 'decor', type, qty: 2 };
+    }
+    const unowned = COSMETIC_POOL.filter((c) => !inv.cosmetics.includes(c));
+    if (!unowned.length) {
+      // 코스메틱을 전부 모았다면 코인으로 대체
+      inv.coins += 5;
+      return { kind: 'coins', type: null, qty: 5 };
+    }
+    const type = unowned[Math.floor(Math.random() * unowned.length)];
+    inv.cosmetics.push(type);
+    return { kind: 'cosmetic', type, qty: 1 };
+  }
 
   function publicQuiz() {
     return {
@@ -98,21 +150,29 @@
           points: 0, correct: 0, answered: 0, streak: 0, bestStreak: 0, online: true,
         };
         s.answers = {};
+        // 새 체험 학생 — 인벤토리/복습 기록도 새로 시작한다
+        s.inventory = { coins: 0, decors: {}, cosmetics: [], hat: null, pet: null };
+        s.practice = {};
       } else {
         s.student.avatar = body.avatar || s.student.avatar;
       }
+      ensureInventory(s);
       saveState(s);
       return json({
         classId: 'demo-class', className: '체험 학급 (온라인 데모)', teacherName: 'BlockQuest',
         student: s.student, activeQuiz: publicQuiz(), myAnswers: myAnswersPayload(s), leaderboard: leaderboard(s),
+        mapKey: 'classic', inventory: s.inventory,
       });
     }
 
     if (route === 'student/state') {
       if (!s.student) return json({ error: '데모 세션이 없습니다. 다시 입장해 주세요.' }, 404);
+      const inv = ensureInventory(s);
+      saveState(s);
       return json({
         className: '체험 학급 (온라인 데모)', student: s.student,
         activeQuiz: publicQuiz(), myAnswers: myAnswersPayload(s), leaderboard: leaderboard(s),
+        mapKey: 'classic', inventory: inv,
       });
     }
 
@@ -144,6 +204,40 @@
         streak: s.student.streak, totalPoints: s.student.points,
         completed: Object.keys(s.answers).length >= DEMO_QUIZ.questions.length,
       });
+    }
+
+    // 복습 풀이 — 포인트 없이 보상만 (정식으로 제출한 문항만 허용, 응답 형식은 서버와 동일)
+    if (route === 'practice-answer') {
+      if (!s.student) return json({ error: '데모 세션이 없습니다.' }, 404);
+      if (body.quizId !== DEMO_QUIZ.id) return json({ error: '퀴즈를 찾을 수 없습니다.' }, 404);
+      const qi = Number(body.questionIndex);
+      const q = DEMO_QUIZ.questions[qi];
+      if (!q) return json({ error: '문항 번호가 올바르지 않습니다.' }, 400);
+      const ci = Number(body.choiceIndex);
+      if (!(ci >= 0 && ci < q.choices.length)) return json({ error: '보기 번호가 올바르지 않습니다.' }, 400);
+      // 정식 퀘스트로 제출한 문항만 복습할 수 있다
+      if (!s.answers[qi]) return json({ error: '먼저 퀘스트로 풀어야 해요' }, 409);
+
+      const correct = ci === q.answerIndex;
+      const inv = ensureInventory(s);
+      let reward = null;
+      if (correct) {
+        // 문항당 하루 3회까지만 보상 — 초과 시 reward:null로 정오답만 알려준다
+        if (!s.practice || typeof s.practice !== 'object') s.practice = {};
+        const pk = `${DEMO_QUIZ.id}:${qi}`;
+        const day = todayStr();
+        let rec = s.practice[pk];
+        if (!rec || rec.day !== day) {
+          rec = { count: 0, day };
+          s.practice[pk] = rec;
+        }
+        if (rec.count < PRACTICE_DAILY_LIMIT) {
+          rec.count += 1;
+          reward = rollPracticeReward(inv);
+        }
+      }
+      saveState(s);
+      return json({ correct, answerIndex: q.answerIndex, explanation: q.explanation, reward, inventory: inv });
     }
 
     if (route === 'leaderboard') return json(leaderboard(s));

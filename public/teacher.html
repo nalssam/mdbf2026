@@ -44,6 +44,21 @@
     @keyframes spin { to { transform: rotate(360deg); } }
     .chart-box { margin-top: 10px; }
     .section-title { display: flex; align-items: center; justify-content: space-between; gap: 10px; flex-wrap: wrap; }
+    /* QR 전체화면 모달 (프로젝터 표시용) */
+    #qr-modal { background: rgba(20, 18, 14, 0.93); z-index: 80; flex-direction: column; }
+    #qr-modal img {
+      width: min(56vh, 82vw); height: auto;
+      background: #fff; border: 6px solid #fff;
+      image-rendering: pixelated;
+    }
+    .qr-modal-code {
+      font-family: var(--font-pixel);
+      font-size: clamp(44px, 11vw, 104px);
+      letter-spacing: 0.25em; text-indent: 0.25em;
+      color: var(--gold); text-shadow: 5px 5px 0 rgba(0, 0, 0, 0.55);
+      margin-top: 16px;
+    }
+    .qr-modal-hint { color: #f4ead2; font-size: 18px; margin: 6px 0 16px; text-align: center; }
     @media (max-width: 780px) {
       .t-layout { flex-direction: column; }
       .t-side { width: auto; display: flex; align-items: center; gap: 8px; overflow-x: auto; padding: 10px; }
@@ -84,6 +99,7 @@
             <div class="center">
               <img id="dash-qr" alt="접속 QR 코드" width="200" height="200" style="border:3px solid var(--ink)" />
               <div class="muted mt8">태블릿 카메라로 QR을 찍으면 바로 접속!</div>
+              <button id="btn-qr-full" class="btn small gold mt8">🔍 QR 크게 보기</button>
             </div>
             <div class="grow" style="min-width:220px">
               <div class="muted">접속 주소</div>
@@ -91,6 +107,24 @@
               <button id="btn-copy-url" class="btn small gold mt8">주소 복사</button>
             </div>
           </div>
+        </div>
+        <div class="panel">
+          <div class="section-title">
+            <h2>🗺 월드 맵</h2>
+            <span class="muted">현재 맵: <b id="dash-map-label">-</b></span>
+          </div>
+          <div class="row wrap mt8">
+            <select id="map-select" class="input" style="width:auto;min-width:180px">
+              <option value="classic">초원 왕국</option>
+              <option value="desert">사막 대탐험</option>
+              <option value="snow">눈의 왕국</option>
+              <option value="volcano">화산 모험</option>
+              <option value="sky">하늘 섬</option>
+              <option value="ocean">바다 마을</option>
+            </select>
+            <button id="btn-change-map" class="btn small gold">맵 변경</button>
+          </div>
+          <div class="muted mt8">맵을 변경하면 학생들이 설치한 블록은 초기화되고, 접속 중인 학생 화면은 자동으로 새로고침됩니다.</div>
         </div>
         <div class="panel">
           <div class="section-title">
@@ -202,6 +236,14 @@
         </div>
       </section>
     </main>
+  </div>
+
+  <!-- QR 전체화면 모달 (프로젝터용) -->
+  <div id="qr-modal" class="overlay hidden">
+    <img id="qr-modal-img" alt="접속 QR 코드 (크게)" />
+    <div class="qr-modal-code" id="qr-modal-code">------</div>
+    <div class="qr-modal-hint">태블릿 카메라로 QR을 찍거나, 첫 화면에서 학급 코드를 입력하세요</div>
+    <button id="qr-modal-close" class="btn stone">닫기 ✕</button>
   </div>
 
   <script src="js/static-shim.js"></script>

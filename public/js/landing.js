@@ -107,7 +107,11 @@
       const res = await fetch('api/teacher/classes', {
         method: 'POST',
         headers: { 'content-type': 'application/json' },
-        body: JSON.stringify({ className, teacherName: $('new-teacher-name').value.trim() }),
+        body: JSON.stringify({
+          className,
+          teacherName: $('new-teacher-name').value.trim(),
+          mapKey: $('new-class-map').value, // 선택한 월드 맵 (기본 classic)
+        }),
       });
       const data = await res.json();
       if (!res.ok) throw new Error(data.error || '학급 생성에 실패했습니다.');
