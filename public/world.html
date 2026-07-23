@@ -23,6 +23,10 @@
     #hud-top .nm { font-size: 15px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
     #hud-top .pts { font-family: var(--font-pixel); font-size: 15px; color: var(--gold); text-shadow: 1px 1px 0 #000; white-space: nowrap; }
     #coin-count { font-family: var(--font-pixel); font-size: 14px; color: #ffd94f; text-shadow: 1px 1px 0 #000; white-space: nowrap; }
+    #armor-badge { font: 700 13px sans-serif; color: #bfe3ff; text-shadow: 1px 1px 0 #000; white-space: nowrap; }
+    #hp-bar { position: fixed; top: 54px; left: 8px; width: 190px; height: 22px; border: 3px solid var(--ink); background: #3a1010; border-radius: 6px; overflow: hidden; z-index: 20; }
+    #hp-fill { position: absolute; left: 0; top: 0; bottom: 0; width: 100%; background: linear-gradient(#ff6a6a, #c62828); transition: width .18s; }
+    #hp-bar span { position: relative; display: block; width: 100%; height: 100%; line-height: 22px; text-align: center; font: 700 12px sans-serif; color: #fff; text-shadow: 1px 1px 0 #000; }
     #hud-hearts { display: flex; gap: 3px; }
     #hud-hearts .h { width: 14px; height: 14px; border: 2px solid var(--ink); background: #d7d7d7; }
     #hud-hearts .h.ok { background: var(--ok); }
@@ -205,13 +209,18 @@
     <div class="pts"><span id="me-points">0</span>P</div>
     <div id="coin-count">⭐0</div>
     <div id="streak" class="streak-flame">🔥0</div>
+    <div id="armor-badge" title="방어력 — 문제를 풀고 복습할수록 올라가 좀비 피해를 줄여요">🛡0</div>
     <div id="hud-hearts"></div>
+    <button id="btn-gun-up" class="btn small gold" title="총 업그레이드 (코인 소모, 5단계까지)">🔫 Lv.1</button>
     <button id="btn-music" class="btn small stone" title="배경음 켜기/끄기">🔊</button>
     <button id="btn-emote" class="btn small stone" title="이모지">😊</button>
     <button id="btn-bag" class="btn small stone" title="가방">🎒</button>
     <button id="btn-help" class="btn small stone">?</button>
     <button id="btn-classic" class="btn small stone">클래식</button>
   </div>
+
+  <!-- 체력 바 (좀비에게 물리면 감소, 시간이 지나면 회복) -->
+  <div id="hp-bar" class="hud"><div id="hp-fill"></div><span id="hp-text">100/100</span></div>
 
   <!-- 이모지 픽커 -->
   <div id="emote-picker" class="hud hidden">
@@ -306,7 +315,10 @@
         <div class="k">🧱</div><div>블록: 탭한 곳에 블록을 쌓아 나만의 공간을 만들어요</div>
         <div class="k">🎨</div><div>장식 블록: 복습 보상으로 받은 모래·얼음·유리 등을 설치! 슬롯을 다시 탭하면 종류가 바뀌어요</div>
         <div class="k">🔫</div><div>블래스터: 멀리 있는 블록을 쏴서 부숴요 (탄약 필요)</div>
-        <div class="k">💣</div><div>폭탄: 주변 블록을 한꺼번에 폭파!</div>
+        <div class="k">💣</div><div>폭탄: 주변 블록과 좀비를 한꺼번에 폭파!</div>
+        <div class="k">🧟</div><div><b>좀비 출현!</b> 총(🔫)이나 폭탄으로 물리치면 포인트와 코인을 얻어요. 좀비는 5종류 — 크고 붉은 좀비일수록 강해요(1수준). 물리면 ❤️체력이 깎이니 조심!</div>
+        <div class="k">🔫</div><div><b>총 업그레이드</b>: 위쪽 🔫 버튼으로 코인을 써서 5단계까지 강화 — 셀수록 좀비가 빨리 쓰러져요</div>
+        <div class="k">🛡</div><div><b>방어력</b>: 문제를 풀고 복습할수록 올라가 좀비 피해를 줄여줘요 (많이 공부할수록 튼튼!)</div>
         <div class="k">🎆</div><div>폭죽: 하늘에 불꽃을 쏘아 올려요 (보물상자·복습 보상에서 획득)</div>
         <div class="k">⭐</div><div>월드 곳곳의 코인을 모아요 — 가끔 찾아오는 <b>✨ 황금 시간</b>엔 2배!</div>
         <div class="k">❓</div><div><b>황금 퀴즈 블록</b>에 다가가 문제를 맞히면 포인트를 얻어요! 이미 푼 문제는 <b>📚 복습</b>으로 다시 풀고 보상을 받아요 (하루 3번)</div>

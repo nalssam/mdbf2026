@@ -22,7 +22,7 @@ let practiceOnly = false; // 퀴즈 종료 후 복습만 가능한 상태
 let practiceOpen = false; // 현재 열린 퀴즈 오버레이가 복습 모드인지
 let myAnswers = {};
 let board = { rankings: [], classTotal: 0 };
-const inv = { blocks: 10, ammo: 0, bombs: 1, fireworks: 0 };
+const inv = { blocks: 10, ammo: 25, bombs: 1, fireworks: 0 };
 let inventory = { coins: 0, decors: {}, cosmetics: [], hat: null, pet: null }; // 서버 저장 인벤토리
 let localCoins = 0;      // 세션 중 월드에서 주운 코인 (서버 미저장)
 let goldenUntil = 0;     // 황금 시간(코인 2배) 종료 시각
@@ -31,6 +31,30 @@ let selectedSlot = 0;
 let selectedDecor = null; // 핫바 장식 슬롯에서 선택된 블록 타입
 let openQuestion = null;  // 현재 열린 문항 인덱스
 let stateLoaded = false;
+
+// ---------- 전투(좀비/총/방어력) ----------
+let gunLevel = 1;         // 총 단계 1~5
+let killCount = 0;        // 처치한 좀비 수 (세션)
+let coinsSpent = 0;       // 총 업그레이드로 쓴 코인 (표시값에서 차감)
+const GUN_COSTS = { 2: 20, 3: 45, 4: 80, 5: 140 }; // 다음 단계로 올리는 코인 비용
+const KILL_COINS = { 1: 10, 2: 7, 3: 5, 4: 3, 5: 2 }; // 처치 시 코인 (강한 좀비일수록 많이)
+const combatKey = () => 'bq_combat_' + (session.studentId || 'me');
+(function loadCombat() {
+  try {
+    const c = JSON.parse(localStorage.getItem(combatKey()) || 'null');
+    if (c) { gunLevel = Math.min(5, Math.max(1, c.gunLevel || 1)); killCount = c.killCount || 0; coinsSpent = c.coinsSpent || 0; }
+  } catch { /* 무시 */ }
+})();
+function persistCombat() {
+  try { localStorage.setItem(combatKey(), JSON.stringify({ gunLevel, killCount, coinsSpent })); } catch { /* 무시 */ }
+}
+// 코인 잔액 = 서버 저장 코인 + 세션 코인 − 업그레이드로 쓴 코인
+function coinBalance() { return Math.max(0, inventory.coins + localCoins - coinsSpent); }
+// 방어력 = 서버가 알려준 defense(문제·복습으로 상승), 없으면 정답 수로 근사 (최대 24)
+function currentArmor() {
+  const d = (me && typeof me.defense === 'number') ? me.defense : Math.floor(((me && me.correct) || 0) * 1.5);
+  return Math.min(24, d);
+}
 
 // 부팅 완료 후 채워진다 — 참조하는 코드는 모두 boot 이후에만 호출되거나 null 가드가 있다
 let engine = null;
@@ -154,9 +178,57 @@ function selectSlot(i) {
 renderHotbar();
 
 // ---------- 코인 HUD ----------
-// 표시값 = 서버 저장 코인(복습 보상) + 세션 중 월드에서 주운 코인
+// 표시값 = 서버 저장 코인(복습 보상) + 세션 중 월드에서 주운 코인 − 업그레이드 소모
 function renderCoins() {
-  $('coin-count').textContent = '⭐' + BQ.fmt(inventory.coins + localCoins);
+  $('coin-count').textContent = '⭐' + BQ.fmt(coinBalance());
+}
+
+// ---------- 전투 HUD (체력/방어력/총 단계) ----------
+function renderCombat() {
+  if (engine) {
+    const hp = engine.getPlayerHp(), max = engine.getMaxHp();
+    const pct = Math.max(0, Math.min(100, Math.round((hp / max) * 100)));
+    const fill = $('hp-fill'); if (fill) fill.style.width = pct + '%';
+    const txt = $('hp-text'); if (txt) txt.textContent = Math.ceil(hp) + '/' + max;
+    const ab = $('armor-badge'); if (ab) ab.textContent = '🛡' + engine.getArmor();
+  }
+  const btn = $('btn-gun-up');
+  if (btn) btn.textContent = gunLevel >= 5 ? '🔫 MAX' : `🔫 Lv.${gunLevel} ⬆⭐${GUN_COSTS[gunLevel + 1]}`;
+}
+function upgradeGun() {
+  if (gunLevel >= 5) { toast('🔫 이미 최고 단계예요! (5단계)', 1600); return; }
+  const cost = GUN_COSTS[gunLevel + 1];
+  if (coinBalance() < cost) { toast(`⭐ 코인이 부족해요 (${cost} 필요) — 좀비를 잡거나 복습해서 코인을 모으세요!`, 2800); return; }
+  coinsSpent += cost;
+  gunLevel += 1;
+  if (engine) engine.setGunLevel(gunLevel);
+  persistCombat();
+  renderCoins(); renderCombat();
+  BQ.sound('levelup');
+  toast(`🔫 총 업그레이드 성공! ${gunLevel}단계 — 위력이 세졌어요!`, 2400);
+}
+// 좀비 처치 포인트 — 서버(또는 정적 심)에 반영해 랭킹에 오르게 한다
+async function awardKill(level) {
+  try {
+    const res = await fetch('api/kill', {
+      method: 'POST',
+      headers: { 'content-type': 'application/json' },
+      body: JSON.stringify({ classId: session.classId, studentId: session.studentId, secret: session.secret, level }),
+    });
+    const data = await res.json().catch(() => ({}));
+    if (res.ok && typeof data.totalPoints === 'number' && me) { me.points = data.totalPoints; renderTop(); }
+  } catch { /* 오프라인 — 로컬 연출만, 점수는 다음 동기화 때 반영 */ }
+}
+// 피격 시 화면 빨간 플래시
+let dmgFlashEl = null;
+function flashDamage() {
+  if (!dmgFlashEl) {
+    dmgFlashEl = document.createElement('div');
+    dmgFlashEl.style.cssText = 'position:fixed;inset:0;background:radial-gradient(transparent 40%,rgba(200,0,0,0.45));pointer-events:none;z-index:55;opacity:0;transition:opacity .12s';
+    document.body.appendChild(dmgFlashEl);
+  }
+  dmgFlashEl.style.opacity = '1';
+  setTimeout(() => { if (dmgFlashEl) dmgFlashEl.style.opacity = '0'; }, 130);
 }
 
 function grantLoot() {
@@ -359,7 +431,10 @@ async function submitAnswer(index, choiceIndex) {
     myAnswers[index] = { choiceIndex, ...data };
     me.points = data.totalPoints;
     me.streak = data.streak;
-    renderTop(); renderHearts();
+    if (typeof data.defense === 'number') me.defense = data.defense;
+    if (data.correct && me.correct != null) me.correct += 1; // 방어력 근사치 즉시 반영
+    if (engine) engine.setArmor(currentArmor()); // 문제를 풀면 방어력 상승
+    renderTop(); renderHearts(); renderCombat();
 
     document.querySelectorAll('#qz-choices .choice').forEach((b, i) => {
       if (i === data.answerIndex) b.classList.add('reveal-correct');
@@ -433,8 +508,9 @@ async function submitPractice(index, choiceIndex) {
       fb.classList.add('good');
       fb.innerHTML = `<b>📚 복습 정답!</b> (포인트는 변하지 않아요)<br/>${BQ.esc(data.explanation || '')}`;
       BQ.sound('correct');
+      if (typeof data.defense === 'number') { me.defense = data.defense; if (engine) engine.setArmor(currentArmor()); renderCombat(); }
       if (data.reward) applyPracticeReward(data.reward, data.inventory);
-      else fb.innerHTML += `<br/><span class="muted">오늘 이 문제의 보상 3번을 모두 받았어요 — 내일 다시 도전!</span>`;
+      else fb.innerHTML += `<br/><span class="muted">오늘 이 문제의 보상 3번을 모두 받았어요 — 내일 다시 도전! (복습은 방어력을 올려줘요 🛡)</span>`;
     } else {
       fb.classList.add('bad');
       fb.innerHTML = `<b>💥 아쉬워요!</b> 정답은 "${BQ.esc(q.questions[index].choices[data.answerIndex])}"<br/>${BQ.esc(data.explanation || '')}`;
@@ -551,7 +627,7 @@ document.querySelectorAll('#emote-picker .em').forEach((b) => {
 
 // ---------- 가방 (코인 / 장식 블록 / 모자·펫 장착) ----------
 function renderBag() {
-  $('bag-coins').textContent = `⭐ ${BQ.fmt(inventory.coins + localCoins)} 코인`;
+  $('bag-coins').textContent = `⭐ ${BQ.fmt(coinBalance())} 코인`;
   $('bag-decors').innerHTML = DECOR_TYPES.map((t) => {
     const n = inventory.decors[t] || 0;
     return `<div class="bag-item ${n ? '' : 'none'}">${DECOR_INFO[t].emoji}<div class="bag-cnt">×${n}</div><div class="bag-nm">${DECOR_INFO[t].label}</div></div>`;
@@ -624,7 +700,7 @@ function applyState(data, { silent } = {}) {
   renderTop();
   renderCoins();
   renderHotbar();
-  if (engine) engine.setStyle('me', { hat: inventory.hat, pet: inventory.pet });
+  if (engine) { engine.setStyle('me', { hat: inventory.hat, pet: inventory.pet }); engine.setArmor(currentArmor()); renderCombat(); }
 
   const active = data.activeQuiz;
   if (active) {
@@ -749,6 +825,32 @@ function startGame(data) {
     engine.burst(engine.player.pos.clone().add(new engine.THREE.Vector3(0, 1.6, 0)), 0xff6b9d, 10, 0.6);
   });
   engine.on('meteor', () => toast('🌠 유성이 떨어졌어요!', 2400));
+
+  // ---------- 전투: 좀비 처치 / 피격 / 쓰러짐 ----------
+  engine.setGunLevel(gunLevel);
+  engine.setArmor(currentArmor());
+  engine.on('zombieKilled', ({ level, points, name }) => {
+    killCount += 1;
+    // 처치 시 코인도 지급 (강한 좀비일수록 많이) → 코인으로 총 업그레이드
+    const coinGain = KILL_COINS[level] || 2;
+    localCoins += coinGain;
+    persistCombat();
+    renderCoins();
+    BQ.floatText(innerWidth / 2 - 40, innerHeight / 3, `+${points}P`, '#9acd32');
+    if (level <= 2) toast(`💀 ${name} 처치! +${points}P · ⭐+${coinGain}`, 1800); // 강한 좀비만 알림
+    awardKill(level);
+  });
+  engine.on('playerHurt', () => { renderCombat(); flashDamage(); });
+  engine.on('playerDown', () => { toast('💀 쓰러졌어요! 안전한 곳에서 다시 시작합니다', 2400); BQ.sound('wrong'); renderCombat(); });
+
+  $('btn-gun-up').addEventListener('click', upgradeGun);
+  renderCombat();
+  // 체력/방어력 HUD 주기적 갱신 (물림·회복 반영)
+  setInterval(renderCombat, 200);
+  // 탄약 서서히 재충전 (좀비와 계속 싸울 수 있도록, 최대 50) — 아이템 픽업은 즉시 보충
+  setInterval(() => {
+    if (inv.ammo < 50) { inv.ammo += 1; if (SLOTS[selectedSlot].id === 'gun') renderHotbar(); }
+  }, 1500);
   engine.on('courseStart', () => {
     courseStartAt = Date.now();
     $('course-timer').style.display = 'block';
