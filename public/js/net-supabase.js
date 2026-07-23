@@ -206,7 +206,9 @@
       const EVENTS = ['p:move', 'p:shoot', 'p:emote', 'p:style', 'w:break', 'w:place', 'w:bomb', 'quiz:launched', 'quiz:closed', 'sync:req', 'world:sync'];
       for (const ev of EVENTS) channel.on('broadcast', { event: ev }, (m) => onBroadcast(ev, m.payload));
 
-      const failTimer = setTimeout(() => { if (!subscribed) { setStatus('failed'); app.emit('connect_error', new Error('realtime timeout')); } }, 9000);
+      // 무료 서버는 유휴 후 첫 접속 때 깨어나는 데 몇 초 걸릴 수 있어 넉넉히 기다린다.
+      // 시간 초과 후에도 supabase-js가 계속 재시도하므로, 나중에 SUBSCRIBED 되면 배지가 '연결됨'으로 바뀐다.
+      const failTimer = setTimeout(() => { if (!subscribed) { setStatus('failed'); app.emit('connect_error', new Error('realtime timeout')); } }, 15000);
       channel.subscribe((st, err) => {
         if (st === 'SUBSCRIBED') {
           clearTimeout(failTimer);
