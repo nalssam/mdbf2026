@@ -6,6 +6,7 @@ on:
     paths:
       - 'assets/sources.json'
       - 'assets/story.srt'
+      - 'assets/video/scene1.mp4'
       - '.github/workflows/fetch-assets.yml'
 
 permissions:
