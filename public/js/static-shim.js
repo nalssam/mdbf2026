@@ -233,7 +233,7 @@
         s.student = {
           id: randId('stu-'), secret: 'demo', name: String(body.name || '체험학생').slice(0, 16),
           avatar: body.avatar || 'steve',
-          points: 0, correct: 0, answered: 0, streak: 0, bestStreak: 0, online: true,
+          points: 0, correct: 0, answered: 0, streak: 0, bestStreak: 0, defense: 0, online: true,
         };
         s.answers = {};
         s.answersQuizId = null;
@@ -283,6 +283,7 @@
         points = 100 + Math.max(0, Math.round(50 * (1 - Math.min(t, limitMs) / limitMs))) + Math.min(s.student.streak, 5) * 10;
         s.student.correct += 1;
         s.student.bestStreak = Math.max(s.student.bestStreak, s.student.streak);
+        s.student.defense = Math.min(24, (s.student.defense || 0) + 2); // 정답 → 방어력 +2
       } else {
         s.student.streak = 0;
       }
@@ -296,9 +297,28 @@
       }
       return json({
         correct, points, answerIndex: q.answerIndex, explanation: q.explanation,
-        streak: s.student.streak, totalPoints: s.student.points,
+        streak: s.student.streak, totalPoints: s.student.points, defense: s.student.defense || 0,
         completed: Object.keys(s.answers).length >= quiz.questions.length,
       });
+    }
+
+    // 좀비 처치 포인트 (정적 모드) — 서버와 같은 값·분당 상한, 실시간 랭킹에 반영
+    if (route === 'kill') {
+      if (!s.student) return json({ error: '데모 세션이 없습니다.' }, 404);
+      const KILL_POINTS = { 1: 120, 2: 70, 3: 40, 4: 22, 5: 10 };
+      const base = KILL_POINTS[Number(body.level)];
+      if (!base) return json({ error: '좀비 수준이 올바르지 않습니다.' }, 400);
+      const now = Date.now();
+      if (!s.killWindow || now - s.killWindow.start > 60000) s.killWindow = { start: now, count: 0 };
+      s.killWindow.count += 1;
+      let points = 0;
+      if (s.killWindow.count <= 60) {
+        points = base;
+        s.student.points += points;
+        saveState(s);
+        if (studentNet && studentNet.setMyStats) studentNet.setMyStats({ points: s.student.points });
+      }
+      return json({ points, totalPoints: s.student.points });
     }
 
     // 복습 풀이 — 포인트 없이 보상만 (정식으로 제출한 문항만 허용, 응답 형식은 서버와 동일)
@@ -318,6 +338,7 @@
       const inv = ensureInventory(s);
       let reward = null;
       if (correct) {
+        s.student.defense = Math.min(24, (s.student.defense || 0) + 1); // 복습 정답 → 방어력 +1
         // 문항당 하루 3회까지만 보상 — 초과 시 reward:null로 정오답만 알려준다
         if (!s.practice || typeof s.practice !== 'object') s.practice = {};
         const pk = `${quiz.id}:${qi}`;
@@ -333,7 +354,7 @@
         }
       }
       saveState(s);
-      return json({ correct, answerIndex: q.answerIndex, explanation: q.explanation, reward, inventory: inv });
+      return json({ correct, answerIndex: q.answerIndex, explanation: q.explanation, reward, inventory: inv, defense: s.student.defense || 0 });
     }
 
     if (route === 'leaderboard') return json(leaderboard(s));

@@ -499,7 +499,7 @@ app.post('/api/join', (req, res) => {
       name: trimmed,
       avatar: String(avatar || 'steve').slice(0, 20),
       points: 0, correct: 0, answered: 0,
-      streak: 0, bestStreak: 0,
+      streak: 0, bestStreak: 0, defense: 0,
       inventory: { coins: 0, decors: {}, cosmetics: [], hat: null, pet: null },
       joinedAt: Date.now(), online: false,
     };
@@ -593,6 +593,7 @@ app.post('/api/answer', (req, res) => {
     points = 100 + speedBonus + streakBonus;
     student.correct += 1;
     student.bestStreak = Math.max(student.bestStreak, student.streak);
+    student.defense = Math.min(24, (student.defense || 0) + 2); // 정답 → 방어력 +2 (최대 24)
   } else {
     student.streak = 0;
   }
@@ -626,8 +627,35 @@ app.post('/api/answer', (req, res) => {
     explanation: question.explanation,
     streak: student.streak,
     totalPoints: student.points,
+    defense: student.defense || 0,
     completed: Boolean(sub.completedAt),
   });
+});
+
+// 좀비 처치 포인트 — 클라이언트가 보고하되 서버가 검증·상한을 둔다(어뷰징 방지)
+const KILL_POINTS = { 1: 120, 2: 70, 3: 40, 4: 22, 5: 10 };
+app.post('/api/kill', (req, res) => {
+  const { classId, studentId, secret, level } = req.body || {};
+  const cls = getClass(classId);
+  if (!cls) throw httpError(404, '학급을 찾을 수 없습니다.');
+  const student = cls.students[studentId];
+  if (!student) throw httpError(404, '학생 정보를 찾을 수 없습니다.');
+  if (student.secret && secret !== student.secret) throw httpError(403, '학생 인증에 실패했습니다.');
+  const lv = Number(level);
+  const base = KILL_POINTS[lv];
+  if (!base) throw httpError(400, '좀비 수준이 올바르지 않습니다.');
+  // 분당 처치 상한 (조작된 클라이언트의 점수 폭주 방지)
+  const now = Date.now();
+  if (!student.killWindow || now - student.killWindow.start > 60000) student.killWindow = { start: now, count: 0 };
+  student.killWindow.count += 1;
+  let points = 0;
+  if (student.killWindow.count <= 60) { // 분당 60마리까지만 점수 인정
+    points = base;
+    student.points += points;
+    save();
+    broadcastLeaderboard(cls);
+  }
+  res.json({ points, totalPoints: student.points });
 });
 
 // 복습 풀이 → 포인트 없이 보상만 지급 (정식 제출한 문항만 허용)
@@ -654,6 +682,7 @@ app.post('/api/practice-answer', (req, res) => {
   const inventory = ensureInventory(student);
   let reward = null;
   if (correct) {
+    student.defense = Math.min(24, (student.defense || 0) + 1); // 복습 정답 → 방어력 +1
     // 문항당 하루 3회까지만 보상 — 초과 시 reward:null로 정오답만 알려준다
     student.practice ||= {};
     const pk = `${quizId}:${qi}`;
@@ -675,6 +704,7 @@ app.post('/api/practice-answer', (req, res) => {
     explanation: question.explanation,
     reward,
     inventory,
+    defense: student.defense || 0,
   });
 });
 

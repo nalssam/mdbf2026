@@ -530,9 +530,24 @@ export function createEngine({ canvas, classSeed, avatarKey, playerName, mapKey 
     coyote: 0,
     speedBoostUntil: 0,
     moving: false,
+    // 전투 스탯
+    hp: 100, maxHp: 100, armor: 0,
+    invulnUntil: 0, lastHurtAt: 0,
   };
   const mesh = buildCharacter(avatarKey, playerName);
   scene.add(mesh);
+
+  // 총 업그레이드 단계 (1~5). 단계가 높을수록 발사체 위력이 세다.
+  let gunLevel = 1;
+  const GUN_DAMAGE = [0, 12, 18, 26, 36, 50]; // index = gunLevel
+  function setGunLevel(lv) { gunLevel = Math.max(1, Math.min(5, lv | 0)); }
+  function getGunLevel() { return gunLevel; }
+  function gunDamage() { return GUN_DAMAGE[gunLevel] || 12; }
+  // 방어력 (학습/복습으로 상승) — 좀비에게 물릴 때 피해를 줄인다
+  function setArmor(n) { player.armor = Math.max(0, Math.min(24, Number(n) || 0)); }
+  function getPlayerHp() { return player.hp; }
+  function getMaxHp() { return player.maxHp; }
+  function getArmor() { return player.armor; }
 
   const input = { move: new THREE.Vector2(), jumpQueued: false };
   function setMove(x, y) { input.move.set(x, y); }
@@ -874,6 +889,8 @@ export function createEngine({ canvas, classSeed, avatarKey, playerName, mapKey 
     }
     for (const d of destroyed) removeBlock(d.key, { silent: true });
     flushDirty();
+    // 좀비 폭발 피해 (범위 내 좀비에게 큰 피해)
+    damageZombiesInRadius(pos, radius + 0.6, 160);
     // 연출
     burst(pos, 0xff8c1a, 30);
     burst(pos, 0x555555, 20);
@@ -943,6 +960,17 @@ export function createEngine({ canvas, classSeed, avatarKey, playerName, mapKey 
       if (p.userData.life <= 0) { scene.remove(p); projectiles.splice(i, 1); continue; }
       const move = SPEED * dt;
       const hit = raycastVoxel(p.position, p.userData.dir, move);
+      // 좀비 명중 (내 발사체만 피해 — 블록보다 가까우면 좀비 우선)
+      if (!p.userData.remote) {
+        const zHit = zombieHitByRay(p.position, p.userData.dir, move);
+        if (zHit && (!hit || zHit.t < hit.dist)) {
+          burst(zHit.z.position.clone().add(new THREE.Vector3(0, 1, 0)), 0x37e0e0, 6, 0.6);
+          damageZombie(zHit.z, gunDamage(), false);
+          scene.remove(p);
+          projectiles.splice(i, 1);
+          continue;
+        }
+      }
       if (hit) {
         burst(new THREE.Vector3(hit.pos.x, hit.pos.y, hit.pos.z), 0x37e0e0, 8, 0.6);
         if (!p.userData.remote && BLOCK_TYPES[hit.type].breakable && onProjectileHit) onProjectileHit(hit);
@@ -1536,6 +1564,177 @@ export function createEngine({ canvas, classSeed, avatarKey, playerName, mapKey 
   addEventListener('resize', resize);
   resize();
 
+  // ---------- 좀비 (5종: 1수준=가장 강하고 큼 ~ 5수준=기본) ----------
+  const ZOMBIE_TYPES = {
+    1: { name: '거대 좀비', hp: 260, scale: 1.9, speed: 1.9, dmg: 22, points: 120, color: 0x7a1f1f, head: 0x9c3a3a },
+    2: { name: '정예 좀비', hp: 160, scale: 1.55, speed: 2.1, dmg: 16, points: 70, color: 0x5a2f8c, head: 0x7d4fb0 },
+    3: { name: '강화 좀비', hp: 100, scale: 1.3, speed: 2.3, dmg: 12, points: 40, color: 0x2f5fa0, head: 0x4f7fc0 },
+    4: { name: '변이 좀비', hp: 60, scale: 1.12, speed: 2.5, dmg: 8, points: 22, color: 0x3f7d20, head: 0x5f9d40 },
+    5: { name: '기본 좀비', hp: 30, scale: 0.95, speed: 2.6, dmg: 5, points: 10, color: 0x57a531, head: 0x77c551 },
+  };
+  // 스폰 가중치: 약한 좀비(4·5수준)가 흔하고, 강한 좀비(1·2수준)는 드물게
+  const SPAWN_WEIGHTS = [5, 5, 5, 5, 4, 4, 4, 3, 3, 2, 1];
+  const MAX_ZOMBIES = 14;
+  const zombies = [];
+  let zombieSpawnAt = 0;
+  const zombieGeoHead = new THREE.BoxGeometry(0.52, 0.52, 0.52);
+  const zombieGeoBody = new THREE.BoxGeometry(0.6, 0.7, 0.34);
+  const zombieGeoArm = new THREE.BoxGeometry(0.18, 0.6, 0.22);
+
+  function buildZombie(level) {
+    const t = ZOMBIE_TYPES[level];
+    const g = new THREE.Group();
+    const bodyMat = new THREE.MeshLambertMaterial({ color: t.color });
+    const headMat = new THREE.MeshLambertMaterial({ color: t.head });
+    const head = new THREE.Mesh(zombieGeoHead, headMat); head.position.y = 1.5;
+    const body = new THREE.Mesh(zombieGeoBody, bodyMat); body.position.y = 0.95;
+    const armL = new THREE.Mesh(zombieGeoArm, bodyMat); armL.position.set(-0.4, 1.05, 0.25); // 앞으로 뻗은 팔
+    const armR = new THREE.Mesh(zombieGeoArm, bodyMat); armR.position.set(0.4, 1.05, 0.25);
+    armL.rotation.x = armR.rotation.x = -1.2;
+    // 빨간 눈
+    const eyeMat = new THREE.MeshBasicMaterial({ color: 0xff3020 });
+    const eyeL = new THREE.Mesh(new THREE.BoxGeometry(0.1, 0.1, 0.05), eyeMat); eyeL.position.set(-0.12, 1.54, 0.27);
+    const eyeR = new THREE.Mesh(new THREE.BoxGeometry(0.1, 0.1, 0.05), eyeMat); eyeR.position.set(0.12, 1.54, 0.27);
+    // HP 바 (초록, 위에 표시)
+    const bar = new THREE.Sprite(new THREE.SpriteMaterial({ color: 0x2fd04f, depthTest: false }));
+    bar.position.y = 2.15; bar.scale.set(0.9, 0.12, 1);
+    const barBg = new THREE.Sprite(new THREE.SpriteMaterial({ color: 0x220000, depthTest: false }));
+    barBg.position.y = 2.15; barBg.scale.set(0.94, 0.16, 1); barBg.renderOrder = 1; bar.renderOrder = 2;
+    g.add(barBg, bar, body, head, armL, armR, eyeL, eyeR);
+    g.scale.setScalar(t.scale);
+    g.userData = { level, hp: t.hp, maxHp: t.hp, bar, armL, armR, phase: Math.random() * 6, biteAt: 0 };
+    return g;
+  }
+
+  function spawnZombie() {
+    // 약한 좀비 위주로 무작위 종류
+    const level = SPAWN_WEIGHTS[Math.floor(Math.random() * SPAWN_WEIGHTS.length)];
+    // 플레이어에서 14~26칸 떨어진 지상에 스폰
+    const ang = Math.random() * Math.PI * 2;
+    const rad = 14 + Math.random() * 12;
+    const x = clampW(Math.round(player.pos.x + Math.cos(ang) * rad));
+    const z = clampW(Math.round(player.pos.z + Math.sin(ang) * rad));
+    const gy = topY(x, z);
+    const z2 = buildZombie(level);
+    z2.position.set(x, gy + 0.5, z);
+    zombies.push(z2);
+    scene.add(z2);
+  }
+
+  function killZombie(z, byExplosion) {
+    const t = ZOMBIE_TYPES[z.userData.level];
+    burst(z.position.clone().add(new THREE.Vector3(0, 0.8, 0)), t.color, byExplosion ? 10 : 18);
+    burst(z.position.clone().add(new THREE.Vector3(0, 0.8, 0)), 0x9acd32, 8);
+    const idx = zombies.indexOf(z);
+    if (idx >= 0) zombies.splice(idx, 1);
+    scene.remove(z);
+    disposeObject(z);
+    emit('zombieKilled', { level: z.userData.level, points: t.points, name: t.name });
+  }
+
+  // 좀비에게 피해 — HP 0 이하이면 처치. 반환: 처치했으면 true
+  function damageZombie(z, dmg, byExplosion) {
+    z.userData.hp -= dmg;
+    // 피격 표시(빨갛게 깜빡)
+    if (window.BQ) BQ.sound('break');
+    burst(z.position.clone().add(new THREE.Vector3(0, 1, 0)), 0xff5030, 4, 0.5);
+    if (z.userData.hp <= 0) { killZombie(z, byExplosion); return true; }
+    return false;
+  }
+
+  // 폭발 지점 주변 좀비 일괄 피해 (폭탄용)
+  function damageZombiesInRadius(pos, radius, dmg) {
+    for (let i = zombies.length - 1; i >= 0; i--) {
+      const z = zombies[i];
+      if (z.position.distanceTo(pos) <= radius + z.scale.x * 0.5) damageZombie(z, dmg, true);
+    }
+  }
+
+  // 발사체 경로에서 가장 먼저 맞는 좀비 (구 근사 교차)
+  function zombieHitByRay(origin, dir, maxT) {
+    let best = null;
+    for (const z of zombies) {
+      const oc = _zTmp.copy(origin).sub(z.position); oc.y -= 1.0; // 몸통 중심
+      const r = 0.55 * z.scale.x;
+      const b = oc.dot(dir);
+      const c = oc.dot(oc) - r * r;
+      const disc = b * b - c;
+      if (disc < 0) continue;
+      const tHit = -b - Math.sqrt(disc);
+      if (tHit >= 0 && tHit <= maxT && (!best || tHit < best.t)) best = { z, t: tHit };
+    }
+    return best;
+  }
+  const _zTmp = new THREE.Vector3();
+
+  // 플레이어 피해 (좀비에게 물림) — 방어력만큼 경감
+  function hurtPlayer(dmg) {
+    const now = performance.now();
+    if (now < player.invulnUntil) return;
+    const applied = Math.max(1, Math.round(dmg - player.armor));
+    player.hp = Math.max(0, player.hp - applied);
+    player.lastHurtAt = now;
+    player.invulnUntil = now + 550;
+    shake = Math.max(shake, 0.35);
+    if (window.BQ) BQ.sound('wrong');
+    burst(player.pos.clone().add(new THREE.Vector3(0, 1, 0)), 0xd83030, 10, 0.5);
+    emit('playerHurt', { hp: player.hp, maxHp: player.maxHp, applied });
+    if (player.hp <= 0) downPlayer();
+  }
+  function downPlayer() {
+    const now = performance.now();
+    emit('playerDown', {});
+    // 근처 좀비를 밀어내고 리스폰 + 무적 잠깐
+    for (const z of zombies) z.userData.biteAt = now + 3000;
+    respawn();
+    player.hp = player.maxHp;
+    player.invulnUntil = now + 2600;
+    burst(player.pos.clone().add(new THREE.Vector3(0, 1, 0)), 0xffffff, 24);
+  }
+
+  function updateZombies(dt) {
+    const now = performance.now();
+    // 스폰 (밤에 더 자주)
+    const night = getTimeOfDay() > 0.5;
+    const interval = night ? 2200 : 3800;
+    if (now > zombieSpawnAt && zombies.length < MAX_ZOMBIES) {
+      zombieSpawnAt = now + interval;
+      spawnZombie();
+    }
+    for (let i = zombies.length - 1; i >= 0; i--) {
+      const z = zombies[i];
+      const t = ZOMBIE_TYPES[z.userData.level];
+      const dx = player.pos.x - z.position.x, dz = player.pos.z - z.position.z;
+      const dist = Math.hypot(dx, dz);
+      // 플레이어를 향해 지상 이동 (물리 근사: topY로 바닥 높이 추적)
+      if (dist > 1.1) {
+        const step = t.speed * dt;
+        z.position.x = clampW(z.position.x + (dx / dist) * step);
+        z.position.z = clampW(z.position.z + (dz / dist) * step);
+        z.rotation.y = Math.atan2(dx, dz);
+        // 걷기 흔들림
+        z.userData.phase += dt * 6;
+        const sw = Math.sin(z.userData.phase) * 0.4;
+        z.userData.armL.rotation.z = sw * 0.3; z.userData.armR.rotation.z = -sw * 0.3;
+      }
+      const gy = topY(Math.round(z.position.x), Math.round(z.position.z));
+      z.position.y = gy + 0.5;
+      // 물기 공격 (근접 + 쿨다운)
+      if (dist < 1.3 && Math.abs(player.pos.y - z.position.y) < 2.0 && now > z.userData.biteAt) {
+        z.userData.biteAt = now + 1100;
+        hurtPlayer(t.dmg);
+      }
+      // HP 바 갱신 (초록→노랑→빨강)
+      const frac = Math.max(0, z.userData.hp / z.userData.maxHp);
+      z.userData.bar.scale.x = 0.9 * frac;
+      z.userData.bar.material.color.setHex(frac > 0.5 ? 0x2fd04f : frac > 0.25 ? 0xe8c020 : 0xd83030);
+    }
+    // 체력 회복 (피격 5초 후 서서히)
+    if (player.hp < player.maxHp && now - player.lastHurtAt > 5000) {
+      player.hp = Math.min(player.maxHp, player.hp + 9 * dt);
+    }
+  }
+
   function frame() {
     if (!running) return;
     requestAnimationFrame(frame);
@@ -1552,6 +1751,7 @@ export function createEngine({ canvas, classSeed, avatarKey, playerName, mapKey 
     updateQuizBlocks(dt);
     updateRemotes(dt);
     updateAnimals(dt);
+    updateZombies(dt);
     updatePortals(dt);
     updateCourses(dt);
     updateCrown();
@@ -1590,6 +1790,10 @@ export function createEngine({ canvas, classSeed, avatarKey, playerName, mapKey 
     // 신규 API — 제트팩/설치/연출/꾸미기
     setJumpHeld, getJetFuel, addJetFuel,
     frontCell, launchFirework, showEmote, setStyle, getTimeOfDay,
+    // 신규 API — 전투(좀비/총/HP/방어력)
+    setGunLevel, getGunLevel, setArmor, getPlayerHp, getMaxHp, getArmor,
+    getZombieCount: () => zombies.length,
+    getZombies: () => zombies.map((z) => ({ x: z.position.x, y: z.position.y, z: z.position.z, level: z.userData.level, hp: z.userData.hp, maxHp: z.userData.maxHp })),
     on, onTick,
     keyOf, parseKey,
     dispose: () => { running = false; renderer.dispose(); },
