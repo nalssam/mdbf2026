@@ -38,6 +38,11 @@ jobs:
           cp -r public/* _site/
           cp node_modules/three/build/three.module.min.js _site/vendor/three/
           cp node_modules/three/build/three.core.min.js _site/vendor/three/
+          # 캐시 무효화: HTML의 로컬 js/css/vendor 참조에 ?v=<커밋SHA>를 붙여
+          # 배포마다 브라우저가 새 버전을 받도록 한다 (옛 스크립트가 캐시에 남는 문제 방지).
+          SHA="${GITHUB_SHA::8}"
+          find _site -maxdepth 2 -name '*.html' -exec sed -i -E \
+            "s/(src|href)=\"((js|css|vendor)\/[^\"?]+\.(js|css))\"/\1=\"\2?v=$SHA\"/g" {} +
 
       - name: Add Korean War escape-room game at /korean-war-escape/
         run: |
