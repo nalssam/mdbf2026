@@ -131,6 +131,12 @@
             <h2>👥 우리 반 학생 <span class="tag" id="dash-count">0명</span></h2>
             <div class="muted">학급 총 포인트: <b id="dash-total">0</b>P</div>
           </div>
+          <div id="rt-note" class="muted mt8 hidden" style="background:#fff7e0;border:2px solid var(--ink);border-radius:10px;padding:10px">
+            🌐 <b>실시간 모드</b>: 학생들이 위 코드/QR로 접속하면 같은 3D 월드에 함께 모입니다.
+            아래 버튼으로 퀴즈를 시작하면 모두의 월드에 문제 블록이 나타나고, 이 화면에서 실시간 랭킹을 볼 수 있어요.
+            (AI 문제 생성·자료 업로드 등 전체 기능은 서버 실행이 필요합니다.)
+          </div>
+          <button id="btn-rt-quiz" class="btn grass grow mt8 hidden">🎮 실시간 퀴즈 시작 (광합성 데모)</button>
           <div id="dash-students" class="mt8"></div>
         </div>
       </section>
@@ -246,6 +252,9 @@
     <button id="qr-modal-close" class="btn stone">닫기 ✕</button>
   </div>
 
+  <script src="js/net-config.js"></script>
+  <script src="vendor/supabase/supabase.min.js"></script>
+  <script src="js/net-supabase.js"></script>
   <script src="js/static-shim.js"></script>
   <script src="socket.io/socket.io.js"></script>
   <script src="js/theme.js"></script>
