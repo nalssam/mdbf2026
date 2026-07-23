@@ -317,11 +317,27 @@
     </div>
   </div>
 
+  <script src="js/net-config.js"></script>
+  <script src="vendor/supabase/supabase.min.js"></script>
+  <script src="js/net-supabase.js"></script>
   <script src="js/static-shim.js"></script>
   <script src="socket.io/socket.io.js"></script>
   <script src="js/theme.js"></script>
   <script type="importmap">
     { "imports": { "three": "./vendor/three/three.module.min.js" } }
+  </script>
+  <div id="net-status" style="position:fixed;top:8px;left:50%;transform:translateX(-50%);z-index:60;padding:6px 12px;border-radius:20px;border:2px solid var(--ink,#1d1a16);font:600 13px sans-serif;display:none;pointer-events:none;box-shadow:2px 2px 0 rgba(0,0,0,.2)"></div>
+  <script>
+  (function(){
+    var el=document.getElementById("net-status");var hideT=null;
+    function show(msg,bg){el.textContent=msg;el.style.background=bg;el.style.display="block";clearTimeout(hideT);hideT=setTimeout(function(){el.style.display="none";},4000);}
+    if(!window.BQ_DEMO){return;} // 서버 모드에선 표시 안 함
+    show("🌐 친구들과 연결 중…","#fff3c4");
+    addEventListener("bq-net-status",function(e){
+      if(e.detail==="connected")show("🌐 친구들과 연결됐어요!","#c7f0c0");
+      else if(e.detail==="failed")show("⚠️ 실시간 연결 안 됨 — 혼자 플레이 중","#f6d0d0");
+    });
+  })();
   </script>
   <script type="module" src="js/game/main.js"></script>
 </body>

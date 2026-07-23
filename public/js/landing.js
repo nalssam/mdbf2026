@@ -11,12 +11,11 @@
   const savedName = localStorage.getItem('bq_name');
   if (savedName) $('join-name').value = savedName;
 
-  // GitHub Pages 체험판 안내
+  // 정적(서버 없음) 실시간 모드 안내
   if (window.BQ_DEMO) {
-    if (!$('join-code').value) $('join-code').value = 'DEMO01';
     $('join-error').style.color = '#1d1a16';
-    $('join-error').textContent = '🌐 체험판: 아무 코드나 입력해도 데모 학급에 입장돼요!';
-    $('teacher-error').textContent = '🌐 체험판에서는 교사 기능이 동작하지 않아요. 전체 기능은 서버 실행이 필요합니다 (README 참고).';
+    $('join-error').textContent = '🌐 선생님이 알려준 코드(또는 QR)로 접속하면 친구들과 같은 공간에서 함께 놀 수 있어요! (코드가 없으면 아무 코드나 입력해 혼자 체험)';
+    $('teacher-error').textContent = '🌐 선생님: 학급을 만들면 코드/QR이 나오고, 학생들이 접속해 함께 활동합니다. (AI 문제 생성은 서버 실행이 필요)';
   }
 
   // 아바타 선택 그리드

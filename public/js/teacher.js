@@ -484,6 +484,52 @@
     renderQuizList();
   }
 
+  // ---------- 정적(서버 없음) 모드: Supabase 실시간으로 학생들과 같은 방을 공유 ----------
+  // 서버가 없으므로 AI 생성·자료 업로드는 불가하지만, 학급 코드/QR로 학생들을 한 월드에 모으고
+  // 실시간 랭킹을 보며 퀴즈를 시작할 수 있다.
+  if (window.BQ_DEMO && window.bqConnectRealtime) {
+    cls = {
+      id: classId, code: session.code, name: session.name,
+      teacherName: session.teacherName || '', mapKey: 'classic', activeQuizId: null,
+      students: [], quizzes: [],
+      leaderboard: { rankings: [], classTotal: 0, studentCount: 0 },
+    };
+    renderDash();
+    renderQuizList();
+
+    const rnet = window.bqConnectRealtime(
+      session.code,
+      { studentId: 'teacher-' + Math.random().toString(36).slice(2, 8), name: cls.teacherName || '선생님', avatar: 'robot' },
+      true
+    );
+    if (rnet) {
+      rnet.socket.on('leaderboard:update', (data) => {
+        cls.leaderboard = data;
+        renderStudents();
+        if (!$('tab-live').classList.contains('hidden')) renderLiveBoard();
+      });
+      window.__bqTeacherNet = rnet;
+    }
+
+    // 실시간 퀴즈 시작 버튼 (데모 광합성 퀴즈를 모든 접속 학생에게 배포)
+    const startBtn = $('btn-rt-quiz');
+    if (startBtn) {
+      startBtn.classList.remove('hidden');
+      startBtn.addEventListener('click', () => {
+        if (!rnet) return alert('실시간 연결이 아직 준비되지 않았어요. 잠시 후 다시 시도해 주세요.');
+        const quiz = window.BQ_DEMO_QUIZ;
+        rnet.pushQuiz(quiz);
+        cls.activeQuizId = quiz.id;
+        BQ.sound('start');
+        alert('🎮 실시간 퀴즈를 시작했어요!\n접속한 학생들의 월드에 황금 문제 블록이 나타납니다.');
+      });
+    }
+    // 정적 모드 안내
+    const note = $('rt-note');
+    if (note) note.classList.remove('hidden');
+    return; // 서버 소켓/AI 경로는 사용하지 않는다
+  }
+
   const socket = io();
   socket.on('connect', () => {
     socket.emit('join', { classId, role: 'teacher', teacherKey: session.teacherKey });
