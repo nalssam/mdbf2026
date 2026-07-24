@@ -594,6 +594,20 @@ $('intro-go').addEventListener('click', () => {
   BQ.sound('start');
 });
 
+// ---------- 접속 QR (튕겼을 때 재접속·친구 초대) ----------
+function joinUrl() {
+  // 현재 페이지 기준 랜딩(index)으로 ?code= 를 붙인 접속 주소
+  return new URL('./?code=' + encodeURIComponent(session.code || ''), location.href).href;
+}
+$('btn-qr').addEventListener('click', () => {
+  $('qr-code').textContent = session.code || '------';
+  const ok = BQ.makeQR($('qr-canvas'), joinUrl(), { scale: 6 });
+  if (!ok) toast('QR을 표시할 수 없어요. 학급 코드로 접속해 주세요: ' + (session.code || ''), 3000);
+  showOverlay('qr-overlay');
+  BQ.sound('click');
+});
+$('qr-close').addEventListener('click', () => hideOverlay('qr-overlay'));
+
 // ---------- 도움말 / 이동 ----------
 $('btn-help').addEventListener('click', () => showOverlay('help-overlay'));
 $('help-close').addEventListener('click', () => {
