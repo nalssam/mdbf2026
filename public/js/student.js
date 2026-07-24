@@ -21,6 +21,16 @@
   BQ.drawAvatar($('me-avatar'), session.avatar, 40);
   $('me-name').textContent = session.name;
 
+  // ---------- 접속 QR (튕겼을 때 재접속) ----------
+  $('btn-qr').addEventListener('click', () => {
+    const url = new URL('./?code=' + encodeURIComponent(session.code || ''), location.href).href;
+    $('qr-code').textContent = session.code || '------';
+    BQ.makeQR($('qr-canvas'), url, { scale: 6 });
+    $('qr-overlay').classList.remove('hidden');
+    BQ.sound('click');
+  });
+  $('qr-close').addEventListener('click', () => $('qr-overlay').classList.add('hidden'));
+
   // ---------- 상단 상태 ----------
   function renderTop() {
     if (!me) return;

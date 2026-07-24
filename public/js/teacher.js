@@ -42,7 +42,14 @@
 
   // ---------- 대시보드 ----------
   function joinUrl() {
-    return `${location.origin}/?code=${cls.code}`;
+    // 현재 페이지(teacher.html) 기준으로 랜딩(index)에 ?code= 를 붙인다 — 서브패스(/mdbf2026/)도 정확
+    return new URL('./?code=' + encodeURIComponent(cls.code), location.href).href;
+  }
+  // QR을 클라이언트에서 생성해 <img>에 넣는다 (서버 없는 정적 사이트에서도 동작)
+  function setQrImg(imgEl, text, scale) {
+    if (!imgEl) return;
+    const c = document.createElement('canvas');
+    if (BQ.makeQR(c, text, { scale: scale || 5 })) imgEl.src = c.toDataURL();
   }
 
   function renderDash() {
@@ -50,7 +57,7 @@
     $('dash-teacher').textContent = `${cls.teacherName} 선생님`;
     $('dash-code').textContent = cls.code;
     $('dash-url').value = joinUrl();
-    $('dash-qr').src = `api/qr?text=${encodeURIComponent(joinUrl())}`;
+    setQrImg($('dash-qr'), joinUrl(), 5);
     $('dash-map-label').textContent = MAP_LABELS[cls.mapKey] || MAP_LABELS.classic;
     $('map-select').value = MAP_LABELS[cls.mapKey] ? cls.mapKey : 'classic';
     renderStudents();
@@ -99,8 +106,7 @@
   // ---------- QR 전체화면 모달 (프로젝터용) ----------
   function openQrModal() {
     if (!cls) return;
-    // 기존 /api/qr 라우트 재사용 (서버가 480px PNG 반환 — CSS로 크게 표시)
-    $('qr-modal-img').src = `api/qr?text=${encodeURIComponent(joinUrl())}`;
+    setQrImg($('qr-modal-img'), joinUrl(), 10); // 크게 표시 (클라이언트 생성)
     $('qr-modal-code').textContent = cls.code;
     $('qr-modal').classList.remove('hidden');
   }

@@ -40,7 +40,20 @@
       </div>
       <div class="pts"><span id="me-points">0</span>P</div>
       <div class="streak-flame" id="streak" title="연속 정답">🔥0</div>
+      <button id="btn-qr" class="btn small gold" title="접속 QR 다시 보기">📷 QR</button>
       <button class="btn small gold" onclick="location.href='world.html'" title="3D 월드에서 플레이">🧊 3D 월드</button>
+    </div>
+
+    <!-- 접속 QR 모달 -->
+    <div id="qr-overlay" class="overlay hidden">
+      <div class="block-panel" style="text-align:center;max-width:360px">
+        <h2>📷 우리 반 접속 QR</h2>
+        <p class="muted">튕겨서 나갔을 때 이 QR을 다시 찍으면 같은 학급으로 재접속돼요.</p>
+        <canvas id="qr-canvas" width="240" height="240" style="background:#fff;border:4px solid var(--ink);image-rendering:pixelated;max-width:82vw"></canvas>
+        <div class="mt8">학급 코드</div>
+        <div id="qr-code" style="font-family:var(--font-pixel);font-size:34px;letter-spacing:8px;color:var(--grass-dark)">------</div>
+        <button id="qr-close" class="btn grass big mt16">닫기</button>
+      </div>
     </div>
 
     <!-- 대기실 -->
@@ -124,6 +137,7 @@
   <script src="js/net-supabase.js"></script>
   <script src="js/static-shim.js"></script>
   <script src="socket.io/socket.io.js"></script>
+  <script src="vendor/qrcode/qrcode.min.js"></script>
   <script src="js/theme.js"></script>
   <div id="net-status" style="position:fixed;top:8px;left:50%;transform:translateX(-50%);z-index:60;padding:6px 12px;border-radius:20px;border:2px solid var(--ink,#1d1a16);font:600 13px sans-serif;display:none;pointer-events:none;box-shadow:2px 2px 0 rgba(0,0,0,.2)"></div>
   <script>

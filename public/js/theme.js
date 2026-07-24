@@ -244,6 +244,34 @@
     else if (name === 'reward') { beep(784, 0.09, 'square', 0, 0.06); beep(988, 0.09, 'square', 0.07, 0.06); beep(1175, 0.09, 'square', 0.14, 0.06); beep(1568, 0.24, 'square', 0.21, 0.07); }
   };
 
+  // ---------- QR 코드 (클라이언트 생성, 서버 불필요) ----------
+  // 벤더링된 qrcode-generator(window.qrcode)로 캔버스에 QR을 그린다.
+  // 서버가 없는 정적 사이트(github.io)에서도 학급 접속 QR을 표시할 수 있다.
+  BQ.makeQR = function (canvas, text, opts) {
+    opts = opts || {};
+    if (!window.qrcode || !canvas) return false;
+    const scale = opts.scale || 6;                       // 모듈당 픽셀
+    const margin = opts.margin != null ? opts.margin : 4; // 여백(모듈 단위, QR 규격 권장 4)
+    try {
+      const qr = window.qrcode(0, opts.ecc || 'M');
+      qr.addData(String(text));
+      qr.make();
+      const n = qr.getModuleCount();
+      const size = (n + margin * 2) * scale;
+      canvas.width = size; canvas.height = size;
+      const ctx = canvas.getContext('2d');
+      ctx.fillStyle = opts.bg || '#ffffff';
+      ctx.fillRect(0, 0, size, size);
+      ctx.fillStyle = opts.fg || '#1d1a16';
+      for (let r = 0; r < n; r++) {
+        for (let c = 0; c < n; c++) {
+          if (qr.isDark(r, c)) ctx.fillRect((c + margin) * scale, (r + margin) * scale, scale, scale);
+        }
+      }
+      return true;
+    } catch (e) { return false; }
+  };
+
   // ---------- 존별 배경음 (WebAudio 루프 시퀀서) ----------
   // 존마다 음계·템포가 다른 짧은 루프를 오디오 시계 기준 lookahead 방식으로 예약한다.
   // seq/bass: 8분음표 단위 스텝(주파수 Hz, 0은 쉼표). vol은 아주 작게(0.03~0.05).

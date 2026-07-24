@@ -215,12 +215,25 @@
     <button id="btn-music" class="btn small stone" title="배경음 켜기/끄기">🔊</button>
     <button id="btn-emote" class="btn small stone" title="이모지">😊</button>
     <button id="btn-bag" class="btn small stone" title="가방">🎒</button>
+    <button id="btn-qr" class="btn small gold" title="접속 QR 다시 보기 (튕겼을 때 재접속)">📷 QR</button>
     <button id="btn-help" class="btn small stone">?</button>
     <button id="btn-classic" class="btn small stone">클래식</button>
   </div>
 
   <!-- 체력 바 (좀비에게 물리면 감소, 시간이 지나면 회복) -->
   <div id="hp-bar" class="hud"><div id="hp-fill"></div><span id="hp-text">100/100</span></div>
+
+  <!-- 접속 QR 모달 (튕겼을 때 재접속·친구 초대용) -->
+  <div id="qr-overlay" class="overlay hidden">
+    <div class="block-panel" style="text-align:center;max-width:360px">
+      <h2>📷 우리 반 접속 QR</h2>
+      <p class="muted">튕겨서 나갔을 때 이 QR을 다시 찍으면 같은 학급으로 재접속돼요.</p>
+      <canvas id="qr-canvas" width="240" height="240" style="background:#fff;border:4px solid var(--ink);image-rendering:pixelated;max-width:82vw"></canvas>
+      <div class="mt8">학급 코드</div>
+      <div id="qr-code" style="font-family:var(--font-pixel);font-size:34px;letter-spacing:8px;color:var(--grass-dark)">------</div>
+      <button id="qr-close" class="btn grass big mt16">닫기</button>
+    </div>
+  </div>
 
   <!-- 이모지 픽커 -->
   <div id="emote-picker" class="hud hidden">
@@ -314,9 +327,10 @@
         <div class="k">⛏️</div><div>곡괭이: 벽돌·판자·상자를 부숴요 (상자에서 아이템이 나와요!)</div>
         <div class="k">🧱</div><div>블록: 탭한 곳에 블록을 쌓아 나만의 공간을 만들어요</div>
         <div class="k">🎨</div><div>장식 블록: 복습 보상으로 받은 모래·얼음·유리 등을 설치! 슬롯을 다시 탭하면 종류가 바뀌어요</div>
-        <div class="k">🔫</div><div>블래스터: 멀리 있는 블록을 쏴서 부숴요 (탄약 필요)</div>
+        <div class="k">🔥</div><div>블래스터: <b>불꽃 총알</b>이 멀리까지 날아가요(사정거리 3배)! 멀리 있는 좀비도 안전하게 처치하세요 (탄약 필요)</div>
         <div class="k">💣</div><div>폭탄: 주변 블록과 좀비를 한꺼번에 폭파!</div>
-        <div class="k">🧟</div><div><b>좀비 출현!</b> 총(🔫)이나 폭탄으로 물리치면 포인트와 코인을 얻어요. 좀비는 5종류 — 크고 붉은 좀비일수록 강해요(1수준). 물리면 ❤️체력이 깎이니 조심!</div>
+        <div class="k">🧟</div><div><b>좀비 출현!</b> 총(🔥)이나 폭탄으로 물리치면 포인트와 코인을 얻어요. 좀비는 5종류 — 크고 붉은 좀비일수록 강해요(1수준). 물리면 ❤️체력이 깎이니 조심! 좀비는 <b>자기 구역 안에서만</b> 쫓아오고, <b>높은 곳</b>(탑·블록 위)엔 못 올라와요 — 위로 피하세요!</div>
+        <div class="k">📷</div><div><b>QR 버튼</b>: 게임 중 튕겨서 나가면 위쪽 📷 QR 버튼의 코드로 다시 접속할 수 있어요</div>
         <div class="k">🔫</div><div><b>총 업그레이드</b>: 위쪽 🔫 버튼으로 코인을 써서 5단계까지 강화 — 셀수록 좀비가 빨리 쓰러져요</div>
         <div class="k">🛡</div><div><b>방어력</b>: 문제를 풀고 복습할수록 올라가 좀비 피해를 줄여줘요 (많이 공부할수록 튼튼!)</div>
         <div class="k">🎆</div><div>폭죽: 하늘에 불꽃을 쏘아 올려요 (보물상자·복습 보상에서 획득)</div>
@@ -334,6 +348,7 @@
   <script src="js/net-supabase.js"></script>
   <script src="js/static-shim.js"></script>
   <script src="socket.io/socket.io.js"></script>
+  <script src="vendor/qrcode/qrcode.min.js"></script>
   <script src="js/theme.js"></script>
   <script type="importmap">
     { "imports": { "three": "./vendor/three/three.module.min.js" } }

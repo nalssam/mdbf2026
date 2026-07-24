@@ -933,12 +933,14 @@ export function createEngine({ canvas, classSeed, avatarKey, playerName, mapKey 
 
   // ---------- 발사체 (총) ----------
   const projectiles = [];
-  const projGeo = new THREE.SphereGeometry(0.12, 8, 8);
-  const projMat = new THREE.MeshBasicMaterial({ color: 0x37e0e0 });
+  // 불꽃 총알: 밝은 주황 코어(강화) + 꼬리 불꽃 파티클
+  const projGeo = new THREE.SphereGeometry(0.19, 8, 8);
+  const projMat = new THREE.MeshBasicMaterial({ color: 0xff7a1a });
+  const PROJ_LIFE = 4.2; // 사정거리 3배 (기존 1.4) — 멀리서도 좀비 처치
   function shootFrom(origin, dir, { remote } = {}) {
     const p = new THREE.Mesh(projGeo, projMat);
     p.position.copy(origin);
-    p.userData = { dir: dir.clone().normalize(), life: 1.4, remote };
+    p.userData = { dir: dir.clone().normalize(), life: PROJ_LIFE, remote };
     projectiles.push(p);
     scene.add(p);
     if (window.BQ) BQ.sound('shoot');
@@ -964,7 +966,7 @@ export function createEngine({ canvas, classSeed, avatarKey, playerName, mapKey 
       if (!p.userData.remote) {
         const zHit = zombieHitByRay(p.position, p.userData.dir, move);
         if (zHit && (!hit || zHit.t < hit.dist)) {
-          burst(zHit.z.position.clone().add(new THREE.Vector3(0, 1, 0)), 0x37e0e0, 6, 0.6);
+          burst(zHit.z.position.clone().add(new THREE.Vector3(0, 1, 0)), 0xff8c1a, 10, 0.6);
           damageZombie(zHit.z, gunDamage(), false);
           scene.remove(p);
           projectiles.splice(i, 1);
@@ -972,13 +974,16 @@ export function createEngine({ canvas, classSeed, avatarKey, playerName, mapKey 
         }
       }
       if (hit) {
-        burst(new THREE.Vector3(hit.pos.x, hit.pos.y, hit.pos.z), 0x37e0e0, 8, 0.6);
+        burst(new THREE.Vector3(hit.pos.x, hit.pos.y, hit.pos.z), 0xff8c1a, 8, 0.6);
         if (!p.userData.remote && BLOCK_TYPES[hit.type].breakable && onProjectileHit) onProjectileHit(hit);
         scene.remove(p);
         projectiles.splice(i, 1);
         continue;
       }
       p.position.addScaledVector(p.userData.dir, move);
+      // 불꽃 꼬리 (프레임마다 작은 불꽃 파티클) + 코어 깜빡임
+      if (Math.random() < 0.7) burst(p.position, Math.random() < 0.5 ? 0xff8c1a : 0xffd23f, 1, 0.32);
+      p.scale.setScalar(0.85 + Math.random() * 0.35);
     }
   }
 
@@ -1606,6 +1611,12 @@ export function createEngine({ canvas, classSeed, avatarKey, playerName, mapKey 
     return g;
   }
 
+  // 좀비 이동/추적 규칙 상수
+  const CLIMB_STEP = 1.05;       // 좀비가 한 번에 오를 수 있는 최대 높이(블록) — 벽/탑은 못 오름
+  const HIGH_UNREACHABLE = 2.6;  // 플레이어가 좀비보다 이보다 높이 있으면 추적 불가(탑·비행)
+  // 수준별 세력권(감지) 기본 반경 — 강하고 큰 좀비일수록 넓게 감시
+  const AGGRO_BASE = { 1: 24, 2: 20, 3: 17, 4: 14, 5: 12 };
+
   function spawnZombie() {
     // 약한 좀비 위주로 무작위 종류
     const level = SPAWN_WEIGHTS[Math.floor(Math.random() * SPAWN_WEIGHTS.length)];
@@ -1617,8 +1628,30 @@ export function createEngine({ canvas, classSeed, avatarKey, playerName, mapKey 
     const gy = topY(x, z);
     const z2 = buildZombie(level);
     z2.position.set(x, gy + 0.5, z);
+    // 개별 세력권: 홈(스폰 지점) 기준 aggro 반경 안에 플레이어가 들어오면만 추적한다
+    z2.userData.home = { x, z };
+    z2.userData.aggro = AGGRO_BASE[level] + (Math.random() * 4 - 1); // 좀비마다 조금씩 다른 영역값
+    z2.userData.wanderT = Math.random() * 4;
+    z2.userData.wander = { x, z };
     zombies.push(z2);
     scene.add(z2);
+  }
+
+  // 좀비 지상 이동 (물리 근사) — 오를 수 없는 높이(벽/탑)는 막아 높은 곳을 못 따라오게 한다.
+  // 반환: 실제로 이동했으면 true
+  function zombieMoveTo(z, tx, tz, speed, dt) {
+    const dx = tx - z.position.x, dz = tz - z.position.z;
+    const dist = Math.hypot(dx, dz);
+    if (dist < 0.06) return false;
+    const step = Math.min(dist, speed * dt);
+    const nx = clampW(z.position.x + (dx / dist) * step);
+    const nz = clampW(z.position.z + (dz / dist) * step);
+    const curGY = topY(Math.round(z.position.x), Math.round(z.position.z));
+    const nextGY = topY(Math.round(nx), Math.round(nz));
+    if (nextGY - curGY > CLIMB_STEP) return false; // 한 칸에 오를 수 없는 높이 → 이동 취소
+    z.position.x = nx; z.position.z = nz;
+    z.rotation.y = Math.atan2(dx, dz);
+    return true;
   }
 
   function killZombie(z, byExplosion) {
@@ -1704,26 +1737,45 @@ export function createEngine({ canvas, classSeed, avatarKey, playerName, mapKey 
     for (let i = zombies.length - 1; i >= 0; i--) {
       const z = zombies[i];
       const t = ZOMBIE_TYPES[z.userData.level];
-      const dx = player.pos.x - z.position.x, dz = player.pos.z - z.position.z;
-      const dist = Math.hypot(dx, dz);
-      // 플레이어를 향해 지상 이동 (물리 근사: topY로 바닥 높이 추적)
-      if (dist > 1.1) {
-        const step = t.speed * dt;
-        z.position.x = clampW(z.position.x + (dx / dist) * step);
-        z.position.z = clampW(z.position.z + (dz / dist) * step);
-        z.rotation.y = Math.atan2(dx, dz);
-        // 걷기 흔들림
+      const home = z.userData.home;
+      // 플레이어가 이 좀비의 세력권(홈 기준 aggro 반경) 안에 있는가
+      const inTerritory = Math.hypot(player.pos.x - home.x, player.pos.z - home.z) <= z.userData.aggro;
+      // 플레이어가 너무 높은 곳(탑/비행)에 있으면 추적 불가
+      const reachable = (player.pos.y - z.position.y) <= HIGH_UNREACHABLE;
+      const chasing = inTerritory && reachable;
+      let moving = false;
+      const dist = Math.hypot(player.pos.x - z.position.x, player.pos.z - z.position.z);
+
+      if (chasing) {
+        // 세력권 안 + 도달 가능 → 플레이어 추적 (오를 수 없는 높이는 zombieMoveTo가 막는다)
+        if (dist > 1.1) moving = zombieMoveTo(z, player.pos.x, player.pos.z, t.speed, dt);
+        // 물기 공격 (근접 + 같은 높이 + 쿨다운)
+        if (dist < 1.3 && Math.abs(player.pos.y - z.position.y) < 2.0 && now > z.userData.biteAt) {
+          z.userData.biteAt = now + 1100;
+          hurtPlayer(t.dmg);
+        }
+      } else {
+        // 세력권 밖이거나 도달 불가 → 홈으로 복귀 후 홈 근처를 배회 (계속 따라오지 않음)
+        const dHome = Math.hypot(z.position.x - home.x, z.position.z - home.z);
+        if (dHome > 1.5) {
+          moving = zombieMoveTo(z, home.x, home.z, t.speed * 0.7, dt);
+        } else {
+          z.userData.wanderT -= dt;
+          if (z.userData.wanderT <= 0) {
+            z.userData.wanderT = 2 + Math.random() * 3;
+            z.userData.wander = { x: clampW(home.x + (Math.random() * 6 - 3)), z: clampW(home.z + (Math.random() * 6 - 3)) };
+          }
+          moving = zombieMoveTo(z, z.userData.wander.x, z.userData.wander.z, t.speed * 0.5, dt);
+        }
+      }
+      // 걷기 흔들림
+      if (moving) {
         z.userData.phase += dt * 6;
         const sw = Math.sin(z.userData.phase) * 0.4;
         z.userData.armL.rotation.z = sw * 0.3; z.userData.armR.rotation.z = -sw * 0.3;
       }
-      const gy = topY(Math.round(z.position.x), Math.round(z.position.z));
-      z.position.y = gy + 0.5;
-      // 물기 공격 (근접 + 쿨다운)
-      if (dist < 1.3 && Math.abs(player.pos.y - z.position.y) < 2.0 && now > z.userData.biteAt) {
-        z.userData.biteAt = now + 1100;
-        hurtPlayer(t.dmg);
-      }
+      // 바닥 높이 추적 (이동 후 현재 위치 기준)
+      z.position.y = topY(Math.round(z.position.x), Math.round(z.position.z)) + 0.5;
       // HP 바 갱신 (초록→노랑→빨강)
       const frac = Math.max(0, z.userData.hp / z.userData.maxHp);
       z.userData.bar.scale.x = 0.9 * frac;
@@ -1793,7 +1845,7 @@ export function createEngine({ canvas, classSeed, avatarKey, playerName, mapKey 
     // 신규 API — 전투(좀비/총/HP/방어력)
     setGunLevel, getGunLevel, setArmor, getPlayerHp, getMaxHp, getArmor,
     getZombieCount: () => zombies.length,
-    getZombies: () => zombies.map((z) => ({ x: z.position.x, y: z.position.y, z: z.position.z, level: z.userData.level, hp: z.userData.hp, maxHp: z.userData.maxHp })),
+    getZombies: () => zombies.map((z) => ({ x: z.position.x, y: z.position.y, z: z.position.z, level: z.userData.level, hp: z.userData.hp, maxHp: z.userData.maxHp, home: z.userData.home, aggro: z.userData.aggro })),
     on, onTick,
     keyOf, parseKey,
     dispose: () => { running = false; renderer.dispose(); },
