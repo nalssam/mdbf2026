@@ -3,6 +3,7 @@
 'use strict';
 (function () {
   var C = window.MDBF_CURRICULUM;
+  var S = window.MDBF_STANDARDS;               // 2022 개정 사회과 성취기준 참고 데이터 (선택)
   var app = document.getElementById('app');
 
   function esc(s) {
@@ -10,6 +11,7 @@
       .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
       .replace(/"/g, '&quot;').replace(/'/g, '&#39;');
   }
+  function bandLabel(b) { return b === '3-4' ? '3–4학년군' : b === '5-6' ? '5–6학년군' : (b || ''); }
   function types() { return C.deliverableTypes; }
   function unitDeliv(unit, key) {
     var d = (unit.deliverables && unit.deliverables[key]) || (C.DEFAULT && C.DEFAULT[key]) || { status: '준비중' };
@@ -76,6 +78,31 @@
     return '<div class="tile pending" aria-disabled="true">' + inner + '</div>';
   }
 
+  // 단원별 "관련 성취기준 (2022 개정 · 참고)" — window.MDBF_STANDARDS 가 있고 코드가 있을 때만 표시
+  function standardsHTML(unit) {
+    if (!S || !S.items || !unit.standards || !unit.standards.length) return '';
+    var rows = unit.standards.map(function (code) {
+      var it = S.items[code];
+      if (!it) return '';
+      return '' +
+        '<li class="std-item">' +
+          '<span class="std-code">' + esc(code) + '</span>' +
+          '<span class="std-sum">' + esc(it.summary) + '</span>' +
+          '<span class="std-unit">' + esc(bandLabel(it.band)) + ' · ' + esc(it.unit) + '</span>' +
+        '</li>';
+    }).join('');
+    if (!rows) return '';
+    return '' +
+      '<details class="std">' +
+        '<summary><span class="std-badge">📎 관련 성취기준</span>' +
+          '<span class="std-meta">2022 개정 · 참고 · ' + unit.standards.length + '개</span></summary>' +
+        '<ul class="std-list">' + rows + '</ul>' +
+        '<p class="std-cap">※ 요약문은 공식 성취기준 문구가 아닌 <b>참고용 요약</b>이며, 현행 단원과의 연결은 ' +
+          '<b>가안(검수 필요)</b>입니다. 출처: 교육부 [별책7] 사회과 교육과정(NCIC) · ' +
+          'Korean Elementary Learning Map 데이터셋(© DECK6, MIT).</p>' +
+      '</details>';
+  }
+
   function unitHTML(unit) {
     var tiles = Object.keys(types()).map(function (k) { return tileHTML(unit, k); }).join('');
     return '' +
@@ -85,6 +112,7 @@
           '<span class="unit-title">' + esc(unit.title) + '</span>' +
         '</div>' +
         '<div class="tiles">' + tiles + '</div>' +
+        standardsHTML(unit) +
       '</div>';
   }
 
@@ -123,7 +151,8 @@
     var banner = document.getElementById('provisional');
     if (banner && C.meta.provisional) {
       banner.innerHTML = '📝 <b>안내</b> — 현재 단원 목록은 <b>' + esc(C.meta.curriculumVersion || '가안') +
-        '</b>입니다. 실제 채택 교과서 목차가 확정되면 그에 맞춰 교체됩니다.';
+        '</b>입니다. 실제 채택 교과서 목차가 확정되면 그에 맞춰 교체됩니다.' +
+        (C.meta.standardsNote ? ' ' + esc(C.meta.standardsNote) : '');
       banner.style.display = 'block';
     }
   }

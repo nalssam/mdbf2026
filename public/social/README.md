@@ -15,7 +15,9 @@ public/social/
 ├── index.html         # 화면 껍데기 (건드릴 일 거의 없음)
 ├── css/hub.css        # 디자인
 ├── js/app.js          # 화면 그리는 코드 (건드릴 일 거의 없음)
-├── js/curriculum.js   # ★ 단원 목록·자료 연결을 편집하는 유일한 파일 ★
+├── js/curriculum.js   # ★ 단원 목록·자료 연결·관련 성취기준을 편집하는 유일한 파일 ★
+├── js/standards.js    # 2022 개정 사회과 성취기준 조회표 (참고용, 자동 생성 데이터)
+├── dataset/           # 원본 데이터·출처 안내 (social-2022.json, ATTRIBUTION.md)
 ├── units/             # 단원별 자료가 들어갈 자리 (예: units/5-2-2/visual.pdf)
 └── templates/         # 재사용 템플릿이 들어갈 자리 (escape/visual/craft)
 ```
@@ -44,6 +46,29 @@ escape: { status: "ready", href: "units/5-2-2/escape/" }
 ### 3) 자료 파일 두는 위치
 - 단원별 자료: `units/<id>/…` (예: `units/5-2-2/visual.pdf`)
 - 예외: 기존 6·25 방탈출은 상위 폴더에 있어 `../korean-war-escape/`로 연결돼 있습니다.
+
+### 4) 단원별 "관련 성취기준(참고)" 고치기
+각 단원의 `standards` 배열에 2022 개정 사회과 성취기준 코드를 넣으면, 그 단원 카드에
+"관련 성취기준(참고)" 접이식 블록이 표시됩니다.
+```js
+{ id: "5-2-2", title: "…", standards: ["[6사06-01]", "[6사06-02]", "[6사07-01]", "[6사07-02]"] }
+```
+- 코드 → 요약/학년군/국가단원명 은 `js/standards.js`(`window.MDBF_STANDARDS`)에서 자동으로 찾습니다.
+- ⚠ 데이터셋은 **학년군(3–4 / 5–6) + 국가교육과정 단원** 축이라 개별 학년/학기가 없습니다.
+  그래서 현행 단원 ↔ 성취기준 연결은 **가안(검수 필요)**입니다 — 이 배열만 고쳐 교정하세요.
+- 요약문은 공식 성취기준 **문구가 아니라** 데이터셋의 비공식 요약입니다(코드는 공식 번호).
+
+## 데이터 출처 / 라이선스 (반드시 보존)
+`js/standards.js`·`dataset/social-2022.json` 의 성취기준 참고 데이터 출처:
+- 성취기준 코드·배치: **교육부 고시 제2022-33호 [별책 7] 사회과 교육과정** (배포: NCIC, 접근일 2026-07-10)
+- 데이터셋: **Korean Elementary Learning Map** — © 2026 DECK(github.com/DECK6), **MIT** ·
+  취득: github.com/nalssam/korean-elementary-learning-map @ `3ef0563`
+- 학습 그래프 접근은 Marble Skill Taxonomy(© Generative Spark, Inc.)에서 영감을 받음.
+- 본 자료는 교육부·국가교육위원회·NCIC의 공식/승인물이 **아닙니다**.
+- 전체 안내: [`dataset/ATTRIBUTION.md`](dataset/ATTRIBUTION.md)
+
+> `js/standards.js` 는 원본 데이터에서 추출·생성된 파일입니다. 성취기준 목록 자체를 바꿀 일은
+> 거의 없지만, 필요하면 `dataset/social-2022.json` 을 원본으로 삼아 다시 생성하세요.
 
 ## 앞으로 (로드맵)
 `templates/` 아래에 3종 재사용 템플릿을 만들 예정입니다.
