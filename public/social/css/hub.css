@@ -1,0 +1,128 @@
+/* 몽당분필 날쌤 · 초등사회 마무리활동 — 허브 스타일
+   (기존 6·25 방탈출 게임의 팔레트를 재사용) */
+:root{
+  --bg:#0b0f1a;
+  --panel:#141a2b;
+  --panel2:#1b2340;
+  --line:#2a3555;
+  --text:#e8ecf8;
+  --dim:#9aa7c9;
+  --gold:#f5c04e;
+  --gold-dim:#a8853a;
+  --green:#5dd39e;
+  --blue:#6ea8ff;
+  --red:#ff6b6b;
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+html,body{height:100%;}
+body{
+  font-family:"Pretendard","Apple SD Gothic Neo","Malgun Gothic","Noto Sans KR",sans-serif;
+  background:
+    radial-gradient(1200px 600px at 50% -10%, #1a2440 0%, transparent 60%),
+    radial-gradient(900px 500px at 90% 110%, #17203a 0%, transparent 55%),
+    var(--bg);
+  color:var(--text);
+  line-height:1.65;
+  min-height:100%;
+}
+a{color:inherit;text-decoration:none;}
+button{font-family:inherit;cursor:pointer;}
+
+/* ---------- header ---------- */
+header{
+  position:sticky;top:0;z-index:20;
+  display:flex;align-items:center;gap:12px;flex-wrap:wrap;
+  padding:12px 20px;
+  background:rgba(11,15,26,.9);
+  backdrop-filter:blur(6px);
+  border-bottom:1px solid var(--line);
+}
+header .home{display:flex;align-items:center;gap:10px;}
+header .logo{font-size:22px;}
+header .brand{font-weight:800;color:var(--gold);letter-spacing:.3px;font-size:16px;line-height:1.2;}
+header .brand small{display:block;color:var(--dim);font-weight:500;font-size:11.5px;letter-spacing:0;}
+.badge{
+  margin-left:auto;display:inline-flex;align-items:center;gap:6px;
+  font-size:12.5px;color:#241a02;font-weight:800;
+  background:linear-gradient(160deg,var(--gold),#d99e2b);
+  border-radius:20px;padding:5px 14px;
+}
+a.badge:hover{filter:brightness(1.06);}
+
+/* ---------- layout ---------- */
+main{max-width:1000px;margin:0 auto;padding:26px 18px 80px;}
+.provisional{
+  background:#241f10;border:1px solid var(--gold-dim);color:#f2dca0;
+  border-radius:12px;padding:11px 16px;font-size:13.5px;margin-bottom:22px;
+}
+.provisional b{color:var(--gold);}
+
+.hero{text-align:center;margin:8px 0 26px;}
+.hero h1{font-size:30px;letter-spacing:-.3px;}
+.hero p{color:var(--dim);font-size:15.5px;margin-top:8px;}
+
+.breadcrumb{display:flex;align-items:center;gap:8px;font-size:14px;color:var(--dim);margin-bottom:18px;}
+.breadcrumb a{color:var(--gold);}
+.breadcrumb a:hover{text-decoration:underline;}
+
+.section-label{font-size:13px;color:var(--dim);letter-spacing:1.5px;font-weight:700;
+  margin:26px 0 12px;text-transform:uppercase;}
+
+/* ---------- grade picker ---------- */
+.grade-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:16px;}
+.grade-card{
+  display:block;position:relative;
+  background:linear-gradient(160deg,var(--panel2),var(--panel));
+  border:1px solid var(--line);border-radius:16px;
+  padding:24px 20px;text-align:left;transition:transform .15s,border-color .15s,box-shadow .15s;
+}
+.grade-card:hover{transform:translateY(-4px);border-color:var(--gold);box-shadow:0 10px 30px rgba(0,0,0,.35);}
+.grade-card .g-emoji{font-size:34px;display:block;}
+.grade-card .g-title{display:block;font-size:22px;font-weight:800;margin-top:10px;}
+.grade-card .g-meta{display:block;font-size:13px;color:var(--dim);margin-top:6px;}
+.grade-card .g-ready{color:var(--green);font-weight:700;}
+
+/* ---------- unit list ---------- */
+.unit-card{
+  background:var(--panel);border:1px solid var(--line);border-radius:14px;
+  padding:16px 18px;margin-bottom:14px;
+}
+.unit-head{display:flex;align-items:baseline;gap:10px;flex-wrap:wrap;margin-bottom:12px;}
+.unit-no{font-size:12.5px;font-weight:800;color:var(--gold);background:#241f10;
+  border:1px solid var(--gold-dim);border-radius:8px;padding:2px 9px;white-space:nowrap;}
+.unit-title{font-size:17px;font-weight:800;}
+
+/* ---------- deliverable tiles ---------- */
+.tiles{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:12px;}
+.tile{
+  display:block;position:relative;
+  background:linear-gradient(160deg,var(--panel2),var(--panel));
+  border:1px solid var(--line);border-radius:12px;padding:15px 14px;text-align:left;
+}
+.tile .t-emoji{font-size:26px;display:block;}
+.tile .t-label{font-weight:700;font-size:14.5px;margin-top:8px;display:block;}
+.tile .t-note{font-size:12px;color:var(--dim);margin-top:4px;display:block;}
+.tile .t-status{
+  position:absolute;top:12px;right:12px;font-size:11.5px;font-weight:800;border-radius:20px;padding:2px 10px;
+}
+
+/* ready tile = clickable link */
+a.tile.ready{transition:transform .15s,border-color .15s,box-shadow .15s;}
+a.tile.ready:hover{transform:translateY(-3px);border-color:var(--green);box-shadow:0 8px 22px rgba(0,0,0,.35);}
+a.tile.ready{border-color:rgba(93,211,158,.5);}
+a.tile.ready .t-status{color:#0c2b1e;background:var(--green);}
+a.tile.ready .t-label::after{content:" →";color:var(--green);}
+
+/* 준비중 tile = inert */
+.tile.pending{opacity:.55;cursor:default;}
+.tile.pending .t-status{color:var(--dim);background:#232c46;border:1px solid var(--line);}
+
+footer{
+  text-align:center;color:#5b6788;font-size:12.5px;padding:22px 18px;border-top:1px solid #161d30;margin-top:30px;
+}
+
+@media (max-width:520px){
+  .hero h1{font-size:24px;}
+  header .brand{font-size:14.5px;}
+  main{padding:20px 14px 70px;}
+}
