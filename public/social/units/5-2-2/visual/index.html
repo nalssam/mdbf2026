@@ -1,0 +1,438 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>한눈에 보는 6·25 전쟁 — 비주얼싱킹 색칠 학습지 (5-2-2)</title>
+<meta name="description" content="6·25 전쟁의 원인과 경과를 한 장에 정리하는 비주얼싱킹 색칠 학습지 (A4 2쪽, 몽당분필 날쌤)">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;700;900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../../../templates/print/print-base.css?v=1">
+<style>
+/* ── 단원 전용 스타일 (5-2-2 비주얼싱킹) ── */
+.abs { position: absolute; }
+
+/* 1쪽: 흐름도 */
+.vcard {
+  border: 0.5mm solid #333; border-radius: 3mm; padding: 2.2mm 2.6mm;
+  width: 56mm; height: 70mm; background: #fff;
+}
+.vcard .vc-head { display: flex; align-items: center; gap: 1.8mm; margin-bottom: 1mm; }
+.vcard .vc-no {
+  width: 7mm; height: 7mm; border-radius: 50%; flex: 0 0 auto;
+  border: 0.5mm solid var(--gold-print); color: var(--gold-print);
+  font-size: 10.5pt; font-weight: 900; text-align: center; line-height: 6.4mm;
+}
+.vcard .vc-title { font-size: 9.5pt; font-weight: 900; line-height: 1.15; }
+.vcard .vc-title small { display: block; font-size: 6.5pt; font-weight: 400; color: var(--ink-dim); }
+.vcard .vc-icon { position: absolute; right: 2.6mm; bottom: 2.4mm; }
+.fact { font-size: 7.4pt; line-height: 1.62; margin-top: 1.1mm; }
+.blank-ans {
+  color: transparent; border-bottom: 0.4mm solid #333;
+  font-weight: 700; padding: 0 1.2mm; white-space: nowrap;
+}
+.wordbank {
+  border: 0.45mm dashed var(--gold-print); border-radius: 3mm;
+  width: 56mm; height: 70mm; padding: 2.4mm 2.6mm; background: #fffdf5;
+}
+.wordbank h4 { font-size: 9pt; font-weight: 900; color: var(--gold-print); margin-bottom: 1.4mm; }
+.wordbank .wb-words { display: flex; flex-wrap: wrap; gap: 1.5mm; }
+.wordbank .wb-words span {
+  font-size: 8pt; font-weight: 700; border: 0.35mm solid #bbb; border-radius: 2.4mm;
+  padding: 0.6mm 2.4mm; background: #fff;
+}
+.wordbank p { font-size: 6.6pt; color: var(--ink-dim); margin-top: 1.6mm; line-height: 1.5; }
+.howto {
+  font-size: 7.6pt; line-height: 1.62; border: 0.45mm solid #333; border-radius: 3mm;
+  padding: 2mm 2.6mm; background: #fff;
+}
+.howto b { color: var(--gold-print); }
+.maptask {
+  font-size: 7.4pt; line-height: 1.6; border: 0.45mm solid var(--blue-print); border-radius: 3mm;
+  padding: 2mm 2.6mm; background: #f7faff;
+}
+.maptask b { color: var(--blue-print); }
+.maplegend { font-size: 7pt; line-height: 1.7; margin-top: 1.6mm; }
+.maplegend svg { vertical-align: middle; margin-right: 1mm; }
+
+/* 지도 */
+.korea-map { width: 74mm; height: 100mm; display: block; }
+.km-north, .km-south { fill: #fff; stroke: #333; stroke-width: 1.1; }
+.km-38 { stroke: var(--red-print); stroke-width: 1.6; stroke-dasharray: 6 4; }
+.km-38label { font-size: 10px; font-weight: 700; fill: var(--red-print); }
+.km-dmz { fill: none; stroke: #111; stroke-width: 2.4; }
+.km-dmzlabel { font-size: 10px; font-weight: 700; fill: #111; }
+.km-citydot { fill: #fff; stroke: #111; stroke-width: 1.6; }
+.km-citylabel { font-size: 11px; font-weight: 700; fill: #111; }
+.km-riverlabel { font-size: 9.5px; fill: #555; font-style: normal; }
+
+/* 화살표 */
+.flow-arrow { stroke: #9a9a9a; stroke-width: 1.2mm; fill: none; stroke-linecap: round; }
+.flow-head { fill: #9a9a9a; }
+
+/* 아이콘 공통 (흰 채움 = 색칠) */
+.wi-fill { fill: #fff; stroke: #222; stroke-width: 0.9; }
+.wi-line { fill: none; stroke: #222; stroke-width: 0.9; }
+.wi-dash { fill: none; stroke: #222; stroke-width: 0.9; stroke-dasharray: 2 1.4; }
+.wi-dot { fill: #222; }
+
+/* 2쪽: 연표 — 이 SVG는 1 unit = 1mm, 글자 크기도 mm 단위로 준다 */
+.sec-title { font-size: 11.5pt; font-weight: 900; }
+.sec-title .st-no {
+  display: inline-block; min-width: 6.5mm; text-align: center;
+  background: var(--gold-print); color: #fff; border-radius: 2mm;
+  font-size: 9.5pt; padding: 0.4mm 1.4mm; margin-right: 1.6mm;
+}
+.timeline-base { stroke: #333; stroke-width: 0.6; }
+.tl-tick { stroke: #333; stroke-width: 0.25; }
+.tl-year { font-size: 3.1px; font-weight: 700; fill: #333; }
+.tl-flagline { stroke: #999; stroke-width: 0.28; }
+.tl-pennant { fill: #fff; stroke: #333; stroke-width: 0.35; }
+.tl-evyear { font-size: 3.3px; font-weight: 900; fill: #111; }
+.tl-evtext { font-size: 2.8px; fill: #222; }
+.color-legend { display: flex; gap: 2.6mm; align-items: center; font-size: 7pt; }
+.color-legend .cl-box {
+  width: 7mm; height: 5mm; border: 0.4mm solid #333; border-radius: 1mm; background: #fff;
+  display: inline-block;
+}
+.color-legend .cl-item { display: flex; align-items: center; gap: 1.2mm; }
+
+/* 자물쇠 */
+.lockrow { display: flex; gap: 2.5mm; }
+.lockcard {
+  flex: 1; border: 0.45mm solid #333; border-radius: 2.6mm; padding: 1.8mm;
+  text-align: center; background: #fff;
+}
+.lockcard .lk-room { font-size: 6.8pt; font-weight: 700; color: var(--ink-dim); min-height: 6.6mm; line-height: 1.25; }
+.lockcard svg { display: block; margin: 0.8mm auto; }
+.lockcard .lk-boxes { display: flex; justify-content: center; gap: 1mm; margin: 1.2mm 0; }
+.lockcard .lk-boxes i { display: block; width: 5.6mm; height: 7.6mm; border: 0.45mm solid #111; border-radius: 0.8mm; background: #fff; }
+.lockcard .lk-mean { font-size: 6.6pt; color: var(--ink); }
+.lockcard .lk-mean .mline { display: inline-block; width: 100%; border-bottom: 0.3mm solid #999; height: 4mm; }
+.lk-body { fill: #fff; stroke: #222; stroke-width: 1; }
+.lk-shackle { fill: none; stroke: #222; stroke-width: 1.6; }
+.lk-dial { fill: none; stroke: #222; stroke-width: 0.8; }
+
+/* 성찰 */
+.reflect {
+  border: 0.5mm solid var(--green-print); border-radius: 3mm; background: #f6fbf8;
+  padding: 2.6mm 3mm;
+}
+.reflect h4 { font-size: 9.5pt; font-weight: 900; color: var(--green-print); }
+.reflect p { font-size: 7.4pt; line-height: 1.55; margin: 1.2mm 0; }
+.reflect .r-label { font-size: 7pt; font-weight: 700; margin-top: 1.8mm; }
+
+/* 정답 스트립 (180° 회전) */
+.answer-strip {
+  transform: rotate(180deg);
+  font-size: 6pt; color: #888; line-height: 1.55;
+  border-top: 0.3mm dashed #bbb; padding-top: 1.2mm;
+}
+.answer-strip b { color: #666; }
+
+/* 화면 전용 교사용 정답 */
+.teacher-key {
+  max-width: 210mm; margin: 0 auto 30px; background: #141a2b; color: #e8ecf8;
+  border: 1px solid #2a3555; border-radius: 12px; padding: 4px 18px 14px;
+}
+.teacher-key summary { cursor: pointer; font-weight: 700; padding: 10px 0; color: #f5c04e; }
+.teacher-key li { margin: 4px 0 4px 18px; font-size: 14px; line-height: 1.6; }
+</style>
+</head>
+<body>
+
+<nav class="print-toolbar no-print">
+  <span class="tb-title">🎨 한눈에 보는 6·25 전쟁 — 비주얼싱킹 색칠 학습지 (A4 2쪽)</span>
+  <a class="ghost" href="../../../#/grade/5">← 자료실로</a>
+  <a href="visual.pdf" download>⬇ PDF 다운로드</a>
+  <button onclick="window.print()">🖨 인쇄하기</button>
+  <span class="print-tip">인쇄 팁: 배율 100% · 여백 없음(또는 기본) · "배경 그래픽" 켜기 — A4 세로 2쪽이 나옵니다.</span>
+</nav>
+
+<!-- ═════════════════ 1쪽: 흐름도형 비주얼싱킹 ═════════════════ -->
+<section class="a4-page"><div class="pc">
+  <header class="print-head">
+    <div class="ph-brand">
+      <svg width="34" height="34" viewBox="0 0 34 34"><rect x="5" y="12" width="24" height="10" rx="2.5" fill="#fff" stroke="#c8931d" stroke-width="1.6" transform="rotate(-18 17 17)"/><rect x="22.5" y="10.6" width="6" height="10" rx="2" fill="#c8931d" transform="rotate(-18 17 17)"/><path d="M7 26 Q13 23 19 25.5" stroke="#c8931d" stroke-width="1.3" fill="none" stroke-linecap="round"/></svg>
+      <span class="ph-brandname">몽당분필 날쌤<small>초등사회 마무리활동</small></span>
+    </div>
+    <div class="ph-main">
+      <div class="ph-title">한눈에 보는 6·25 전쟁</div>
+      <div class="ph-sub">빈칸을 채우고 색칠하며 전쟁의 원인과 경과를 한 장에 정리해요 — 비주얼싱킹 색칠 학습지</div>
+      <div class="ph-chips">
+        <span class="chip">5학년 2학기 · 5-2-2</span>
+        <span class="chip dim">[6사06-02] 광복과 한국전쟁이 사회·생활에 미친 영향(참고 요약)</span>
+      </div>
+    </div>
+    <div class="name-date">이름 <span class="nd-line"></span><br>날짜 <span class="nd-line"></span></div>
+  </header>
+
+  <!-- 활동 안내 (중앙 위) -->
+  <div class="abs howto" style="left:60mm; top:29mm; width:70mm;">
+    <b>이렇게 해요</b> ─ ① 낱말 은행에서 알맞은 말을 찾아 빈칸에 써요 ② 지도와 그림을 예쁘게 색칠해요 ③ 화살표를 따라 ①→⑤ 순서로 읽어요
+  </div>
+
+  <!-- 중앙: 정확한 한반도 지도 -->
+  <div class="abs" style="left:58mm; top:56mm;">
+    <svg class="korea-map" viewBox="0 0 280 380" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="한반도 지도 — 38도선과 휴전선">
+    <!-- 색칠 가능: 북쪽/남쪽 흰 채움 -->
+    <path class="km-north" d="M161.651,176.504L160.59,177.093L158.786,180.235L157.194,184.288L155.602,186.443L153.691,187.617L151.781,188.335L147.748,188.661L144.245,188.4L143.078,187.943L138.196,188.204L136.816,188.465L129.811,188.204L126.097,188.53L123.762,189.248L121.427,190.877L119.304,193.352L117.5,195.955L113.891,200.699L111.238,203.036L111.238,206.342L111.238,207.379L110.283,208.091L109.964,207.767L108.479,207.508L102.535,204.462L97.653,206.342L96.379,208.739L95.106,209.515L93.089,204.787L89.905,204.657L84.811,200.439L82.582,201.283L82.051,202.971L79.292,206.86L75.365,209.968L74.091,210.421L72.712,210.227L72.924,209.321L71.332,205.759L65.176,204.333L62.948,202.841L61.78,202.452L67.83,198.491L69.422,197.776L68.254,196.866L66.981,196.41L61.992,196.996L59.445,195.695L55.624,196.15L53.077,195.11L58.49,191.203L58.702,188.856L58.596,187.095L61.356,181.87L64.115,178.992L71.226,174.931L74.41,174.341L76.639,174.538L78.443,174.144L76.533,172.57L74.622,171.849L70.907,171.98L67.087,169.617L66.768,167.12L74.198,151.296L74.304,149.841L73.136,146.001L72.818,142.222L67.405,140.031L65.07,139.766L58.278,135.512L55.518,133.316L54.457,133.981L54.245,137.374L53.289,138.171L51.485,138.836L50.53,134.913L49.044,132.117L44.587,129.185L42.888,127.651L43.737,124.179L43.313,123.912L44.056,120.034L46.815,117.021L53.608,111.724L55.412,109.239L58.914,106.281L60.4,106.348L62.098,106.079L62.523,104.801L62.948,103.791L64.327,102.916L67.617,101.231L71.438,99.141L74.41,98.534L78.125,95.294L79.61,93.875L81.202,93.875L81.521,93.199L82.476,91.576L83.643,90.493L85.235,90.29L87.889,89.478L91.285,89.004L93.62,86.294L94.363,84.327L95.849,82.223L99.139,79.914L101.261,76.446L103.809,72.701L104.976,71.474L106.037,71.269L106.78,69.837L107.523,65.809L108.691,61.979L109.328,60.131L112.193,58.076L112.936,57.116L113.573,56.773L114.847,57.047L116.545,55.881L118.243,54.578L119.729,55.058L121.321,56.087L122.913,58.281L123.656,59.994L124.929,61.432L125.141,63.484L126.415,64.442L129.068,64.852L133.526,66.287L136.391,66.355L137.983,67.448L141.38,67.994L148.172,67.175L150.932,67.653L152.099,68.95L153.903,70.042L154.965,70.11L156.451,68.267L158.149,65.399L159.21,63.211L159.104,61.432L158.149,59.514L155.92,57.801L154.434,55.058L153.054,52.243L152.205,51.281L151.568,49.906L151.462,47.843L151.887,46.397L155.283,45.433L159.635,44.882L163.137,45.502L169.08,45.089L172.689,44.262L175.342,44.4L177.783,44.4L178.951,43.159L182.347,40.262L184.045,39.226L185.849,37.223L186.168,35.149L186.486,33.488L187.548,31.688L189.352,29.471L190.838,28.431L192.536,28.57L194.34,29.61L195.508,30.58L196.781,30.303L197.842,28.57L198.585,28.223L200.602,28.084L201.239,26.974L202.088,21.834L202.831,17.728L203.043,14.941L204.847,10.195L205.484,7.329L206.545,6L207.819,6.07L208.88,6.91L210.154,7.399L211.958,6.979L213.232,7.679L213.975,9.217L216.628,10.265L216.84,11.033L216.84,16.196L218.22,18.564L220.13,20.721L222.784,22.738L224.27,23.155L225.119,24.544L225.862,26.974L227.772,29.332L228.727,31.065L228.939,32.865L229.788,33.903L228.303,35.01L226.286,34.319L222.996,33.903L218.857,37.43L216.522,38.605L214.824,42.056L211.534,44.124L209.729,46.259L207.394,49.975L205.909,53.617L202.406,57.321L200.283,61.911L200.177,65.877L202.406,69.905L202.618,73.382L201.026,80.458L201.982,87.92L200.92,90.831L190.095,95.969L187.335,98.466L183.302,105.07L178.42,107.491L175.448,110.179L171.309,111.791L168.55,116.418L165.684,119.03L162.182,120.636L159.528,122.642L153.691,122.776L149.552,124.179L146.686,128.051L137.877,132.45L136.604,135.711L137.241,140.828L137.241,144.676L136.498,147.922L134.587,146.995L133.526,148.054L132.358,150.966L132.783,154.337L135.755,155.459L138.196,156.779L141.698,157.505L144.245,159.088L149.764,166.133L154.222,169.222L155.389,170.339L157.936,171.914L160.271,174.341ZM59.339,141.824L57.641,142.952L57.641,140.961L58.914,139.301L60.188,139.101Z"/>
+    <path class="km-south" d="M110.283,208.091L111.238,207.379L111.238,206.342L111.238,203.036L113.891,200.699L117.5,195.955L119.304,193.352L121.427,190.877L123.762,189.248L126.097,188.53L129.811,188.204L136.816,188.465L138.196,188.204L143.078,187.943L144.245,188.4L147.748,188.661L151.781,188.335L153.691,187.617L155.602,186.443L157.194,184.288L158.786,180.235L160.59,177.093L161.651,176.504L168.868,193.352L175.661,204.138L181.604,211.974L189.989,226.935L192.43,234.899L192.642,239.833L194.022,246.611L192.854,250.44L193.173,256.557L192.642,259.673L191.687,261.961L191.581,266.404L191.899,268.75L192.005,271.853L192.642,273.056L193.597,273.499L195.083,272.36L196.993,271.917L196.675,275.649L194.34,285.116L192.43,291.977L189.776,297.943L186.38,303.395L182.347,305.524L179.481,306.337L174.069,306.587L169.505,305.649L165.684,306.337L164.092,307.463L162.925,309.401L163.774,312.399L163.668,314.645L161.97,314.458L158.679,313.148L155.071,313.023L153.373,312.336L151.675,309.151L149.87,309.276L146.793,311.212L142.123,311.587L140.531,312.648L140,313.959L140.637,315.581L142.972,317.763L142.229,320.005L139.788,321.126L137.771,318.386L136.498,315.705L135.118,315.581L132.995,316.329L132.571,319.195L133.632,321.188L135.224,323.428L132.889,326.039L132.358,327.902L130.66,329.206L126.203,326.287L126.84,324.174L128.75,322.121L129.068,320.005L128.432,318.759L121.957,324.112L118.03,330.075L116.014,329.641L115.059,328.089L113.891,327.468L109.646,331.378L108.797,334.416L107.311,334.54L106.568,333.238L106.568,330.447L105.825,328.151L101.474,324.671L99.457,321.686L100.519,320.005L104.127,320.939L107.099,320.814L106.462,319.382L105.507,318.697L107.523,317.949L109.115,316.267L107.736,315.83L105.719,316.765L104.021,316.329L103.384,312.399L101.261,308.338L100.2,304.397L102.217,302.143L103.278,298.633L105.188,293.548L106.144,291.851L108.797,290.656L109.752,289.335L108.266,288.643L105.931,288.077L106.037,286.565L107.629,285.81L109.328,284.171L112.724,282.153L113.785,278.429L112.83,277.482L110.707,276.597L111.238,274.701L112.087,273.246L111.769,272.36L109.221,269.954L107.523,267.672L108.054,265.135L107.629,261.326L107.842,258.084L107.736,256.302L106.568,252.353L106.037,248.335L104.339,248.973L103.066,249.93L98.396,248.526L96.91,248.462L96.379,245.461L97.971,241.817L102.004,238.616L104.233,238.232L105.931,236.822L108.691,236.374L111.875,238.552L114.74,239L116.332,242.776L117.288,243.544L117.5,242.137L119.835,240.537L120.365,239.321L119.941,238.616L117.288,237.976L114.847,233.295L114.528,231.241L113.573,229.956L114.953,226.163L112.193,221.85L110.813,220.496L111.026,216.69L109.54,214.171L108.691,212.814L108.266,210.486L108.691,209.451L109.964,209.062ZM172.477,317.202L169.611,319.445L165.896,316.454L165.047,314.832L167.807,312.399L170.248,309.651L171.84,309.463ZM152.524,316.952L152.205,320.441L150.083,320.628L148.915,318.386L147.535,319.445L146.899,319.507L145.837,316.703L145.625,314.458L148.066,312.836L149.552,313.834L151.675,314.333ZM98.502,332.556L96.592,333.114L95.53,331.874L94.787,331.502L95.212,329.889L98.29,326.722L98.927,325.666L101.792,326.287L102.853,327.964L101.474,330.571ZM106.993,209.774L106.78,214.688L105.188,214.43L104.127,213.977L103.596,213.008L102.535,208.415L103.703,206.537L106.144,208.026ZM113.785,333.486L114.316,335.159L111.981,334.85L110.707,333.238L110.813,331.812L112.299,331.626ZM144.67,323.801L144.351,324.92L142.866,323.241L144.351,321.375ZM103.915,255.729L103.49,258.147L101.58,256.557L101.049,251.333L103.066,252.863ZM96.698,319.631L96.273,320.503L95,320.254L93.726,317.763L93.195,315.83L91.816,314.708L93.938,313.023L96.592,316.08ZM236.581,219.335L235.201,220.496L233.609,219.335L233.397,218.174L234.246,217.206L236.156,216.561L237.112,217.465ZM101.261,373.205L99.882,374L98.714,373.511L98.396,373.144L96.91,371.124L96.486,370.083L97.547,368.123L101.58,364.873L112.087,361.743L113.997,361.62L118.137,362.909L119.092,365.486L118.349,367.632L117.394,369.103L112.512,371.552L108.797,372.715Z"/>
+    <!-- 1945: 북위 38도선 (점선 직선) -->
+    <line class="km-38" x1="50.346" y1="199.92" x2="190.381" y2="199.92"/>
+    <text class="km-38label" x="32.657" y="186.794" text-anchor="start">38도선(1945)</text>
+    <!-- 1953: 휴전선 (실제 경계) -->
+    <path class="km-dmz" d="M110.283,208.091L111.238,207.379L111.238,206.342L111.238,203.036L113.891,200.699L117.5,195.955L119.304,193.352L121.427,190.877L123.762,189.248L126.097,188.53L129.811,188.204L136.816,188.465L138.196,188.204L143.078,187.943L144.245,188.4L147.748,188.661L151.781,188.335L153.691,187.617L155.602,186.443L157.194,184.288L158.786,180.235L160.59,177.093L161.651,176.504"/>
+    <text class="km-dmzlabel" x="172.692" y="171.716" text-anchor="end">휴전선(1953)</text>
+    <text x="79.827" y="95.017" text-anchor="end" class="km-riverlabel">압록강</text>
+    <text x="162.374" y="270.11" text-anchor="end" class="km-riverlabel">낙동강</text>
+    <circle cx="120.452" cy="216.072" r="3.2" class="km-citydot"/><text x="126.452" y="219.472" text-anchor="start" class="km-citylabel">서울</text>
+    <circle cx="112.403" cy="220.197" r="3.2" class="km-citydot"/><text x="106.403" y="223.597" text-anchor="end" class="km-citylabel">인천</text>
+    <circle cx="182.303" cy="303.485" r="3.2" class="km-citydot"/><text x="188.303" y="306.885" text-anchor="start" class="km-citylabel">부산</text>
+    <circle cx="139.349" cy="130.499" r="3.2" class="km-citydot"/><text x="145.349" y="133.899" text-anchor="start" class="km-citylabel">흥남</text>
+    <circle cx="111.578" cy="201.491" r="3.2" class="km-citydot"/><text x="105.578" y="204.891" text-anchor="end" class="km-citylabel">판문점</text>
+  </svg>
+  </div>
+
+  <!-- 지도 과제 (중앙 아래) -->
+  <div class="abs maptask" style="left:60mm; top:160mm; width:70mm;">
+    <b>지도 과제</b> ─ 북쪽과 남쪽을 서로 다른 색으로 칠해요. 그리고 두 선이 왜 다른지 짝과 이야기해요.
+    <div class="maplegend">
+      <svg width="26" height="6"><line x1="1" y1="3" x2="25" y2="3" stroke="#d95555" stroke-width="1.8" stroke-dasharray="5 3"/></svg>38도선(1945) — 광복 직후 미·소가 나눈 선<br>
+      <svg width="26" height="6"><line x1="1" y1="3" x2="25" y2="3" stroke="#111" stroke-width="2.2"/></svg>휴전선(1953) — 전쟁이 멈춘 자리에 생긴 선
+    </div>
+  </div>
+
+  <!-- ① 배경 (왼쪽 위) -->
+  <div class="abs vcard" style="left:0mm; top:29mm;">
+    <div class="vc-head">
+      <span class="vc-no">1</span>
+      <span class="vc-title">전쟁의 배경<small>1945 ~ 1948</small></span>
+    </div>
+    <svg class="vc-icon" width="42" height="42" viewBox="-7 -7 14 14"><line x1="-2.6" y1="-4.6" x2="-2.6" y2="5.4" class="wi-line"/><path d="M-2.6,-4.6 L2.6,-3.4 L-2.6,-2.2 Z" class="wi-fill"/><line x1="3.4" y1="-1" x2="3.4" y2="5.4" class="wi-line"/><path d="M3.4,-1 L-1.2,0.2 L3.4,1.4 Z" class="wi-fill"/><line x1="-4.6" y1="5.4" x2="5.4" y2="5.4" class="wi-line"/></svg>
+    <p class="fact">1945년 8월 15일, 우리 민족은 <span class="blank-ans">광복</span>을 맞이했어요.</p>
+    <p class="fact">그러나 미국과 소련이 북위 <span class="blank-ans">38</span>도선을 경계로 남과 북에 들어왔어요.</p>
+    <p class="fact">1948년, 남과 북에 서로 다른 두 개의 <span class="blank-ans">정부</span>가 세워지며 분단이 굳어졌어요.</p>
+  </div>
+
+  <!-- ② 발발 (오른쪽 위) -->
+  <div class="abs vcard" style="left:134mm; top:29mm;">
+    <div class="vc-head">
+      <span class="vc-no">2</span>
+      <span class="vc-title">전쟁의 시작<small>1950. 6. 25.</small></span>
+    </div>
+    <svg class="vc-icon" width="42" height="42" viewBox="-7 -7 14 14"><rect x="-5" y="-3" width="10" height="7" rx="1" class="wi-fill"/><circle cx="2.2" cy="0.5" r="1.8" class="wi-line"/><line x1="-3.6" y1="-1" x2="-1" y2="-1" class="wi-line"/><line x1="-3.6" y1="1" x2="-1" y2="1" class="wi-line"/><line x1="-3.6" y1="2.4" x2="-1" y2="2.4" class="wi-line"/><line x1="-4" y1="-3" x2="1.4" y2="-5.8" class="wi-line"/></svg>
+    <p class="fact">1950년 6월 25일 새벽, 북한군이 기습 <span class="blank-ans">남침</span>했어요.</p>
+    <p class="fact">전쟁 3일 만에 수도 <span class="blank-ans">서울</span>을 빼앗겼어요.</p>
+    <p class="fact"><span class="blank-ans">유엔</span>군 16개국이 참전했고, 낙동강 방어선을 끝까지 지켜 냈어요.</p>
+  </div>
+
+  <!-- ③ 반격 (오른쪽 가운데) -->
+  <div class="abs vcard" style="left:134mm; top:104mm;">
+    <div class="vc-head">
+      <span class="vc-no">3</span>
+      <span class="vc-title">전세를 뒤집다<small>1950. 9. 15.</small></span>
+    </div>
+    <svg class="vc-icon" width="42" height="42" viewBox="-7 -7 14 14"><path d="M-5.6,1 L5.6,1 L4,4.2 L-4,4.2 Z" class="wi-fill"/><rect x="-2.2" y="-1.6" width="4.4" height="2.6" class="wi-fill"/><rect x="-0.8" y="-3.8" width="1.6" height="2.2" class="wi-fill"/><path d="M-5.6,5.4 Q-2.8,4.2 0,5.4 Q2.8,6.6 5.6,5.4" class="wi-line"/></svg>
+    <p class="fact"><span class="blank-ans">맥아더</span>가 이끄는 <span class="blank-ans">인천</span> 상륙 작전이 성공했어요.</p>
+    <p class="fact">9월 28일 서울을 되찾고, <span class="blank-ans">압록</span>강 근처까지 북진했어요.</p>
+  </div>
+
+  <!-- ④ 후퇴 (오른쪽 아래) -->
+  <div class="abs vcard" style="left:134mm; top:179mm;">
+    <div class="vc-head">
+      <span class="vc-no">4</span>
+      <span class="vc-title">얼어붙은 겨울<small>1950. 10. ~ 1951.</small></span>
+    </div>
+    <svg class="vc-icon" width="42" height="42" viewBox="-7 -7 14 14"><g class="wi-line"><line x1="0" y1="-5.4" x2="0" y2="5.4"/><line x1="-4.7" y1="-2.7" x2="4.7" y2="2.7"/><line x1="-4.7" y1="2.7" x2="4.7" y2="-2.7"/><line x1="-1.4" y1="-4" x2="0" y2="-2.6"/><line x1="1.4" y1="-4" x2="0" y2="-2.6"/><line x1="-1.4" y1="4" x2="0" y2="2.6"/><line x1="1.4" y1="4" x2="0" y2="2.6"/></g></svg>
+    <p class="fact"><span class="blank-ans">중국</span>군의 개입으로 전세가 다시 뒤집혔어요.</p>
+    <p class="fact">1950년 12월, 흥남에서 약 <span class="blank-ans">10</span>만 명이 배를 타고 철수했어요.</p>
+    <p class="fact">1951년 1월 4일, 서울을 다시 빼앗겼어요(1·4 후퇴).</p>
+  </div>
+
+  <!-- ⑤ 정전 (왼쪽 아래) -->
+  <div class="abs vcard" style="left:0mm; top:179mm;">
+    <div class="vc-head">
+      <span class="vc-no">5</span>
+      <span class="vc-title">멈춘 전쟁<small>1951 ~ 1953</small></span>
+    </div>
+    <svg class="vc-icon" width="42" height="42" viewBox="-7 -7 14 14"><path d="M-5,0.6 C-3,-1.6 -0.6,-2.2 1.6,-1.4 C2.4,-3 4,-3.8 5.4,-3.4 L4.2,-1.8 L5.8,-1.2 C4.6,0.6 2.6,1.4 0.6,1 L-1.6,3.4 L-2.2,1.2 Z" class="wi-fill"/><circle cx="4.1" cy="-2.5" r="0.35" class="wi-dot"/></svg>
+    <p class="fact">1951년 7월부터 정전 협상이 시작되었어요.</p>
+    <p class="fact">1953년 7월 27일, <span class="blank-ans">판문점</span>에서 정전 협정이 맺어졌어요.</p>
+    <p class="fact">전쟁은 끝난 게 아니라 <span class="blank-ans">멈춘</span> 것 — 지금도 휴전 상태예요.</p>
+  </div>
+
+  <!-- 낱말 은행 (왼쪽 가운데) -->
+  <div class="abs wordbank" style="left:0mm; top:104mm;">
+    <h4>낱말 은행</h4>
+    <div class="wb-words">
+      <span>광복</span><span>38</span><span>정부</span><span>남침</span><span>서울</span><span>유엔</span>
+      <span>맥아더</span><span>인천</span><span>압록</span><span>중국</span><span>10</span><span>판문점</span><span>멈춘</span>
+    </div>
+    <p>※ 낱말은 한 번씩만 쓰여요. 다 쓰고 나면 남는 낱말이 없는지 확인해 보세요!</p>
+  </div>
+
+  <!-- 흐름 화살표 -->
+  <svg class="abs" style="left:57mm; top:49mm; width:76mm; height:8mm;" viewBox="0 0 76 8">
+    <path class="flow-arrow" d="M2,4 L68,4" style="stroke-width:1.2"/><path class="flow-head" d="M68,0.4 L74,4 L68,7.6 Z"/>
+  </svg>
+  <svg class="abs" style="left:158mm; top:99mm; width:14mm; height:6mm;" viewBox="0 0 14 6">
+    <path class="flow-arrow" d="M7,0.5 L7,2.5" style="stroke-width:1.2"/><path class="flow-head" d="M3.8,2.5 L7,5.8 L10.2,2.5 Z"/>
+  </svg>
+  <svg class="abs" style="left:158mm; top:174mm; width:14mm; height:6mm;" viewBox="0 0 14 6">
+    <path class="flow-arrow" d="M7,0.5 L7,2.5" style="stroke-width:1.2"/><path class="flow-head" d="M3.8,2.5 L7,5.8 L10.2,2.5 Z"/>
+  </svg>
+  <svg class="abs" style="left:57mm; top:242mm; width:76mm; height:14mm;" viewBox="0 0 76 14">
+    <path class="flow-arrow" d="M74,7 L8,7" style="stroke-width:1.2"/><path class="flow-head" d="M8,3.4 L2,7 L8,10.6 Z"/>
+  </svg>
+
+  <footer class="print-foot">
+    <span>몽당분필 날쌤 · 초등사회 마무리활동 — 6·25 전쟁 단원(5-2-2)</span>
+    <span>비주얼싱킹 색칠 학습지 · 1 / 2</span>
+  </footer>
+</div></section>
+
+<!-- ═════════════════ 2쪽: 암호 연표 ═════════════════ -->
+<section class="a4-page"><div class="pc">
+  <header class="print-head">
+    <div class="ph-brand">
+      <svg width="34" height="34" viewBox="0 0 34 34"><rect x="5" y="12" width="24" height="10" rx="2.5" fill="#fff" stroke="#c8931d" stroke-width="1.6" transform="rotate(-18 17 17)"/><rect x="22.5" y="10.6" width="6" height="10" rx="2" fill="#c8931d" transform="rotate(-18 17 17)"/><path d="M7 26 Q13 23 19 25.5" stroke="#c8931d" stroke-width="1.3" fill="none" stroke-linecap="round"/></svg>
+      <span class="ph-brandname">몽당분필 날쌤<small>초등사회 마무리활동</small></span>
+    </div>
+    <div class="ph-main">
+      <div class="ph-title">암호 연표를 완성하라!</div>
+      <div class="ph-sub">방탈출에서 찾은 다섯 개의 암호를 기억하나요? 연표를 색칠하고 암호의 뜻을 완성해요.</div>
+      <div class="ph-chips">
+        <span class="chip">5학년 2학기 · 5-2-2</span>
+        <span class="chip dim">[6사06-02] 광복과 한국전쟁이 사회·생활에 미친 영향(참고 요약)</span>
+      </div>
+    </div>
+    <div class="name-date">이름 <span class="nd-line"></span><br>날짜 <span class="nd-line"></span></div>
+  </header>
+
+  <!-- A. 연표 -->
+  <div class="abs" style="left:0; top:29mm; width:190mm;">
+    <div class="sec-title"><span class="st-no">가</span>연표 색칠하기 — 깃발을 골라 단계별 색으로 칠해요</div>
+    <svg viewBox="0 0 190 62" xmlns="http://www.w3.org/2000/svg" style="width:190mm;height:62mm;display:block;margin-top:2mm">
+<line class="timeline-base" x1="4" y1="34" x2="186" y2="34"/>
+<line class="tl-tick" x1="8" y1="32.4" x2="8" y2="35.6"/><text class="tl-year" x="8" y="39.4" text-anchor="middle">1945</text>
+<line class="tl-tick" x1="27.33" y1="32.4" x2="27.33" y2="35.6"/><text class="tl-year" x="27.33" y="39.4" text-anchor="middle">1946</text>
+<line class="tl-tick" x1="46.67" y1="32.4" x2="46.67" y2="35.6"/><text class="tl-year" x="46.67" y="39.4" text-anchor="middle">1947</text>
+<line class="tl-tick" x1="66" y1="32.4" x2="66" y2="35.6"/><text class="tl-year" x="66" y="39.4" text-anchor="middle">1948</text>
+<line class="tl-tick" x1="85.33" y1="32.4" x2="85.33" y2="35.6"/><text class="tl-year" x="85.33" y="39.4" text-anchor="middle">1949</text>
+<line class="tl-tick" x1="104.67" y1="32.4" x2="104.67" y2="35.6"/><text class="tl-year" x="104.67" y="39.4" text-anchor="middle">1950</text>
+<line class="tl-tick" x1="124" y1="32.4" x2="124" y2="35.6"/><text class="tl-year" x="124" y="39.4" text-anchor="middle">1951</text>
+<line class="tl-tick" x1="143.33" y1="32.4" x2="143.33" y2="35.6"/><text class="tl-year" x="143.33" y="39.4" text-anchor="middle">1952</text>
+<line class="tl-tick" x1="162.67" y1="32.4" x2="162.67" y2="35.6"/><text class="tl-year" x="162.67" y="39.4" text-anchor="middle">1953</text>
+<line class="tl-tick" x1="182" y1="32.4" x2="182" y2="35.6"/><text class="tl-year" x="182" y="39.4" text-anchor="middle">1954</text>
+<line class="tl-flagline" x1="22.5" y1="15.5" x2="19.99" y2="33.8"/>
+<circle cx="19.99" cy="34" r="1.1" fill="#333"/>
+<g transform="translate(0 0)"><rect x="0" y="0" width="45" height="15.5" rx="1.8" fill="#fff" stroke="#333" stroke-width="0.4"/><line x1="4" y1="3" x2="4" y2="13" stroke="#333" stroke-width="0.6"/><path class="tl-pennant" d="M4,3 L11.5,5 L4,7.4 Z"/><circle cx="41" cy="4" r="2.5" fill="#fff" stroke="#c8931d" stroke-width="0.45"/><text x="41" y="5.4" text-anchor="middle" style="font-size:3.4px;font-weight:900;fill:#c8931d">1</text><text class="tl-evyear" x="14" y="5.6">1945. 8. 15.</text><text class="tl-evtext" x="4.5" y="10.4">광복 — 그러나 38도선으로</text><text class="tl-evtext" x="4.5" y="14">남과 북이 나뉘다</text></g>
+<line class="tl-flagline" x1="22.5" y1="46.5" x2="77.6" y2="34.2"/>
+<circle cx="77.6" cy="34" r="1.1" fill="#333"/>
+<g transform="translate(0 46.5)"><rect x="0" y="0" width="45" height="15.5" rx="1.8" fill="#fff" stroke="#333" stroke-width="0.4"/><line x1="4" y1="3" x2="4" y2="13" stroke="#333" stroke-width="0.6"/><path class="tl-pennant" d="M4,3 L11.5,5 L4,7.4 Z"/><circle cx="41" cy="4" r="2.5" fill="#fff" stroke="#c8931d" stroke-width="0.45"/><text x="41" y="5.4" text-anchor="middle" style="font-size:3.4px;font-weight:900;fill:#c8931d">1</text><text class="tl-evyear" x="14" y="5.6">1948</text><text class="tl-evtext" x="4.5" y="10.4">남과 북에 각각 정부 수립</text><text class="tl-evtext" x="4.5" y="14">분단이 굳어지다</text></g>
+<line class="tl-flagline" x1="69.83" y1="15.5" x2="113.95" y2="33.8"/>
+<circle cx="113.95" cy="34" r="1.1" fill="#333"/>
+<g transform="translate(47.33 0)"><rect x="0" y="0" width="45" height="15.5" rx="1.8" fill="#fff" stroke="#333" stroke-width="0.4"/><line x1="4" y1="3" x2="4" y2="13" stroke="#333" stroke-width="0.6"/><path class="tl-pennant" d="M4,3 L11.5,5 L4,7.4 Z"/><circle cx="41" cy="4" r="2.5" fill="#fff" stroke="#c8931d" stroke-width="0.45"/><text x="41" y="5.4" text-anchor="middle" style="font-size:3.4px;font-weight:900;fill:#c8931d">2</text><text class="tl-evyear" x="14" y="5.6">1950. 6. 25.</text><text class="tl-evtext" x="4.5" y="10.4">북한군의 기습 남침</text><text class="tl-evtext" x="4.5" y="14">3일 만에 서울 함락</text></g>
+<line class="tl-flagline" x1="69.83" y1="46.5" x2="115.88" y2="34.2"/>
+<circle cx="115.88" cy="34" r="1.1" fill="#333"/>
+<g transform="translate(47.33 46.5)"><rect x="0" y="0" width="45" height="15.5" rx="1.8" fill="#fff" stroke="#333" stroke-width="0.4"/><line x1="4" y1="3" x2="4" y2="13" stroke="#333" stroke-width="0.6"/><path class="tl-pennant" d="M4,3 L11.5,5 L4,7.4 Z"/><circle cx="41" cy="4" r="2.5" fill="#fff" stroke="#c8931d" stroke-width="0.45"/><text x="41" y="5.4" text-anchor="middle" style="font-size:3.4px;font-weight:900;fill:#c8931d">2</text><text class="tl-evyear" x="14" y="5.6">1950 여름</text><text class="tl-evtext" x="4.5" y="10.4">유엔군(16개국) 참전</text><text class="tl-evtext" x="4.5" y="14">낙동강 방어선 사수</text></g>
+<line class="tl-flagline" x1="117.16" y1="15.5" x2="118.39" y2="33.8"/>
+<circle cx="118.39" cy="34" r="1.1" fill="#333"/>
+<g transform="translate(94.66 0)"><rect x="0" y="0" width="45" height="15.5" rx="1.8" fill="#fff" stroke="#333" stroke-width="0.4"/><line x1="4" y1="3" x2="4" y2="13" stroke="#333" stroke-width="0.6"/><path class="tl-pennant" d="M4,3 L11.5,5 L4,7.4 Z"/><circle cx="41" cy="4" r="2.5" fill="#fff" stroke="#c8931d" stroke-width="0.45"/><text x="41" y="5.4" text-anchor="middle" style="font-size:3.4px;font-weight:900;fill:#c8931d">3</text><text class="tl-evyear" x="14" y="5.6">1950. 9. 15.</text><text class="tl-evtext" x="4.5" y="10.4">인천 상륙 작전 성공</text><text class="tl-evtext" x="4.5" y="14">9. 28. 서울 수복</text></g>
+<line class="tl-flagline" x1="117.16" y1="46.5" x2="121.49" y2="34.2"/>
+<circle cx="121.49" cy="34" r="1.1" fill="#333"/>
+<g transform="translate(94.66 46.5)"><rect x="0" y="0" width="45" height="15.5" rx="1.8" fill="#fff" stroke="#333" stroke-width="0.4"/><line x1="4" y1="3" x2="4" y2="13" stroke="#333" stroke-width="0.6"/><path class="tl-pennant" d="M4,3 L11.5,5 L4,7.4 Z"/><circle cx="41" cy="4" r="2.5" fill="#fff" stroke="#c8931d" stroke-width="0.45"/><text x="41" y="5.4" text-anchor="middle" style="font-size:3.4px;font-weight:900;fill:#c8931d">4</text><text class="tl-evyear" x="14" y="5.6">1950. 10.~12.</text><text class="tl-evtext" x="4.5" y="10.4">중국군 개입</text><text class="tl-evtext" x="4.5" y="14">흥남 철수(약 10만 명)</text></g>
+<line class="tl-flagline" x1="164.49" y1="15.5" x2="124.19" y2="33.8"/>
+<circle cx="124.19" cy="34" r="1.1" fill="#333"/>
+<g transform="translate(141.99 0)"><rect x="0" y="0" width="45" height="15.5" rx="1.8" fill="#fff" stroke="#333" stroke-width="0.4"/><line x1="4" y1="3" x2="4" y2="13" stroke="#333" stroke-width="0.6"/><path class="tl-pennant" d="M4,3 L11.5,5 L4,7.4 Z"/><circle cx="41" cy="4" r="2.5" fill="#fff" stroke="#c8931d" stroke-width="0.45"/><text x="41" y="5.4" text-anchor="middle" style="font-size:3.4px;font-weight:900;fill:#c8931d">4</text><text class="tl-evyear" x="14" y="5.6">1951. 1. 4.</text><text class="tl-evtext" x="4.5" y="10.4">1·4 후퇴</text><text class="tl-evtext" x="4.5" y="14">서울을 다시 빼앗기다</text></g>
+<line class="tl-flagline" x1="164.49" y1="46.5" x2="173.69" y2="34.2"/>
+<circle cx="173.69" cy="34" r="1.1" fill="#333"/>
+<g transform="translate(141.99 46.5)"><rect x="0" y="0" width="45" height="15.5" rx="1.8" fill="#fff" stroke="#333" stroke-width="0.4"/><line x1="4" y1="3" x2="4" y2="13" stroke="#333" stroke-width="0.6"/><path class="tl-pennant" d="M4,3 L11.5,5 L4,7.4 Z"/><circle cx="41" cy="4" r="2.5" fill="#fff" stroke="#c8931d" stroke-width="0.45"/><text x="41" y="5.4" text-anchor="middle" style="font-size:3.4px;font-weight:900;fill:#c8931d">5</text><text class="tl-evyear" x="14" y="5.6">1953. 7. 27.</text><text class="tl-evtext" x="4.5" y="10.4">판문점 정전 협정</text><text class="tl-evtext" x="4.5" y="14">휴전선 — 멈춘 전쟁</text></g>
+</svg>
+    <div class="color-legend" style="margin-top:1mm;">
+      <span style="font-weight:700;">내가 정한 단계 색 →</span>
+      <span class="cl-item"><span class="cl-box"></span>① 배경</span>
+      <span class="cl-item"><span class="cl-box"></span>② 발발</span>
+      <span class="cl-item"><span class="cl-box"></span>③ 반격</span>
+      <span class="cl-item"><span class="cl-box"></span>④ 후퇴</span>
+      <span class="cl-item"><span class="cl-box"></span>⑤ 정전</span>
+    </div>
+  </div>
+
+  <!-- B. 자물쇠 암호 -->
+  <div class="abs" style="left:0; top:110mm; width:190mm;">
+    <div class="sec-title"><span class="st-no">나</span>다섯 개의 암호 — 숫자를 쓰고, 그 뜻을 적어요</div>
+    <div class="lockrow" style="margin-top:2.5mm;">
+      <div class="lockcard">
+        <div class="lk-room">기록 보관실<br>전쟁은 왜 일어났을까?</div>
+        <svg width="34" height="30" viewBox="0 0 34 30"><path class="lk-shackle" d="M11,13 V9 a6,6 0 0 1 12,0 V13"/><rect class="lk-body" x="7" y="13" width="20" height="14" rx="2.4"/><circle class="lk-dial" cx="17" cy="19.5" r="2.6"/><line x1="17" y1="19.5" x2="17" y2="24" stroke="#222" stroke-width="1"/></svg>
+        <div class="lk-boxes"><i></i><i></i><i></i><i></i></div>
+        <div class="lk-mean">이 암호의 뜻<span class="mline"></span></div>
+      </div>
+      <div class="lockcard">
+        <div class="lk-room">새벽의 사이렌<br>전쟁이 시작되다</div>
+        <svg width="34" height="30" viewBox="0 0 34 30"><path class="lk-shackle" d="M11,13 V9 a6,6 0 0 1 12,0 V13"/><rect class="lk-body" x="7" y="13" width="20" height="14" rx="2.4"/><circle class="lk-dial" cx="17" cy="19.5" r="2.6"/><line x1="17" y1="19.5" x2="17" y2="24" stroke="#222" stroke-width="1"/></svg>
+        <div class="lk-boxes"><i></i><i></i><i></i><i></i></div>
+        <div class="lk-mean">이 암호의 뜻<span class="mline"></span></div>
+      </div>
+      <div class="lockcard">
+        <div class="lk-room">작전 상황실<br>전세를 뒤집어라</div>
+        <svg width="34" height="30" viewBox="0 0 34 30"><path class="lk-shackle" d="M11,13 V9 a6,6 0 0 1 12,0 V13"/><rect class="lk-body" x="7" y="13" width="20" height="14" rx="2.4"/><circle class="lk-dial" cx="17" cy="19.5" r="2.6"/><line x1="17" y1="19.5" x2="17" y2="24" stroke="#222" stroke-width="1"/></svg>
+        <div class="lk-boxes"><i></i><i></i><i></i><i></i></div>
+        <div class="lk-mean">이 암호의 뜻<span class="mline"></span></div>
+      </div>
+      <div class="lockcard">
+        <div class="lk-room">얼어붙은 겨울<br>다시 밀려나다</div>
+        <svg width="34" height="30" viewBox="0 0 34 30"><path class="lk-shackle" d="M11,13 V9 a6,6 0 0 1 12,0 V13"/><rect class="lk-body" x="7" y="13" width="20" height="14" rx="2.4"/><circle class="lk-dial" cx="17" cy="19.5" r="2.6"/><line x1="17" y1="19.5" x2="17" y2="24" stroke="#222" stroke-width="1"/></svg>
+        <div class="lk-boxes"><i></i><i></i><i></i><i></i></div>
+        <div class="lk-mean">이 암호의 뜻<span class="mline"></span></div>
+      </div>
+      <div class="lockcard">
+        <div class="lk-room">협상 테이블<br>멈춘 전쟁</div>
+        <svg width="34" height="30" viewBox="0 0 34 30"><path class="lk-shackle" d="M11,13 V9 a6,6 0 0 1 12,0 V13"/><rect class="lk-body" x="7" y="13" width="20" height="14" rx="2.4"/><circle class="lk-dial" cx="17" cy="19.5" r="2.6"/><line x1="17" y1="19.5" x2="17" y2="24" stroke="#222" stroke-width="1"/></svg>
+        <div class="lk-boxes"><i></i><i></i><i></i><i></i></div>
+        <div class="lk-mean">이 암호의 뜻<span class="mline"></span></div>
+      </div>
+    </div>
+    <p style="font-size:6.8pt; color:var(--ink-dim); margin-top:1.6mm;">힌트: 방탈출 게임의 다섯 방에서 열었던 자물쇠 번호예요. 날짜(월월일일)로 된 암호가 네 개, 숫자 두 개를 이어 붙인 암호가 한 개!</p>
+  </div>
+
+  <!-- C. 성찰 -->
+  <div class="abs reflect" style="left:0; top:178mm; width:190mm;">
+    <h4>전쟁이 남긴 것, 평화의 약속</h4>
+    <p>전쟁은 수많은 사상자와 <b>이산가족</b>, <b>전쟁고아</b>를 남겼고 국토를 폐허로 만들었어요. 그리고 전쟁은 아직 끝나지 않은 <b>휴전 상태</b>랍니다.</p>
+    <div class="r-label">① 전쟁이 남긴 아픔 중 가장 마음에 남는 것 한 가지와 그 까닭을 써 보세요.</div>
+    <div class="ruled-line"></div>
+    <div class="ruled-line"></div>
+    <div class="r-label">② 평화를 지키기 위해 내가 오늘 할 수 있는 일 한 가지를 써 보세요.</div>
+    <div class="ruled-line"></div>
+    <svg class="abs" style="right:3mm; top:2.5mm; width:22mm; height:22mm;" viewBox="-7 -7 14 14"><path d="M-5,0.6 C-3,-1.6 -0.6,-2.2 1.6,-1.4 C2.4,-3 4,-3.8 5.4,-3.4 L4.2,-1.8 L5.8,-1.2 C4.6,0.6 2.6,1.4 0.6,1 L-1.6,3.4 L-2.2,1.2 Z" class="wi-fill"/><circle cx="4.1" cy="-2.5" r="0.35" class="wi-dot"/></svg>
+  </div>
+
+  <!-- 정답 스트립 (거꾸로) -->
+  <div class="abs answer-strip" style="left:0; top:252mm; width:190mm;">
+    <b>정답</b> · 1쪽 빈칸(위→아래): 광복 → 38 → 정부 → 남침 → 서울 → 유엔 → 맥아더 → 인천 → 압록 → 중국 → 10 → 판문점 → 멈춘 ·
+    2쪽 암호: 기록 보관실 3848(38도선+1948년 정부 수립) / 새벽의 사이렌 0625(1950년 6월 25일 전쟁 발발) / 작전 상황실 0915(9월 15일 인천 상륙 작전) / 얼어붙은 겨울 0104(1월 4일 1·4 후퇴) / 협상 테이블 0727(7월 27일 정전 협정)
+  </div>
+
+  <footer class="print-foot">
+    <span>몽당분필 날쌤 · 초등사회 마무리활동 — 6·25 전쟁 단원(5-2-2)</span>
+    <span>비주얼싱킹 색칠 학습지 · 2 / 2</span>
+  </footer>
+</div></section>
+
+<!-- 화면 전용: 교사용 정답 -->
+<details class="teacher-key screen-only">
+  <summary>👩‍🏫 교사용 정답 보기 (화면 전용 — 인쇄되지 않아요)</summary>
+  <ul>
+    <li><b>1쪽 빈칸</b>: ① 광복 · 38 · 정부 ② 남침 · 서울 · 유엔 ③ 맥아더 · 인천 · 압록 ④ 중국 · 10 ⑤ 판문점 · 멈춘</li>
+    <li><b>2쪽 암호</b>: 3848(38도선 + 1948년 정부 수립) → 0625(전쟁 발발) → 0915(인천 상륙 작전) → 0104(1·4 후퇴) → 0727(정전 협정)</li>
+    <li><b>지도 과제</b>: 38도선(1945, 점선)은 광복 직후 미·소가 나눈 직선, 휴전선(1953, 실선)은 전쟁이 멈춘 자리의 실제 전선 — 비슷하지만 같지 않아요.</li>
+    <li>학습지의 성취기준 표기는 2022 개정 사회과 <b>[6사06-02]</b>의 참고용 요약입니다(공식 문구 아님).</li>
+  </ul>
+</details>
+
+</body>
+</html>

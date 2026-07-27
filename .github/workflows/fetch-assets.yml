@@ -18,8 +18,8 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Install ffmpeg and Korean fonts
-        run: sudo apt-get update -qq && sudo apt-get install -y -qq ffmpeg fonts-noto-cjk
+      - name: Install ffmpeg, ImageMagick and Korean fonts
+        run: sudo apt-get update -qq && sudo apt-get install -y -qq ffmpeg imagemagick fonts-noto-cjk
 
       - name: Download and convert assets listed in assets/sources.json
         run: |
@@ -60,6 +60,28 @@ jobs:
           fetch_group images assets/img
           fetch_group audio assets/audio
           fetch_group video assets/video
+
+      - name: Fetch hub illustrations into public/social/img
+        run: |
+          set -euo pipefail
+          jq -e 'has("hub_images")' assets/sources.json >/dev/null || { echo "no hub_images"; exit 0; }
+          IM=$(command -v magick || command -v convert)
+          mkdir -p public/social/img
+          tmp=$(mktemp -d)
+          for name in $(jq -r '.hub_images | keys[]' assets/sources.json); do
+            if [ -f "public/social/img/$name" ]; then echo "skip existing $name"; continue; fi
+            url=$(jq -r ".hub_images[\"${name}\"]" assets/sources.json)
+            echo "downloading hub image $name"
+            curl -sSfL --retry 3 -o "$tmp/src" "$url"
+            case "$name" in
+              # 히어로: 가로 1600px JPEG
+              hero.jpg) "$IM" "$tmp/src" -resize 1600x -quality 82 -strip "public/social/img/$name" ;;
+              # 캐릭터 컷아웃: 투명 여백을 잘라내고 560px 박스에 맞춤 (알파 유지)
+              *.png)    "$IM" "$tmp/src" -trim +repage -resize 560x560 -strip "public/social/img/$name" ;;
+              *)        cp "$tmp/src" "public/social/img/$name" ;;
+            esac
+          done
+          ls -la public/social/img
 
       - name: Build story video (clips + narration + Korean subtitles)
         run: |
@@ -114,7 +136,7 @@ jobs:
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add -A assets/
+          git add -A assets/ public/social/img/
           git diff --cached --quiet && echo "no changes" && exit 0
-          git commit -m "Add generated game assets (images, audio, video)"
+          git commit -m "Add generated assets (game media + hub illustrations)"
           git push
