@@ -105,8 +105,16 @@ window.MDBF_CURRICULUM = {
               href:   "../korean-war-escape/",     // → /mdbf2026/korean-war-escape/
               note:   "역사의 문을 열어라 — 6·25 스토리텔링 방탈출"
             },
-            visual: { status: "준비중" },
-            craft:  { status: "준비중" }
+            visual: {
+              status: "ready",
+              href:   "units/5-2-2/visual/",
+              note:   "한눈에 보는 6·25 — 비주얼싱킹 색칠 학습지 (A4 2쪽 · PDF)"
+            },
+            craft:  {
+              status: "ready",
+              href:   "units/5-2-2/craft/",
+              note:   "6·25 암호 돌림판 — 페이퍼크래프트 도안 (A4 2쪽 · PDF)"
+            }
           }
         }
       ]}

@@ -18,8 +18,12 @@ public/social/
 ├── js/curriculum.js   # ★ 단원 목록·자료 연결·관련 성취기준을 편집하는 유일한 파일 ★
 ├── js/standards.js    # 2022 개정 사회과 성취기준 조회표 (참고용, 자동 생성 데이터)
 ├── dataset/           # 원본 데이터·출처 안내 (social-2022.json, ATTRIBUTION.md)
-├── units/             # 단원별 자료가 들어갈 자리 (예: units/5-2-2/visual.pdf)
-└── templates/         # 재사용 템플릿이 들어갈 자리 (escape/visual/craft)
+├── units/             # 단원별 자료
+│   └── 5-2-2/         #   6·25 단원 (첫 완성 단원 — 3종 전부 공개)
+│       ├── visual/    #   비주얼싱킹 색칠 학습지 (index.html + visual.pdf, A4 2쪽)
+│       └── craft/     #   암호 돌림판 페이퍼크래프트 (index.html + craft.pdf, A4 2쪽)
+└── templates/
+    └── print/         # 공용 A4 인쇄 템플릿 (print-base.css + 제작 가이드 README)
 ```
 
 ## 자주 하는 편집 — `js/curriculum.js` 한 파일만
@@ -70,10 +74,19 @@ escape: { status: "ready", href: "units/5-2-2/escape/" }
 > `js/standards.js` 는 원본 데이터에서 추출·생성된 파일입니다. 성취기준 목록 자체를 바꿀 일은
 > 거의 없지만, 필요하면 `dataset/social-2022.json` 을 원본으로 삼아 다시 생성하세요.
 
-## 앞으로 (로드맵)
-`templates/` 아래에 3종 재사용 템플릿을 만들 예정입니다.
-- `templates/escape/` — 6·25 게임을 데이터 기반 엔진으로 일반화 (단원별 config만 교체)
-- `templates/visual/` — A4 인쇄용 비주얼싱킹 색칠 학습지
-- `templates/craft/` — A4 인쇄용 페이퍼크래프트 도안
+## 인쇄 자료(비주얼싱킹·페이퍼크래프트) 만드는 법
 
-`curriculum.js`의 `href`는 자유로운 상대경로라, 위 템플릿이 생겨도 스키마 변경 없이 바로 연결됩니다.
+첫 완성 예시는 6·25 단원(`units/5-2-2/`)입니다. 새 단원 인쇄 자료는:
+
+1. `units/5-2-2/visual/`(또는 `craft/`)를 `units/<새id>/…`로 복사해 내용만 교체
+2. 공용 스타일은 `templates/print/print-base.css` — 고치면 각 인쇄 페이지 링크의 `?v=` 숫자를 손으로 올릴 것
+3. PDF 재생성(Playwright `page.pdf`, A4) 후 같은 폴더에 커밋
+4. `curriculum.js`에서 해당 deliverable을 `ready` + `href`로 flip
+
+자세한 규약은 [`templates/print/README.md`](templates/print/README.md) 참고.
+
+## 앞으로 (로드맵)
+- `templates/escape/` — 6·25 게임을 데이터 기반 엔진으로 일반화 (단원별 config만 교체)
+- 단원별 3종 양산: 확정 교과서 목차 기준, 단원마다 방탈출·비주얼싱킹·페이퍼크래프트 제작
+
+`curriculum.js`의 `href`는 자유로운 상대경로라, 어떤 템플릿이 생겨도 스키마 변경 없이 바로 연결됩니다.
