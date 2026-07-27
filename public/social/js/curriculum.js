@@ -25,8 +25,11 @@
  * ========================================================================== */
 window.MDBF_CURRICULUM = {
   meta: {
-    title:      "몽당분필 날쌤 · 초등사회 마무리활동",
-    subtitle:   "단원 마무리 활동 — 방탈출 · 비주얼싱킹 · 페이퍼크래프트",
+    title:      "초등사회 교육콘텐츠 클라우드",
+    handle:     "@nalssam",                         // 브랜드 핸들 (헤더·히어로에 표시)
+    tagline:    "몽당분필 날쌤",                     // 작은 부제(제작자 브랜드)
+    heroArt:    "img/hero.jpg",                     // 히어로 배경 일러스트(없으면 자동 생략)
+    subtitle:   "초등 사회 3~6학년, 단원 마무리 활동을 구름처럼 모아 둔 곳<br>🗝 방탈출 게임 · 🎨 비주얼싱킹 색칠 학습지 · ✂️ 페이퍼크래프트 도안",
     memberNote: "몽당분필 회원 전용 학습자료",     // 헤더 배지 문구 (실제 로그인은 없음)
     memberLink: "",                                 // 몽당분필 사이트 주소를 넣으면 배지가 링크가 됨(선택)
     provisional: true,                              // true면 "가안" 안내 배너 표시
@@ -46,7 +49,7 @@ window.MDBF_CURRICULUM = {
 
   grades: [
     /* ────────────────────────── 3학년 ────────────────────────── */
-    { grade: 3, semesters: [
+    { grade: 3, label: "우리 고장을 탐험해요", art: "img/grade3.png", semesters: [
       { semester: 1, units: [
         { id: "3-1-1", title: "우리 고장의 모습",
           standards: ["[4사01-01]", "[4사01-02]"] },
@@ -66,7 +69,7 @@ window.MDBF_CURRICULUM = {
     ]},
 
     /* ────────────────────────── 4학년 ────────────────────────── */
-    { grade: 4, semesters: [
+    { grade: 4, label: "우리 지역을 알아봐요", art: "img/grade4.png", semesters: [
       { semester: 1, units: [
         { id: "4-1-1", title: "지역의 위치와 특성",
           standards: ["[4사05-01]", "[4사05-02]"] },
@@ -86,7 +89,7 @@ window.MDBF_CURRICULUM = {
     ]},
 
     /* ────────────────────────── 5학년 ────────────────────────── */
-    { grade: 5, semesters: [
+    { grade: 5, label: "국토와 역사를 만나요", art: "img/grade5.png", semesters: [
       { semester: 1, units: [
         { id: "5-1-1", title: "국토와 우리 생활",
           standards: ["[6사01-01]", "[6사01-02]", "[6사02-01]", "[6사02-02]"] },
@@ -121,7 +124,7 @@ window.MDBF_CURRICULUM = {
     ]},
 
     /* ────────────────────────── 6학년 ────────────────────────── */
-    { grade: 6, semesters: [
+    { grade: 6, label: "정치·경제·세계로 나가요", art: "img/grade6.png", semesters: [
       { semester: 1, units: [
         { id: "6-1-1", title: "우리나라의 정치 발전",
           standards: ["[6사07-02]", "[6사08-01]", "[6사08-02]", "[6사08-03]"] },

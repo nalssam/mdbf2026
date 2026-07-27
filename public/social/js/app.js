@@ -1,5 +1,6 @@
-/* 몽당분필 날쌤 · 초등사회 마무리활동 — 허브 SPA (해시 라우터 + 렌더)
-   window.MDBF_CURRICULUM (curriculum.js) 을 읽어 화면을 그린다. 빌드 도구/서버 불필요. */
+/* 초등사회 교육콘텐츠 클라우드 @nalssam — 허브 SPA (해시 라우터 + 렌더)
+   window.MDBF_CURRICULUM (curriculum.js) 을 읽어 화면을 그린다. 빌드 도구/서버 불필요.
+   성취기준 참고 데이터는 window.MDBF_STANDARDS (standards.js, 선택). */
 'use strict';
 (function () {
   var C = window.MDBF_CURRICULUM;
@@ -14,8 +15,7 @@
   function bandLabel(b) { return b === '3-4' ? '3–4학년군' : b === '5-6' ? '5–6학년군' : (b || ''); }
   function types() { return C.deliverableTypes; }
   function unitDeliv(unit, key) {
-    var d = (unit.deliverables && unit.deliverables[key]) || (C.DEFAULT && C.DEFAULT[key]) || { status: '준비중' };
-    return d;
+    return (unit.deliverables && unit.deliverables[key]) || (C.DEFAULT && C.DEFAULT[key]) || { status: '준비중' };
   }
   function isReady(d) { return d && d.status === 'ready' && d.href; }
 
@@ -30,39 +30,65 @@
     });
     return { total: total, ready: ready };
   }
-
-  /* ---------------- routing ---------------- */
-  function parseRoute() {
-    var h = (location.hash || '').replace(/^#/, '');
-    var m = h.match(/^\/grade\/([3-6])$/);
-    if (m) return { view: 'grade', grade: Number(m[1]) };
-    return { view: 'landing' };
+  function siteStats() {
+    var total = 0, ready = 0, units = 0;
+    (C.grades || []).forEach(function (g) {
+      var st = gradeStats(g); total += st.total; ready += st.ready;
+      (g.semesters || []).forEach(function (s) { units += (s.units || []).length; });
+    });
+    return { total: total, ready: ready, units: units };
+  }
+  // 이미지가 아직 없을 때(자산 미배포·차단) 이모지로 대체
+  // ※ textContent를 바꾸면 이 <img>가 DOM에서 사라지므로 부모를 먼저 변수에 담아 둔다.
+  function artHTML(src, fallback) {
+    return '<img src="' + esc(src) + '" alt="" loading="lazy" ' +
+           'onerror="var p=this.parentNode;p.textContent=\'' + fallback +
+           '\';p.style.fontSize=\'44px\';p.style.lineHeight=\'1\'">';
   }
 
-  /* ---------------- views ---------------- */
+  /* ---------------- 라우팅 ---------------- */
+  function parseRoute() {
+    var m = (location.hash || '').replace(/^#/, '').match(/^\/grade\/([3-6])$/);
+    return m ? { view: 'grade', grade: Number(m[1]) } : { view: 'landing' };
+  }
+
+  /* ---------------- 화면: 랜딩 ---------------- */
   function renderLanding() {
+    var st = siteStats();
     var cards = (C.grades || []).map(function (g) {
-      var st = gradeStats(g);
-      var readyTxt = st.ready > 0
-        ? '<span class="g-ready">공개 ' + st.ready + '개</span> · 준비중 ' + (st.total - st.ready) + '개'
-        : '준비중 ' + st.total + '개';
+      var gs = gradeStats(g);
+      var readyTxt = gs.ready > 0
+        ? '<span class="g-ready">공개 ' + gs.ready + '개</span>준비중 ' + (gs.total - gs.ready) + '개'
+        : '준비중 ' + gs.total + '개';
       return '' +
         '<a class="grade-card" href="#/grade/' + g.grade + '">' +
-          '<span class="g-emoji">🎒</span>' +
-          '<span class="g-title">' + g.grade + '학년</span>' +
+          '<span class="g-art">' + artHTML(g.art || '', '🎒') + '</span>' +
+          '<span class="g-title display">' + g.grade + '학년</span>' +
+          (g.label ? '<span class="g-sub">' + esc(g.label) + '</span>' : '') +
           '<span class="g-meta">' + readyTxt + '</span>' +
         '</a>';
     }).join('');
 
     app.innerHTML =
-      '<div class="hero">' +
-        '<h1>' + esc(C.meta.title) + '</h1>' +
-        '<p>' + esc(C.meta.subtitle) + '</p>' +
-      '</div>' +
-      '<div class="section-label">학년 선택</div>' +
+      '<section class="hero">' +
+        (C.meta.heroArt ? '<div class="h-art" style="background-image:url(' + esc(C.meta.heroArt) + ')"></div>' : '') +
+        '<div class="h-copy">' +
+          '<h1 class="display">' + esc(C.meta.title) +
+            (C.meta.handle ? '<span class="handle">' + esc(C.meta.handle) + '</span>' : '') + '</h1>' +
+          '<p>' + (C.meta.subtitle || '') + '</p>' +
+          '<div class="h-chips">' +
+            '<span>🎒 3~6학년</span>' +
+            '<span>📚 단원 ' + st.units + '개</span>' +
+            '<span>✨ 공개 자료 <b>' + st.ready + '개</b></span>' +
+          '</div>' +
+        '</div>' +
+        '<div class="h-mascot">' + artHTML('img/mascot.png', '☁️') + '</div>' +
+      '</section>' +
+      '<div class="section-label">학년을 골라 주세요</div>' +
       '<div class="grade-grid">' + cards + '</div>';
   }
 
+  /* ---------------- 화면: 학년 ---------------- */
   function tileHTML(unit, key) {
     var t = types()[key];
     var d = unitDeliv(unit, key);
@@ -72,13 +98,12 @@
       '<span class="t-label">' + esc(t.label) + '</span>' +
       (d.note ? '<span class="t-note">' + esc(d.note) + '</span>' : '') +
       '<span class="t-status">' + (ready ? '이용하기' : '준비 중') + '</span>';
-    if (ready) {
-      return '<a class="tile ready" href="' + esc(d.href) + '">' + inner + '</a>';
-    }
-    return '<div class="tile pending" aria-disabled="true">' + inner + '</div>';
+    return ready
+      ? '<a class="tile ready" href="' + esc(d.href) + '">' + inner + '</a>'
+      : '<div class="tile pending" aria-disabled="true">' + inner + '</div>';
   }
 
-  // 단원별 "관련 성취기준 (2022 개정 · 참고)" — window.MDBF_STANDARDS 가 있고 코드가 있을 때만 표시
+  // 단원별 "관련 성취기준 (2022 개정 · 참고)" — 데이터가 있을 때만 표시
   function standardsHTML(unit) {
     if (!S || !S.items || !unit.standards || !unit.standards.length) return '';
     var rows = unit.standards.map(function (code) {
@@ -119,33 +144,46 @@
   function renderGrade(n) {
     var g = (C.grades || []).find(function (x) { return x.grade === n; });
     if (!g) { location.hash = '#/'; return; }
+    var st = gradeStats(g);
     var body = (g.semesters || []).map(function (s) {
-      var units = (s.units || []).map(unitHTML).join('');
-      return '<div class="section-label">' + s.semester + '학기</div>' + units;
+      return '<div class="section-label">' + s.semester + '학기</div>' +
+             (s.units || []).map(unitHTML).join('');
     }).join('');
 
     app.innerHTML =
-      '<div class="breadcrumb"><a href="#/">전체 학년</a><span>›</span><span>' + n + '학년</span></div>' +
-      '<div class="hero"><h1>' + n + '학년 사회 · 단원 마무리 활동</h1></div>' +
+      '<div class="breadcrumb"><a href="#/">← 전체 학년</a><span>' + n + '학년</span></div>' +
+      '<section class="hero sub">' +
+        '<div class="h-badge">' + artHTML(g.art || '', '🎒') + '</div>' +
+        '<div class="h-copy">' +
+          '<h1 class="display">' + n + '학년 사회 · 단원 마무리 활동</h1>' +
+          (g.label ? '<p>' + esc(g.label) + '</p>' : '') +
+          '<div class="h-chips">' +
+            '<span>✨ 공개 <b>' + st.ready + '개</b></span>' +
+            '<span>⏳ 준비중 ' + (st.total - st.ready) + '개</span>' +
+          '</div>' +
+        '</div>' +
+      '</section>' +
       body;
   }
 
-  /* ---------------- boot ---------------- */
+  /* ---------------- 부팅 ---------------- */
   function route() {
     var r = parseRoute();
     if (r.view === 'grade') renderGrade(r.grade); else renderLanding();
     window.scrollTo({ top: 0 });
   }
 
-  // header content from meta
   function initChrome() {
-    var brand = document.querySelector('header .brand');
-    if (brand) brand.innerHTML = esc((C.meta.title || '').split(' · ')[0] || '몽당분필 날쌤') +
-      '<small>' + esc(((C.meta.title || '').split(' · ')[1]) || '초등사회 마무리활동') + '</small>';
+    var brand = document.getElementById('brandName');
+    if (brand) {
+      brand.innerHTML = '<b>' + esc(C.meta.title || '초등사회 교육콘텐츠 클라우드') + '</b>' +
+        (C.meta.handle ? '<span class="handle">' + esc(C.meta.handle) + '</span>' : '') +
+        (C.meta.tagline ? '<small>' + esc(C.meta.tagline) + '</small>' : '');
+    }
     var badge = document.getElementById('memberBadge');
     if (badge && C.meta.memberNote) {
       badge.textContent = '🔒 ' + C.meta.memberNote;
-      if (C.meta.memberLink) { badge.setAttribute('href', C.meta.memberLink); }
+      if (C.meta.memberLink) badge.setAttribute('href', C.meta.memberLink);
       badge.style.display = 'inline-flex';
     }
     var banner = document.getElementById('provisional');

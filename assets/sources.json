@@ -1,5 +1,5 @@
 {
-  "comment": "Generated media sources (Higgsfield). The fetch-assets workflow downloads these into assets/ and commits them. video_build is assembled in CI (per-block voice mix + Korean gothic subtitles from assets/story.srt). youtube feeds assets/videos.json (titles for the learning-content drawer).",
+  "comment": "Generated media sources (Higgsfield). The fetch-assets workflow downloads these into assets/ and commits them. video_build is assembled in CI (per-block voice mix + Korean gothic subtitles from assets/story.srt). youtube feeds assets/videos.json (titles for the learning-content drawer). hub_images는 public/social/img/로 내려받아 트림·리사이즈됩니다(허브 일러스트).",
   "images": {
     "intro.jpg": "https://d8j0ntlcm91z4.cloudfront.net/user_2yTdILg9Q4rMO0h5HFRWvJ51FB1/hf_20260720_235118_96652897-088e-4481-bd3d-a13ed2b3612f.png",
     "room1.jpg": "https://d8j0ntlcm91z4.cloudfront.net/user_2yTdILg9Q4rMO0h5HFRWvJ51FB1/hf_20260720_235121_0ff22584-527d-437f-a0bf-087bf938fe9b.png",
@@ -46,5 +46,13 @@
     "8nh9tWS2YBA",
     "kH3Zvc_k6as",
     "Eh6PMQFkFuM"
-  ]
+  ],
+  "hub_images": {
+    "hero.jpg": "https://d8j0ntlcm91z4.cloudfront.net/user_2yTdILg9Q4rMO0h5HFRWvJ51FB1/hf_20260727_055523_dcc3c949-e327-4815-9d5c-f1d80799a536.png",
+    "mascot.png": "https://d8j0ntlcm91z4.cloudfront.net/user_2yTdILg9Q4rMO0h5HFRWvJ51FB1/hf_20260727_055730_ff238571-a49e-46e2-878f-2d89381b59df.png",
+    "grade3.png": "https://d8j0ntlcm91z4.cloudfront.net/user_2yTdILg9Q4rMO0h5HFRWvJ51FB1/hf_20260727_055732_5a20e5f2-7fed-4755-9b7b-97ea3af4ddd0.png",
+    "grade4.png": "https://d8j0ntlcm91z4.cloudfront.net/user_2yTdILg9Q4rMO0h5HFRWvJ51FB1/hf_20260727_055733_09ea7e00-97c9-413d-82d0-f437f112db47.png",
+    "grade5.png": "https://d8j0ntlcm91z4.cloudfront.net/user_2yTdILg9Q4rMO0h5HFRWvJ51FB1/hf_20260727_055734_79c26bbe-abb0-4f0a-bf5f-caca57a40526.png",
+    "grade6.png": "https://d8j0ntlcm91z4.cloudfront.net/user_2yTdILg9Q4rMO0h5HFRWvJ51FB1/hf_20260727_055736_6bfa579c-83c3-448f-9bc9-9328b0bf2246.png"
+  }
 }
