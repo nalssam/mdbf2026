@@ -116,7 +116,7 @@ window.MDBF_CURRICULUM = {
             craft:  {
               status: "ready",
               href:   "units/5-2-2/craft/",
-              note:   "6·25 암호 돌림판 — 페이퍼크래프트 도안 (A4 2쪽 · PDF)"
+              note:   "판문점 정전 회담장 만들기 — 입체 페이퍼크래프트 (A4 2쪽 · PDF)"
             }
           }
         }

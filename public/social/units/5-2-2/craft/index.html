@@ -3,44 +3,58 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>6·25 암호 돌림판 — 페이퍼크래프트 도안 (5-2-2)</title>
-<meta name="description" content="방탈출의 다섯 암호로 6·25 전쟁의 경과를 복습하는 회전 돌림판 페이퍼크래프트 (A4 2쪽, 몽당분필 날쌤)">
+<title>판문점 정전 회담장 만들기 — 페이퍼크래프트 도안 (5-2-2)</title>
+<meta name="description" content="오려·접어·붙여 만드는 입체 페이퍼크래프트 — 1953년 정전 협정이 맺어진 판문점 회담장과 군사 분계선 받침판 (A4 2쪽, 몽당분필 날쌤)">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;700;900&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="../../../templates/print/print-base.css?v=1">
 <style>
-/* ── 단원 전용 스타일 (5-2-2 암호 돌림판) ── */
+/* ── 단원 전용 (5-2-2 판문점 회담장 페이퍼크래프트) ── */
 .abs { position: absolute; }
+.craft-legend { font-size: 7pt; gap: 4mm; }
 
-/* 돌림판 공통 텍스트/선 */
-.wb-sep   { stroke: #999; stroke-width: 0.3; }
-.wb-guide { fill: none; stroke: #ddd; stroke-width: 0.2; }
-.wb-hub   { fill: #fffdf5; stroke: #c8931d; stroke-width: 0.5; }
-.wb-code    { font-size: 8.6px; font-weight: 900; fill: #111; letter-spacing: 1.6px; }
-.wb-codelab { font-size: 2.9px; font-weight: 700; fill: #888; }
-.wb-phase { font-size: 3.6px; font-weight: 900; fill: #c8931d; }
-.wb-date  { font-size: 3.4px; font-weight: 700; fill: #111; }
-.wb-line1 { font-size: 2.9px; fill: #222; }
-.wb-hubtitle { font-size: 6.4px; font-weight: 900; fill: #c8931d; }
-.wb-hubsub   { font-size: 3.4px; font-weight: 700; fill: #333; }
-.wb-hubbrand { font-size: 2.6px; fill: #999; }
-.wb-hole  { fill: #fff; stroke: #111; stroke-width: 0.5; stroke-dasharray: 1 0.8; }
-.wt-pointer { fill: #c8931d; stroke: #111; stroke-width: 0.3; }
-.wt-tick  { fill: #fff; stroke: #999; stroke-width: 0.25; }
-.wt-title { font-size: 7.2px; font-weight: 900; fill: #111; }
-.wt-sub   { font-size: 3px; fill: #888; }
-.wt-hint  { font-size: 3.4px; font-weight: 700; fill: #3f6fbf; }
-.wt-holelab { font-size: 2.4px; fill: #999; }
-.wi-fill { fill: #fff; stroke: #222; stroke-width: 0.5; }
-.wi-line { fill: none; stroke: #222; stroke-width: 0.5; }
-.wi-dash { fill: none; stroke: #222; stroke-width: 0.5; stroke-dasharray: 1.2 0.9; }
-.wi-dot  { fill: #222; }
+/* 전개도 선 규약 — SVG 1 단위 = 1mm 이므로 굵기도 mm 값으로 직접 지정 */
+.cutline   { stroke: #111; stroke-width: 0.6; fill: none; stroke-linecap: square; }
+.cutline2  { stroke: #111; stroke-width: 0.6; fill: none; }
+.foldline  { stroke: #6a7a90; stroke-width: 0.32; fill: none; stroke-dasharray: 2.6 1.7; }
+.tab       { fill: #eceff4; stroke: #111; stroke-width: 0.35; }
+.tablab    { font-size: 3.1px; font-weight: 700; fill: #8a93a3; }
+
+/* 건물 면 */
+.wallblue  { fill: #a8cfe8; stroke: none; }
+.trim      { fill: #ffffff; stroke: none; }
+.base      { fill: #6f8ea3; stroke: none; }
+.win       { fill: #fdfefe; stroke: #4c6b80; stroke-width: 0.32; }
+.winbar    { stroke: #4c6b80; stroke-width: 0.28; }
+.door      { fill: #f6fbfd; stroke: #4c6b80; stroke-width: 0.4; }
+.knob      { fill: #c8931d; }
+.roof      { fill: #c3ccd4; stroke: none; }
+.roofline  { stroke: #a9b4bd; stroke-width: 0.3; }
+.floor     { fill: #f2f4f6; stroke: none; }
+.facelab   { font-size: 4.4px; font-weight: 700; fill: #7d8894; }
+.facelab2  { font-size: 3.4px; font-weight: 700; fill: #55707f; }
+
+/* 2쪽 받침판 */
+.plate       { fill: #e6f0fa; stroke: none; }
+.platenorth  { fill: #e9f4e2; stroke: none; }
+.mdl         { stroke: #e0a21c; stroke-width: 1.5; stroke-dasharray: 5 2.6; }
+.mdllab      { font-size: 3.6px; font-weight: 700; fill: #a5760a; }
+.platetitle  { font-size: 4.6px; font-weight: 900; fill: #3f5a3a; }
+.dirlab      { font-size: 4.2px; font-weight: 900; fill: #6f8299; }
+.footprint   { fill: none; stroke: #8fa3b5; stroke-width: 0.4; stroke-dasharray: 2.4 1.6; }
+.fplab       { font-size: 3.4px; font-weight: 700; fill: #6f8299; }
+.fplab2      { font-size: 2.9px; fill: #94a3b4; }
+.card        { fill: #fffdf4; stroke: none; }
+.cardbig     { font-size: 7px; font-weight: 900; fill: #c8931d; }
+.cardsub     { font-size: 3.8px; font-weight: 700; fill: #333; }
+.cardsub2    { font-size: 3.2px; fill: #777; }
+.foldnote    { font-size: 2.9px; fill: #8a93a3; }
 
 /* 만드는 법 */
 .steps { display: flex; gap: 2.6mm; }
 .step {
-  flex: 1; border: 0.45mm solid #333; border-radius: 2.6mm; padding: 2mm;
+  flex: 1; border: 0.45mm solid #333; border-radius: 2.6mm; padding: 2mm 1.6mm;
   font-size: 7.2pt; line-height: 1.5; background: #fff; text-align: center;
 }
 .step .sp-no {
@@ -49,13 +63,15 @@
   line-height: 6mm; margin-bottom: 1mm;
 }
 .step svg { display: block; margin: 0.6mm auto 1mm; }
-.st-line { fill: none; stroke: #222; stroke-width: 1; }
-.st-fill { fill: #fff; stroke: #222; stroke-width: 1; }
+.st-line { fill: none; stroke: #222; stroke-width: 1.1; }
+.st-blue { fill: #a8cfe8; stroke: #222; stroke-width: 1.1; }
+.st-grey { fill: #d8dee4; stroke: #222; stroke-width: 1.1; }
+.st-dash { fill: none; stroke: #666; stroke-width: 0.9; stroke-dasharray: 2.6 1.8; }
 
-/* 사용법/퀴즈 */
+/* 활동/사용법 */
 .usage {
   border: 0.5mm solid var(--blue-print); border-radius: 3mm; background: #f7faff;
-  padding: 2.6mm 3.2mm; font-size: 7.6pt; line-height: 1.65;
+  padding: 2.6mm 3.2mm; font-size: 7.6pt; line-height: 1.62;
 }
 .usage h4 { font-size: 9.5pt; font-weight: 900; color: var(--blue-print); margin-bottom: 1mm; }
 .usage b { color: var(--blue-print); }
@@ -63,19 +79,25 @@
   border: 0.45mm dashed #999; border-radius: 3mm; padding: 2mm 3mm;
   font-size: 7.4pt; line-height: 1.6; background: #fafafa;
 }
+.example { text-align: center; }
+.example img {
+  width: 58mm; height: 58mm; object-fit: contain; margin: 0 auto;
+  border: 0.4mm solid var(--line-soft); border-radius: 3mm; background: #fff;
+}
+.example .ex-cap { font-size: 7pt; color: var(--ink-dim); margin-top: 1.2mm; }
 </style>
 </head>
 <body>
 
 <nav class="print-toolbar no-print">
-  <span class="tb-title">✂️ 6·25 암호 돌림판 — 페이퍼크래프트 도안 (A4 2쪽)</span>
+  <span class="tb-title">✂️ 판문점 정전 회담장 만들기 — 페이퍼크래프트 도안 (A4 2쪽)</span>
   <a class="ghost" href="../../../#/grade/5">← 자료실로</a>
   <a href="craft.pdf" download>⬇ PDF 다운로드</a>
   <button onclick="window.print()">🖨 인쇄하기</button>
   <span class="print-tip">인쇄 팁: 배율 100%(실제 크기) 필수 · 두꺼운 종이(120g~)에 인쇄하면 더 튼튼해요 · A4 세로 2쪽.</span>
 </nav>
 
-<!-- ═════════════════ 1쪽: 아래판 + 만드는 법 ═════════════════ -->
+<!-- ═════════════════ 1쪽: 본체 전개도 ═════════════════ -->
 <section class="a4-page"><div class="pc">
   <header class="print-head" style="margin-bottom:1mm;">
     <div class="ph-brand">
@@ -83,84 +105,56 @@
       <span class="ph-brandname">몽당분필 날쌤<small>초등사회 마무리활동</small></span>
     </div>
     <div class="ph-main">
-      <div class="ph-title">6·25 암호 돌림판 <span style="font-size:9pt;font-weight:700;color:#888;">— 아래판 (1/2)</span></div>
-      <div class="ph-sub">방탈출에서 찾은 다섯 개의 암호를 돌려 가며 6·25 전쟁의 경과를 복습해요.</div>
+      <div class="ph-title">판문점 정전 회담장 만들기 <span style="font-size:9pt;font-weight:700;color:#888;">— 본체 전개도 (1/2)</span></div>
+      <div class="ph-sub">전쟁이 멈춘 그 자리를 입체로 만들어 봐요 · 완성 크기 92 × 36 × 46mm</div>
       <div class="ph-chips">
         <span class="chip">5학년 2학기 · 5-2-2</span>
         <span class="chip dim">[6사06-02] 광복과 한국전쟁이 사회·생활에 미친 영향(참고 요약)</span>
-        <span class="chip dim">준비물: 가위 · 할핀(브래드) · 송곳</span>
+        <span class="chip dim">준비물: 가위 · 풀 · 자</span>
       </div>
     </div>
     <div class="craft-legend">
-      <span><svg width="24" height="6"><line x1="1" y1="3" x2="23" y2="3" stroke="#111" stroke-width="2.6"/></svg> 실선 = 자르기</span>
-      <span><svg width="24" height="10"><rect x="1" y="1" width="22" height="8" fill="url(#hatchLegend)" stroke="#111" stroke-width="1.2"/></svg> 빗금 = 오려내기</span>
+      <span><svg width="26" height="6"><line x1="1" y1="3" x2="25" y2="3" stroke="#111" stroke-width="2.2"/></svg> 실선 = 자르기</span>
+      <span><svg width="26" height="6"><line x1="1" y1="3" x2="25" y2="3" stroke="#6a7a90" stroke-width="1.4" stroke-dasharray="4 2.6"/></svg> 점선 = 접기</span>
+      <span><svg width="26" height="10"><rect x="1" y="1" width="24" height="8" fill="#eceff4" stroke="#111" stroke-width="1"/></svg> 회색 = 풀칠</span>
     </div>
   </header>
 
-  <!-- 아래판 (⌀170mm 정밀 도안) -->
-  <svg width="0" height="0" style="position:absolute"><defs>
-    <pattern id="hatch" patternUnits="userSpaceOnUse" width="2.4" height="2.4" patternTransform="rotate(45)"><line x1="0" y1="0" x2="0" y2="2.4" stroke="#999" stroke-width="0.55"/></pattern>
-    <pattern id="hatchLegend" patternUnits="userSpaceOnUse" width="4" height="4" patternTransform="rotate(45)"><line x1="0" y1="0" x2="0" y2="4" stroke="#999" stroke-width="1"/></pattern>
-  </defs></svg>
-  <div class="abs" style="left:0; top:32mm;">
-    <svg viewBox="0 0 190 190" xmlns="http://www.w3.org/2000/svg" style="width:190mm;height:190mm;display:block">
-<circle cx="95" cy="95" r="85" class="cut"/>
-<line x1="109.11" y1="75.58" x2="144.96" y2="26.23" class="wb-sep"/>
-<line x1="117.83" y1="102.42" x2="175.84" y2="121.27" class="wb-sep"/>
-<line x1="95" y1="119" x2="95" y2="180" class="wb-sep"/>
-<line x1="72.17" y1="102.42" x2="14.16" y2="121.27" class="wb-sep"/>
-<line x1="80.89" y1="75.58" x2="45.04" y2="26.23" class="wb-sep"/>
-<circle cx="95" cy="95" r="82" class="wb-guide"/>
-<circle cx="95" cy="95" r="64" class="wb-guide"/>
-<circle cx="95" cy="95" r="55" class="wb-guide"/>
-<circle cx="95" cy="95" r="27" class="wb-guide"/>
-<circle cx="95" cy="95" r="24" class="wb-hub"/>
-<g transform="rotate(0 95 95)"><text x="95" y="25" text-anchor="middle" class="wb-code">3848</text><text x="95" y="16.5" text-anchor="middle" class="wb-codelab">1단계 배경</text></g>
-<g transform="rotate(0 95 95)"><text x="95" y="45" text-anchor="middle" class="wb-phase">1단계 · 배경</text><text x="95" y="50.5" text-anchor="middle" class="wb-date">1945~1948</text><text x="95" y="56.5" text-anchor="middle" class="wb-line1">광복 후 38도선 분할,</text><text x="95" y="61" text-anchor="middle" class="wb-line1">1948년 두 정부 수립</text><g transform="translate(95 65.5) scale(0.55)"><line x1="-2.6" y1="-4.6" x2="-2.6" y2="5.4" class="wi-line"/><path d="M-2.6,-4.6 L2.6,-3.4 L-2.6,-2.2 Z" class="wi-fill"/><line x1="3.4" y1="-1" x2="3.4" y2="5.4" class="wi-line"/><path d="M3.4,-1 L-1.2,0.2 L3.4,1.4 Z" class="wi-fill"/><line x1="-4.6" y1="5.4" x2="5.4" y2="5.4" class="wi-line"/></g></g>
-<g transform="rotate(72 95 95)"><text x="95" y="25" text-anchor="middle" class="wb-code">0625</text><text x="95" y="16.5" text-anchor="middle" class="wb-codelab">2단계 발발</text></g>
-<g transform="rotate(72 95 95)"><text x="95" y="45" text-anchor="middle" class="wb-phase">2단계 · 발발</text><text x="95" y="50.5" text-anchor="middle" class="wb-date">1950. 6. 25.</text><text x="95" y="56.5" text-anchor="middle" class="wb-line1">북한군 기습 남침,</text><text x="95" y="61" text-anchor="middle" class="wb-line1">3일 만에 서울 함락</text><g transform="translate(95 65.5) scale(0.55)"><rect x="-5" y="-3" width="10" height="7" rx="1" class="wi-fill"/><circle cx="2.2" cy="0.5" r="1.8" class="wi-line"/><line x1="-3.6" y1="-1" x2="-1" y2="-1" class="wi-line"/><line x1="-3.6" y1="1" x2="-1" y2="1" class="wi-line"/><line x1="-3.6" y1="2.4" x2="-1" y2="2.4" class="wi-line"/><line x1="-4" y1="-3" x2="1.4" y2="-5.8" class="wi-line"/></g></g>
-<g transform="rotate(144 95 95)"><text x="95" y="25" text-anchor="middle" class="wb-code">0915</text><text x="95" y="16.5" text-anchor="middle" class="wb-codelab">3단계 반격</text></g>
-<g transform="rotate(144 95 95)"><text x="95" y="45" text-anchor="middle" class="wb-phase">3단계 · 반격</text><text x="95" y="50.5" text-anchor="middle" class="wb-date">1950. 9. 15.</text><text x="95" y="56.5" text-anchor="middle" class="wb-line1">맥아더의 인천 상륙 작전,</text><text x="95" y="61" text-anchor="middle" class="wb-line1">9.28 서울 수복</text><g transform="translate(95 65.5) scale(0.55)"><path d="M-5.6,1 L5.6,1 L4,4.2 L-4,4.2 Z" class="wi-fill"/><rect x="-2.2" y="-1.6" width="4.4" height="2.6" class="wi-fill"/><rect x="-0.8" y="-3.8" width="1.6" height="2.2" class="wi-fill"/><path d="M-5.6,5.4 Q-2.8,4.2 0,5.4 Q2.8,6.6 5.6,5.4" class="wi-line"/></g></g>
-<g transform="rotate(216 95 95)"><text x="95" y="25" text-anchor="middle" class="wb-code">0104</text><text x="95" y="16.5" text-anchor="middle" class="wb-codelab">4단계 후퇴</text></g>
-<g transform="rotate(216 95 95)"><text x="95" y="45" text-anchor="middle" class="wb-phase">4단계 · 후퇴</text><text x="95" y="50.5" text-anchor="middle" class="wb-date">1951. 1. 4.</text><text x="95" y="56.5" text-anchor="middle" class="wb-line1">중국군 개입·흥남 철수,</text><text x="95" y="61" text-anchor="middle" class="wb-line1">서울을 다시 빼앗김</text><g transform="translate(95 65.5) scale(0.55)"><g class="wi-line"><line x1="0" y1="-5.4" x2="0" y2="5.4"/><line x1="-4.7" y1="-2.7" x2="4.7" y2="2.7"/><line x1="-4.7" y1="2.7" x2="4.7" y2="-2.7"/><line x1="-1.4" y1="-4" x2="0" y2="-2.6"/><line x1="1.4" y1="-4" x2="0" y2="-2.6"/><line x1="-1.4" y1="4" x2="0" y2="2.6"/><line x1="1.4" y1="4" x2="0" y2="2.6"/></g></g></g>
-<g transform="rotate(288 95 95)"><text x="95" y="25" text-anchor="middle" class="wb-code">0727</text><text x="95" y="16.5" text-anchor="middle" class="wb-codelab">5단계 정전</text></g>
-<g transform="rotate(288 95 95)"><text x="95" y="45" text-anchor="middle" class="wb-phase">5단계 · 정전</text><text x="95" y="50.5" text-anchor="middle" class="wb-date">1953. 7. 27.</text><text x="95" y="56.5" text-anchor="middle" class="wb-line1">판문점 정전 협정,</text><text x="95" y="61" text-anchor="middle" class="wb-line1">지금도 휴전 상태</text><g transform="translate(95 65.5) scale(0.55)"><path d="M-5,0.6 C-3,-1.6 -0.6,-2.2 1.6,-1.4 C2.4,-3 4,-3.8 5.4,-3.4 L4.2,-1.8 L5.8,-1.2 C4.6,0.6 2.6,1.4 0.6,1 L-1.6,3.4 L-2.2,1.2 Z" class="wi-fill"/><circle cx="4.1" cy="-2.5" r="0.35" class="wi-dot"/></g></g>
-<text x="95" y="89" text-anchor="middle" class="wb-hubtitle">6·25</text>
-<text x="95" y="94.5" text-anchor="middle" class="wb-hubsub">암호 돌림판</text>
-<text x="95" y="106" text-anchor="middle" class="wb-hubbrand">몽당분필 날쌤</text>
-<circle cx="95" cy="99.5" r="2" class="wb-hole"/>
+  <div class="abs" style="left:0; top:36mm;">
+    <svg viewBox="0 4 190 184" xmlns="http://www.w3.org/2000/svg" style="width:190mm;height:184mm;display:block">
+<path class="tab" d="M13,44 L5,46.2 L5,87.8 L13,90 Z"/><path class="tab" d="M13,44 L15.2,36 L46.8,36 L49,44 Z"/><path class="tab" d="M13,90 L15.2,98 L46.8,98 L49,90 Z"/><path class="tab" d="M177,44 L185,46.2 L185,87.8 L177,90 Z"/><path class="tab" d="M141,44 L143.2,36 L174.8,36 L177,44 Z"/><path class="tab" d="M141,90 L143.2,98 L174.8,98 L177,90 Z"/><path class="tab" d="M49,172 L51.2,180 L138.8,180 L141,172 Z"/><text class="tablab" x="95" y="177.6" text-anchor="middle">풀칠</text><rect class="roof" x="49" y="8" width="92" height="36"/><line class="roofline" x1="49" y1="15.2" x2="141" y2="15.2"/><line class="roofline" x1="49" y1="22.4" x2="141" y2="22.4"/><line class="roofline" x1="49" y1="29.6" x2="141" y2="29.6"/><line class="roofline" x1="49" y1="36.8" x2="141" y2="36.8"/><text class="facelab" x="95" y="27.4" text-anchor="middle">지붕</text><rect class="floor" x="49" y="90" width="92" height="36"/><text class="facelab" x="95" y="109.4" text-anchor="middle">바닥</text><rect class="wallblue" x="49" y="44" width="92" height="46"/><rect class="trim" x="49" y="44" width="92" height="5"/><rect class="base" x="49" y="84.5" width="92" height="5.5"/><rect class="win" x="53.57" y="58" width="10" height="16" rx="0.8"/><line class="winbar" x1="53.57" y1="66" x2="63.57" y2="66"/><line class="winbar" x1="58.57" y1="58" x2="58.57" y2="74"/><rect class="win" x="68.14" y="58" width="10" height="16" rx="0.8"/><line class="winbar" x1="68.14" y1="66" x2="78.14" y2="66"/><line class="winbar" x1="73.14" y1="58" x2="73.14" y2="74"/><rect class="win" x="82.71" y="58" width="10" height="16" rx="0.8"/><line class="winbar" x1="82.71" y1="66" x2="92.71" y2="66"/><line class="winbar" x1="87.71" y1="58" x2="87.71" y2="74"/><rect class="win" x="97.29" y="58" width="10" height="16" rx="0.8"/><line class="winbar" x1="97.29" y1="66" x2="107.29" y2="66"/><line class="winbar" x1="102.29" y1="58" x2="102.29" y2="74"/><rect class="win" x="111.86" y="58" width="10" height="16" rx="0.8"/><line class="winbar" x1="111.86" y1="66" x2="121.86" y2="66"/><line class="winbar" x1="116.86" y1="58" x2="116.86" y2="74"/><rect class="win" x="126.43" y="58" width="10" height="16" rx="0.8"/><line class="winbar" x1="126.43" y1="66" x2="136.43" y2="66"/><line class="winbar" x1="131.43" y1="58" x2="131.43" y2="74"/><text class="facelab2" x="95" y="55" text-anchor="middle">정면</text><rect class="wallblue" x="49" y="126" width="92" height="46"/><rect class="trim" x="49" y="126" width="92" height="5"/><rect class="base" x="49" y="166.5" width="92" height="5.5"/><rect class="win" x="53.57" y="140" width="10" height="16" rx="0.8"/><line class="winbar" x1="53.57" y1="148" x2="63.57" y2="148"/><line class="winbar" x1="58.57" y1="140" x2="58.57" y2="156"/><rect class="win" x="68.14" y="140" width="10" height="16" rx="0.8"/><line class="winbar" x1="68.14" y1="148" x2="78.14" y2="148"/><line class="winbar" x1="73.14" y1="140" x2="73.14" y2="156"/><rect class="win" x="82.71" y="140" width="10" height="16" rx="0.8"/><line class="winbar" x1="82.71" y1="148" x2="92.71" y2="148"/><line class="winbar" x1="87.71" y1="140" x2="87.71" y2="156"/><rect class="win" x="97.29" y="140" width="10" height="16" rx="0.8"/><line class="winbar" x1="97.29" y1="148" x2="107.29" y2="148"/><line class="winbar" x1="102.29" y1="140" x2="102.29" y2="156"/><rect class="win" x="111.86" y="140" width="10" height="16" rx="0.8"/><line class="winbar" x1="111.86" y1="148" x2="121.86" y2="148"/><line class="winbar" x1="116.86" y1="140" x2="116.86" y2="156"/><rect class="win" x="126.43" y="140" width="10" height="16" rx="0.8"/><line class="winbar" x1="126.43" y1="148" x2="136.43" y2="148"/><line class="winbar" x1="131.43" y1="140" x2="131.43" y2="156"/><text class="facelab2" x="95" y="137" text-anchor="middle">뒷면</text><rect class="wallblue" x="13" y="44" width="36" height="46"/><rect class="trim" x="13" y="44" width="36" height="5"/><rect class="base" x="13" y="84.5" width="36" height="5.5"/><rect class="door" x="23.5" y="60.5" width="15" height="24" rx="0.8"/><circle class="knob" cx="35.5" cy="72.5" r="1"/><text class="facelab2" x="31" y="55" text-anchor="middle">북쪽 문</text><rect class="wallblue" x="141" y="44" width="36" height="46"/><rect class="trim" x="141" y="44" width="36" height="5"/><rect class="base" x="141" y="84.5" width="36" height="5.5"/><rect class="door" x="151.5" y="60.5" width="15" height="24" rx="0.8"/><circle class="knob" cx="163.5" cy="72.5" r="1"/><text class="facelab2" x="159" y="55" text-anchor="middle">남쪽 문</text><line class="foldline" x1="49" y1="44" x2="141" y2="44"/><line class="foldline" x1="49" y1="90" x2="141" y2="90"/><line class="foldline" x1="49" y1="126" x2="141" y2="126"/><line class="foldline" x1="49" y1="172" x2="141" y2="172"/><line class="foldline" x1="49" y1="44" x2="49" y2="90"/><line class="foldline" x1="141" y1="44" x2="141" y2="90"/><line class="foldline" x1="13" y1="44" x2="13" y2="90"/><line class="foldline" x1="177" y1="44" x2="177" y2="90"/><line class="foldline" x1="13" y1="44" x2="49" y2="44"/><line class="foldline" x1="13" y1="90" x2="49" y2="90"/><line class="foldline" x1="141" y1="44" x2="177" y2="44"/><line class="foldline" x1="141" y1="90" x2="177" y2="90"/><line class="cutline" x1="13" y1="44" x2="5" y2="46.2"/><line class="cutline" x1="5" y1="46.2" x2="5" y2="87.8"/><line class="cutline" x1="5" y1="87.8" x2="13" y2="90"/><line class="cutline" x1="13" y1="44" x2="15.2" y2="36"/><line class="cutline" x1="15.2" y1="36" x2="46.8" y2="36"/><line class="cutline" x1="46.8" y1="36" x2="49" y2="44"/><line class="cutline" x1="13" y1="90" x2="15.2" y2="98"/><line class="cutline" x1="15.2" y1="98" x2="46.8" y2="98"/><line class="cutline" x1="46.8" y1="98" x2="49" y2="90"/><line class="cutline" x1="177" y1="44" x2="185" y2="46.2"/><line class="cutline" x1="185" y1="46.2" x2="185" y2="87.8"/><line class="cutline" x1="185" y1="87.8" x2="177" y2="90"/><line class="cutline" x1="141" y1="44" x2="143.2" y2="36"/><line class="cutline" x1="143.2" y1="36" x2="174.8" y2="36"/><line class="cutline" x1="174.8" y1="36" x2="177" y2="44"/><line class="cutline" x1="141" y1="90" x2="143.2" y2="98"/><line class="cutline" x1="143.2" y1="98" x2="174.8" y2="98"/><line class="cutline" x1="174.8" y1="98" x2="177" y2="90"/><line class="cutline" x1="49" y1="172" x2="51.2" y2="180"/><line class="cutline" x1="51.2" y1="180" x2="138.8" y2="180"/><line class="cutline" x1="138.8" y1="180" x2="141" y2="172"/><line class="cutline" x1="49" y1="8" x2="141" y2="8"/><line class="cutline" x1="49" y1="8" x2="49" y2="44"/><line class="cutline" x1="141" y1="8" x2="141" y2="44"/><line class="cutline" x1="49" y1="90" x2="49" y2="126"/><line class="cutline" x1="141" y1="90" x2="141" y2="126"/><line class="cutline" x1="49" y1="126" x2="49" y2="172"/><line class="cutline" x1="141" y1="126" x2="141" y2="172"/>
 </svg>
   </div>
 
   <!-- 만드는 법 -->
-  <div class="abs" style="left:0; top:226mm; width:190mm;">
+  <div class="abs" style="left:0; top:224mm; width:190mm;">
     <div class="steps">
       <div class="step"><span class="sp-no">1</span>
-        <svg width="40" height="26" viewBox="0 0 40 26"><circle cx="27" cy="13" r="10" class="st-line"/><path d="M4,6 L14,13 L4,20" class="st-line"/><circle cx="4.5" cy="5" r="2" class="st-line"/><circle cx="4.5" cy="21" r="2" class="st-line"/></svg>
-        두 판을 <b>실선</b>대로 가위로 오려요
+        <svg width="42" height="24" viewBox="0 0 42 24"><rect x="9" y="3" width="24" height="18" class="st-line"/><path d="M2,5 L8,12 L2,19" class="st-line"/><circle cx="2.5" cy="4" r="1.8" class="st-line"/><circle cx="2.5" cy="20" r="1.8" class="st-line"/></svg>
+        바깥 <b>실선</b>을 따라 전체를 오려요
       </div>
       <div class="step"><span class="sp-no">2</span>
-        <svg width="40" height="26" viewBox="0 0 40 26"><circle cx="20" cy="14" r="10" class="st-line"/><path d="M15,7.5 L13,3.5 A11.5,11.5 0 0 1 27,3.5 L25,7.5 A7,7 0 0 0 15,7.5 Z" transform="translate(0 4.5)" fill="url(#hatchLegend)" stroke="#222" stroke-width="1"/></svg>
-        윗판의 <b>빗금 창문</b>을 칼이나 가위로 오려 내요
+        <svg width="42" height="24" viewBox="0 0 42 24"><path d="M6,20 L20,20 L20,6" class="st-line"/><path d="M20,20 L34,20" class="st-dash"/><path d="M20,6 L28,3" class="st-line"/></svg>
+        모든 <b>점선</b>을 자로 눌러 접어요
       </div>
       <div class="step"><span class="sp-no">3</span>
-        <svg width="40" height="26" viewBox="0 0 40 26"><circle cx="20" cy="13" r="10" class="st-line"/><circle cx="20" cy="13" r="1.8" fill="#222"/><path d="M28,3 L23,10" class="st-line"/><path d="M28,3 L30,1.2" stroke="#222" stroke-width="2.4" fill="none"/></svg>
-        두 판의 <b>가운데 구멍</b>을 송곳이나 연필심으로 뚫어요
+        <svg width="42" height="24" viewBox="0 0 42 24"><rect x="8" y="8" width="20" height="12" class="st-blue"/><path d="M8,8 L14,3 L34,3 L28,8 Z" class="st-grey"/><path d="M28,8 L34,3 L34,15 L28,20 Z" class="st-blue"/></svg>
+        상자 모양으로 세우고 <b>회색 탭</b>에 풀칠해 붙여요
       </div>
       <div class="step"><span class="sp-no">4</span>
-        <svg width="40" height="26" viewBox="0 0 40 26"><circle cx="15" cy="14" r="9" class="st-line"/><circle cx="21" cy="11" r="10.5" class="st-line"/><circle cx="18.5" cy="12.5" r="1.6" fill="#222"/><path d="M30,4 L34,8 M34,4 L30,8" class="st-line"/></svg>
-        윗판을 위에 겹치고 <b>할핀</b>으로 고정하면 완성! <span style="color:#888;">(할핀이 없으면 압정+지우개)</span>
+        <svg width="42" height="24" viewBox="0 0 42 24"><rect x="4" y="16" width="34" height="5" fill="#eef6e6" stroke="#222" stroke-width="1.1"/><line x1="4" y1="18.5" x2="38" y2="18.5" stroke="#e0a21c" stroke-width="1.4" stroke-dasharray="3 2"/><rect x="13" y="7" width="16" height="9" class="st-blue"/><path d="M13,7 L17,4 L33,4 L29,7 Z" class="st-grey"/></svg>
+        2쪽 <b>받침판</b>의 분계선 위에 세우면 완성!
       </div>
     </div>
   </div>
 
   <footer class="print-foot">
     <span>몽당분필 날쌤 · 초등사회 마무리활동 — 6·25 전쟁 단원(5-2-2)</span>
-    <span>암호 돌림판 도안 · 1 / 2</span>
+    <span>판문점 회담장 페이퍼크래프트 · 1 / 2</span>
   </footer>
 </div></section>
 
-<!-- ═════════════════ 2쪽: 윗판 + 사용법 ═════════════════ -->
+<!-- ═════════════════ 2쪽: 받침판 + 팻말 + 활동 ═════════════════ -->
 <section class="a4-page"><div class="pc">
   <header class="print-head" style="margin-bottom:1mm;">
     <div class="ph-brand">
@@ -168,74 +162,47 @@
       <span class="ph-brandname">몽당분필 날쌤<small>초등사회 마무리활동</small></span>
     </div>
     <div class="ph-main">
-      <div class="ph-title">6·25 암호 돌림판 <span style="font-size:9pt;font-weight:700;color:#888;">— 윗판 (2/2)</span></div>
-      <div class="ph-sub">창문이 뚫린 윗판이에요. 빗금 부분을 오려 내고, 아래판 위에 할핀으로 고정해요.</div>
+      <div class="ph-title">군사 분계선 받침판 <span style="font-size:9pt;font-weight:700;color:#888;">— 받침판 · 안내 팻말 (2/2)</span></div>
+      <div class="ph-sub">회담장은 분계선 위에 걸쳐 서 있어요. 남과 북, 어느 쪽에도 속하지 않는 자리랍니다.</div>
       <div class="ph-chips">
         <span class="chip">5학년 2학기 · 5-2-2</span>
-        <span class="chip dim">테두리 고리 무늬는 자유롭게 색칠해요</span>
+        <span class="chip dim">받침판은 오리기만, 팻말은 반으로 접기</span>
       </div>
     </div>
     <div class="craft-legend">
-      <span><svg width="24" height="6"><line x1="1" y1="3" x2="23" y2="3" stroke="#111" stroke-width="2.6"/></svg> 실선 = 자르기</span>
-      <span><svg width="24" height="10"><rect x="1" y="1" width="22" height="8" fill="url(#hatchLegend)" stroke="#111" stroke-width="1.2"/></svg> 빗금 = 오려내기</span>
+      <span><svg width="26" height="6"><line x1="1" y1="3" x2="25" y2="3" stroke="#111" stroke-width="2.2"/></svg> 실선 = 자르기</span>
+      <span><svg width="26" height="6"><line x1="1" y1="3" x2="25" y2="3" stroke="#6a7a90" stroke-width="1.4" stroke-dasharray="4 2.6"/></svg> 점선 = 접기</span>
     </div>
   </header>
 
-  <!-- 윗판 (⌀120mm 정밀 도안) -->
   <div class="abs" style="left:0; top:34mm;">
-    <svg viewBox="0 0 190 145" xmlns="http://www.w3.org/2000/svg" style="width:190mm;height:145mm;display:block">
-<circle cx="95" cy="72" r="60" class="cut"/>
-<path d="M82.79,49.04 L68.71,22.55 A56,56 0 0 1 121.29,22.55 L107.21,49.04 A26,26 0 0 0 82.79,49.04 Z" class="cutout-hatch"/>
-<path d="M92,16.5 L95,11.5 L98,16.5 Z" class="wt-pointer"/>
-<path d="M96.19,15.21 L96.24,12.81 A59.2,59.2 0 0 1 109.12,14.51 L108.55,16.84 A56.8,56.8 0 0 0 96.19,15.21 Z" class="wt-tick"/>
-<path d="M110.85,17.46 L111.52,15.15 A59.2,59.2 0 0 1 123.52,20.12 L122.36,22.23 A56.8,56.8 0 0 0 110.85,17.46 Z" class="wt-tick"/>
-<path d="M124.42,23.42 L125.67,21.36 A59.2,59.2 0 0 1 135.97,29.27 L134.31,31 A56.8,56.8 0 0 0 124.42,23.42 Z" class="wt-tick"/>
-<path d="M136,32.69 L137.73,31.03 A59.2,59.2 0 0 1 145.64,41.33 L143.58,42.58 A56.8,56.8 0 0 0 136,32.69 Z" class="wt-tick"/>
-<path d="M144.77,44.64 L146.88,43.48 A59.2,59.2 0 0 1 151.85,55.48 L149.54,56.15 A56.8,56.8 0 0 0 144.77,44.64 Z" class="wt-tick"/>
-<path d="M150.16,58.45 L152.49,57.88 A59.2,59.2 0 0 1 154.19,70.76 L151.79,70.81 A56.8,56.8 0 0 0 150.16,58.45 Z" class="wt-tick"/>
-<path d="M151.79,73.19 L154.19,73.24 A59.2,59.2 0 0 1 152.49,86.12 L150.16,85.55 A56.8,56.8 0 0 0 151.79,73.19 Z" class="wt-tick"/>
-<path d="M149.54,87.85 L151.85,88.52 A59.2,59.2 0 0 1 146.88,100.52 L144.77,99.36 A56.8,56.8 0 0 0 149.54,87.85 Z" class="wt-tick"/>
-<path d="M143.58,101.42 L145.64,102.67 A59.2,59.2 0 0 1 137.73,112.97 L136,111.31 A56.8,56.8 0 0 0 143.58,101.42 Z" class="wt-tick"/>
-<path d="M134.31,113 L135.97,114.73 A59.2,59.2 0 0 1 125.67,122.64 L124.42,120.58 A56.8,56.8 0 0 0 134.31,113 Z" class="wt-tick"/>
-<path d="M122.36,121.77 L123.52,123.88 A59.2,59.2 0 0 1 111.52,128.85 L110.85,126.54 A56.8,56.8 0 0 0 122.36,121.77 Z" class="wt-tick"/>
-<path d="M108.55,127.16 L109.12,129.49 A59.2,59.2 0 0 1 96.24,131.19 L96.19,128.79 A56.8,56.8 0 0 0 108.55,127.16 Z" class="wt-tick"/>
-<path d="M93.81,128.79 L93.76,131.19 A59.2,59.2 0 0 1 80.88,129.49 L81.45,127.16 A56.8,56.8 0 0 0 93.81,128.79 Z" class="wt-tick"/>
-<path d="M79.15,126.54 L78.48,128.85 A59.2,59.2 0 0 1 66.48,123.88 L67.64,121.77 A56.8,56.8 0 0 0 79.15,126.54 Z" class="wt-tick"/>
-<path d="M65.58,120.58 L64.33,122.64 A59.2,59.2 0 0 1 54.03,114.73 L55.69,113 A56.8,56.8 0 0 0 65.58,120.58 Z" class="wt-tick"/>
-<path d="M54,111.31 L52.27,112.97 A59.2,59.2 0 0 1 44.36,102.67 L46.42,101.42 A56.8,56.8 0 0 0 54,111.31 Z" class="wt-tick"/>
-<path d="M45.23,99.36 L43.12,100.52 A59.2,59.2 0 0 1 38.15,88.52 L40.46,87.85 A56.8,56.8 0 0 0 45.23,99.36 Z" class="wt-tick"/>
-<path d="M39.84,85.55 L37.51,86.12 A59.2,59.2 0 0 1 35.81,73.24 L38.21,73.19 A56.8,56.8 0 0 0 39.84,85.55 Z" class="wt-tick"/>
-<path d="M38.21,70.81 L35.81,70.76 A59.2,59.2 0 0 1 37.51,57.88 L39.84,58.45 A56.8,56.8 0 0 0 38.21,70.81 Z" class="wt-tick"/>
-<path d="M40.46,56.15 L38.15,55.48 A59.2,59.2 0 0 1 43.12,43.48 L45.23,44.64 A56.8,56.8 0 0 0 40.46,56.15 Z" class="wt-tick"/>
-<path d="M46.42,42.58 L44.36,41.33 A59.2,59.2 0 0 1 52.27,31.03 L54,32.69 A56.8,56.8 0 0 0 46.42,42.58 Z" class="wt-tick"/>
-<path d="M55.69,31 L54.03,29.27 A59.2,59.2 0 0 1 64.33,21.36 L65.58,23.42 A56.8,56.8 0 0 0 55.69,31 Z" class="wt-tick"/>
-<path d="M67.64,22.23 L66.48,20.12 A59.2,59.2 0 0 1 78.48,15.15 L79.15,17.46 A56.8,56.8 0 0 0 67.64,22.23 Z" class="wt-tick"/>
-<path d="M81.45,16.84 L80.88,14.51 A59.2,59.2 0 0 1 93.76,12.81 L93.81,15.21 A56.8,56.8 0 0 0 81.45,16.84 Z" class="wt-tick"/>
-<text x="95" y="86" text-anchor="middle" class="wt-title">6·25 암호 돌림판</text>
-<text x="95" y="93" text-anchor="middle" class="wt-sub">몽당분필 날쌤 · 초등사회 마무리활동 5-2-2</text>
-<text x="95" y="101" text-anchor="middle" class="wt-hint">▲ 포인터를 암호에 맞추면</text>
-<text x="95" y="106.5" text-anchor="middle" class="wt-hint">창문에 그날의 역사가 나타나요</text>
-<circle cx="95" cy="72" r="2" class="wb-hole"/>
-<text x="95" y="78.5" text-anchor="middle" class="wt-holelab">구멍 뚫기</text>
+    <svg viewBox="0 0 190 170" xmlns="http://www.w3.org/2000/svg" style="width:190mm;height:170mm;display:block">
+<rect class="plate" x="6" y="4" width="178" height="96" rx="2"/><rect class="platenorth" x="6" y="4" width="178" height="48"/><line class="mdl" x1="6" y1="52" x2="184" y2="52"/><text class="platetitle" x="11" y="15">판문점 공동경비구역</text><text class="dirlab" x="178" y="15" text-anchor="end">북쪽</text><text class="dirlab" x="178" y="95" text-anchor="end">남쪽</text><text class="mdllab" x="11" y="49.4">군사 분계선 (휴전선)</text><rect class="footprint" x="49" y="34" width="92" height="36" rx="1"/><text class="fplab"  x="95" y="50.4" text-anchor="middle">회담장을 여기에 세워요</text><text class="fplab2" x="95" y="56.6" text-anchor="middle">분계선 위에 걸치도록</text><rect class="cutline2" x="6" y="4" width="178" height="96" rx="2"/><rect class="card" x="6" y="110" width="88" height="56" rx="1.5"/><text class="cardbig"  x="50" y="152" text-anchor="middle">1953. 7. 27.</text><text class="cardsub"  x="50" y="159" text-anchor="middle">판문점에서 정전 협정을 맺다</text><text class="cardsub2" x="50" y="164.5" text-anchor="middle">전쟁이 끝난 게 아니라 “멈춘” 자리</text><g transform="rotate(180 50 124)"><text class="cardbig" x="50" y="127" text-anchor="middle">1953. 7. 27.</text><text class="cardsub" x="50" y="134" text-anchor="middle">판문점 정전 협정 · 암호 0727</text></g><line class="foldline" x1="6" y1="138" x2="94" y2="138"/><text class="foldnote" x="91.5" y="136" text-anchor="end">여기를 접어 세워요</text><rect class="cutline2" x="6" y="110" width="88" height="56" rx="1.5"/>
 </svg>
   </div>
 
-  <!-- 준비물/사용법 -->
-  <div class="abs materials" style="left:0; top:186mm; width:190mm;">
-    <b>더 튼튼하게!</b> 얇은 종이라면 오리기 전에 두 판을 마분지(과자 상자도 좋아요)에 풀로 붙였다가 함께 오려 보세요.
+  <!-- 완성 예시 -->
+  <div class="abs example" style="left:104mm; top:150mm; width:86mm;">
+    <img src="assembled.jpg" alt="완성한 모습 예시"
+         onerror="var p=this.parentNode;this.remove();p.insertAdjacentHTML('afterbegin','<div style=&quot;height:58mm;border:0.4mm dashed #bbb;border-radius:3mm;display:flex;align-items:center;justify-content:center;color:#aaa;font-size:8pt&quot;>완성 예시</div>');">
+    <div class="ex-cap">완성한 모습 — 분계선 위에 걸친 회담장</div>
   </div>
 
-  <div class="abs usage" style="left:0; top:203mm; width:190mm;">
-    <h4>이렇게 놀아요</h4>
-    ① 윗판의 <b>▲ 포인터</b>를 테두리의 암호 숫자에 맞춰 돌리면, 창문에 그날의 역사가 나타나요.<br>
-    ② <b>암호 → 사건 퀴즈</b>: 짝이 "0915!"라고 외치면, 돌리기 전에 어떤 사건인지 먼저 말해 보고 창문으로 확인해요.<br>
-    ③ <b>사건 → 암호 퀴즈</b>: 거꾸로 "인천 상륙 작전!"을 듣고 알맞은 암호 숫자를 맞혀 보아요.<br>
-    ④ 방탈출 게임을 했다면 — 이 암호를 <b>어느 방</b>에서 찾았는지도 기억해 보세요!
+  <div class="abs materials" style="left:0; top:214mm; width:190mm;">
+    <b>더 튼튼하게!</b> 얇은 종이라면 오리기 전에 도안을 마분지(과자 상자도 좋아요)에 풀로 붙였다가 함께 오려 보세요.
+    받침판은 접지 않고 오리기만 하면 됩니다.
+  </div>
+
+  <div class="abs usage" style="left:0; top:230mm; width:190mm;">
+    <h4>만들고 나서 — 이야기해 봐요</h4>
+    ① 회담장은 왜 <b>분계선 위에</b> 걸쳐 지었을까요? 남과 북 어느 쪽 땅도 아닌 자리에서 만나야 했기 때문이에요.<br>
+    ② 방탈출에서 찾은 암호 <b>0727</b>은 무슨 날이었나요? 그날 이 자리에서 무슨 일이 있었는지 짝에게 설명해 보세요.<br>
+    ③ 정전 협정은 전쟁을 <b>끝낸</b> 것이 아니라 <b>멈춘</b> 약속이에요. 오늘 우리에게 어떤 의미인지 이야기해 봐요.
   </div>
 
   <footer class="print-foot">
     <span>몽당분필 날쌤 · 초등사회 마무리활동 — 6·25 전쟁 단원(5-2-2)</span>
-    <span>암호 돌림판 도안 · 2 / 2</span>
+    <span>판문점 회담장 페이퍼크래프트 · 2 / 2</span>
   </footer>
 </div></section>
 
