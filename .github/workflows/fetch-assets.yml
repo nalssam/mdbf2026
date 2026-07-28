@@ -113,8 +113,9 @@ jobs:
             url=$(jq -r ".visual_images[\"${name}\"]" assets/sources.json)
             echo "downloading doodle $name"
             curl -sSfL --retry 3 -o "$tmp/src" "$url"
-            # 흰 여백을 잘라내고 480px 박스에 맞춤 (선화이므로 흰 배경 유지)
-            "$IM" "$tmp/src" -fuzz 8% -trim +repage -resize 480x480 -quality 88 -strip "$out/$name"
+            # 옅은 회색 배경을 흰색으로 밀어낸 뒤 여백 트림 → 480px 박스에 맞춤 (선화라 흰 배경 유지)
+            "$IM" "$tmp/src" -colorspace sRGB -level 0%,80% -fuzz 18% -trim +repage \
+              -bordercolor white -border 10 -resize 480x480 -quality 88 -strip "$out/$name"
           done
           ls -la "$out"
 
