@@ -111,7 +111,7 @@ window.MDBF_CURRICULUM = {
             visual: {
               status: "ready",
               href:   "units/5-2-2/visual/",
-              note:   "한눈에 보는 6·25 — 비주얼싱킹 색칠 학습지 (A4 2쪽 · PDF)"
+              note:   "6·25 전쟁 비주얼싱킹 학습지 (A4 가로 2쪽 · PDF)"
             },
             craft:  {
               status: "ready",
