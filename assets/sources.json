@@ -57,5 +57,19 @@
   },
   "craft_images": {
     "assembled.jpg": "https://d8j0ntlcm91z4.cloudfront.net/user_2yTdILg9Q4rMO0h5HFRWvJ51FB1/hf_20260728_160016_46077439-df7b-4a76-b262-01163d763256.png"
+  },
+  "visual_images": {
+    "d01-gwangbok.jpg": "https://d8j0ntlcm91z4.cloudfront.net/user_2yTdILg9Q4rMO0h5HFRWvJ51FB1/hf_20260728_162803_40910132-615f-4c13-a49a-489dbd51269d.png",
+    "d02-border.jpg": "https://d8j0ntlcm91z4.cloudfront.net/user_2yTdILg9Q4rMO0h5HFRWvJ51FB1/hf_20260728_162804_45c3b76c-972a-4d13-ae89-c675459a9d40.png",
+    "d03-govs.jpg": "https://d8j0ntlcm91z4.cloudfront.net/user_2yTdILg9Q4rMO0h5HFRWvJ51FB1/hf_20260728_162805_8c8e9c16-c143-4fa1-8e37-d9a595f7f56e.png",
+    "d04-doc.jpg": "https://d8j0ntlcm91z4.cloudfront.net/user_2yTdILg9Q4rMO0h5HFRWvJ51FB1/hf_20260728_162807_86da15aa-352a-4258-b71c-19964d84cf27.png",
+    "d05-tank.jpg": "https://d8j0ntlcm91z4.cloudfront.net/user_2yTdILg9Q4rMO0h5HFRWvJ51FB1/hf_20260728_162809_09023bf3-d8b3-48be-8e21-6f5e86735014.png",
+    "d06-radio.jpg": "https://d8j0ntlcm91z4.cloudfront.net/user_2yTdILg9Q4rMO0h5HFRWvJ51FB1/hf_20260728_162810_54ff11f7-fb15-4d82-b473-6a2daedc3bbc.png",
+    "d07-flags.jpg": "https://d8j0ntlcm91z4.cloudfront.net/user_2yTdILg9Q4rMO0h5HFRWvJ51FB1/hf_20260728_162821_2ee327e5-c9b7-469d-9264-832a238934e2.png",
+    "d08-river.jpg": "https://d8j0ntlcm91z4.cloudfront.net/user_2yTdILg9Q4rMO0h5HFRWvJ51FB1/hf_20260728_162823_9ce259e8-2f95-4c57-9d46-99933f406370.png",
+    "d09-ship.jpg": "https://d8j0ntlcm91z4.cloudfront.net/user_2yTdILg9Q4rMO0h5HFRWvJ51FB1/hf_20260728_162825_b831aee4-fac1-49e3-8687-c904d9552674.png",
+    "d10-refugee.jpg": "https://d8j0ntlcm91z4.cloudfront.net/user_2yTdILg9Q4rMO0h5HFRWvJ51FB1/hf_20260728_162827_6601b7b5-8997-41c1-abbe-d2c2e086fccf.png",
+    "d11-signing.jpg": "https://d8j0ntlcm91z4.cloudfront.net/user_2yTdILg9Q4rMO0h5HFRWvJ51FB1/hf_20260728_162828_b04dbff1-c0bd-4c20-abfc-69748f674ce5.png",
+    "d12-family.jpg": "https://d8j0ntlcm91z4.cloudfront.net/user_2yTdILg9Q4rMO0h5HFRWvJ51FB1/hf_20260728_162831_2d46def7-b55e-43d2-962c-707429440c10.png"
   }
 }
