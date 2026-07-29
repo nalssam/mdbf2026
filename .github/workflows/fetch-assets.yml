@@ -119,6 +119,45 @@ jobs:
           done
           ls -la "$out"
 
+      - name: Fetch 5-2-3 escape scene images
+        run: |
+          set -euo pipefail
+          jq -e 'has("escape523_images")' assets/sources.json >/dev/null || { echo "no escape523_images"; exit 0; }
+          out=public/social/units/5-2-3/escape/img
+          mkdir -p "$out"
+          tmp=$(mktemp -d)
+          for name in $(jq -r '.escape523_images | keys[]' assets/sources.json); do
+            if [ -f "$out/$name" ]; then echo "skip existing $name"; continue; fi
+            url=$(jq -r ".escape523_images[\"${name}\"]" assets/sources.json)
+            echo "downloading scene $name"
+            curl -sSfL --retry 3 -o "$tmp/src" "$url"
+            ffmpeg -y -loglevel error -i "$tmp/src" -vf "scale=1280:-2" -q:v 4 "$out/$name"
+          done
+          ls -la "$out"
+
+      - name: Verify and build 5-2-3 YouTube list
+        run: |
+          set -euo pipefail
+          jq -e 'has("youtube_523")' assets/sources.json >/dev/null || { echo "no youtube_523"; exit 0; }
+          out=public/social/units/5-2-3/escape
+          mkdir -p "$out"
+          echo "[]" > /tmp/v523.json
+          bad=0
+          for id in $(jq -r '.youtube_523[]' assets/sources.json); do
+            meta=$(curl -sSfL "https://www.youtube.com/oembed?url=https://www.youtube.com/watch?v=${id}&format=json" 2>/dev/null || echo '')
+            title=$(echo "$meta" | jq -r '.title // empty' 2>/dev/null || echo '')
+            if [ -z "$title" ]; then
+              echo "::warning::YouTube id ${id} could not be verified — dropped from the list"
+              bad=$((bad+1)); continue
+            fi
+            author=$(echo "$meta" | jq -r '.author_name // empty')
+            jq --arg id "$id" --arg t "$title" --arg a "$author" \
+              '. += [{id:$id, title:$t, author:$a}]' /tmp/v523.json > /tmp/v523b.json && mv /tmp/v523b.json /tmp/v523.json
+          done
+          cp /tmp/v523.json "$out/videos.json"
+          echo "verified $(jq 'length' "$out/videos.json") video(s), dropped ${bad}"
+          cat "$out/videos.json"
+
       - name: Build story video (clips + narration + Korean subtitles)
         run: |
           set -euo pipefail
