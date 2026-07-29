@@ -1,0 +1,751 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>빼앗긴 이름, 되찾은 나라 — 일제강점기 방탈출</title>
+<meta name="description" content="일제의 식민 통치와 우리 민족의 저항을 스토리텔링 방탈출로 배우는 초등 사회 마무리 활동 (5-2-3)">
+<style>
+:root{
+  --bg:#0d0b08; --panel:#1a1611; --panel2:#241e16; --line:#3a2f22;
+  --text:#f0e9dd; --dim:#b3a794; --gold:#e2b455; --gold-dim:#9c7a2e;
+  --green:#6fc79a; --red:#e8776b; --blue:#7fa8d8;
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+html,body{height:100%;}
+body{
+  font-family:"Pretendard","Apple SD Gothic Neo","Malgun Gothic","Noto Sans KR",sans-serif;
+  background:var(--bg);color:var(--text);line-height:1.7;overflow-x:hidden;
+}
+button{font-family:inherit;cursor:pointer;}
+img{max-width:100%;display:block;}
+
+/* ── 헤더 ── */
+header{
+  position:sticky;top:0;z-index:40;display:flex;align-items:center;gap:10px;flex-wrap:wrap;
+  padding:9px 16px;background:rgba(13,11,8,.92);backdrop-filter:blur(8px);
+  border-bottom:1px solid var(--line);font-size:13.5px;
+}
+header .h-title{font-weight:800;color:var(--gold);margin-right:auto;}
+header .chip{
+  background:var(--panel2);border:1px solid var(--line);border-radius:20px;
+  padding:4px 12px;color:var(--dim);font-size:12.5px;white-space:nowrap;
+}
+header button.chip{color:var(--text);}
+header button.chip:hover{border-color:var(--gold);color:var(--gold);}
+.dots{display:flex;gap:5px;}
+.dots i{width:9px;height:9px;border-radius:50%;background:#3a2f22;display:block;}
+.dots i.on{background:var(--gold);box-shadow:0 0 8px rgba(226,180,85,.6);}
+
+/* ── 화면 ── */
+main{max-width:960px;margin:0 auto;padding:22px 16px 90px;}
+.screen{display:none;}
+.screen.active{display:block;animation:fade .4s ease;}
+@keyframes fade{from{opacity:0;transform:translateY(10px);}to{opacity:1;transform:none;}}
+
+.hero{
+  position:relative;border-radius:18px;overflow:hidden;border:1px solid var(--line);
+  min-height:210px;display:flex;align-items:flex-end;
+  background:var(--panel);margin-bottom:20px;
+}
+.hero img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:.55;}
+.hero .h-in{position:relative;padding:22px;width:100%;
+  background:linear-gradient(180deg,transparent,rgba(13,11,8,.92));}
+.hero h1{font-size:27px;color:var(--gold);letter-spacing:-.3px;}
+.hero h2{font-size:22px;color:var(--gold);}
+.hero p{color:var(--dim);font-size:14.5px;margin-top:6px;}
+
+/* ── 대화 ── */
+.story{
+  background:var(--panel);border:1px solid var(--line);border-radius:16px;
+  padding:18px 20px;margin-bottom:18px;min-height:96px;cursor:pointer;position:relative;
+}
+.story:hover{border-color:var(--gold-dim);}
+.story .spk{font-size:12.5px;font-weight:800;color:var(--gold);margin-bottom:5px;}
+.story .line{font-size:15.5px;}
+.story .next{position:absolute;right:16px;bottom:10px;font-size:12px;color:var(--dim);}
+.story .next::after{content:" ▾";animation:blink 1.2s infinite;}
+@keyframes blink{50%{opacity:.25;}}
+
+/* ── 카드/버튼 ── */
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:12px;margin-bottom:16px;}
+.clue{
+  background:linear-gradient(160deg,var(--panel2),var(--panel));
+  border:1px solid var(--line);border-radius:14px;padding:15px;text-align:left;
+  transition:transform .15s,border-color .15s;color:var(--text);
+}
+.clue:hover{transform:translateY(-3px);border-color:var(--gold);}
+.clue.done{border-color:var(--green);opacity:.75;}
+.clue .c-t{font-weight:800;font-size:15px;}
+.clue .c-s{font-size:12.5px;color:var(--dim);margin-top:3px;}
+.clue .c-b{position:absolute;}
+.badge{
+  display:inline-block;font-size:11.5px;font-weight:800;border-radius:20px;
+  padding:1px 9px;background:#2e2617;color:var(--gold);border:1px solid var(--gold-dim);margin-top:8px;
+}
+.clue.done .badge{background:#14311f;color:var(--green);border-color:#2c6b47;}
+
+.btn{
+  background:linear-gradient(160deg,var(--gold),#c1912f);color:#241a02;border:0;
+  border-radius:22px;padding:9px 20px;font-weight:800;font-size:14.5px;
+}
+.btn:hover{filter:brightness(1.06);}
+.btn.ghost{background:transparent;color:var(--dim);border:1px solid var(--line);}
+.btn.ghost:hover{color:var(--gold);border-color:var(--gold-dim);}
+.row{display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin-top:14px;}
+
+/* ── 자물쇠 ── */
+.lock{
+  background:var(--panel);border:1px solid var(--line);border-radius:16px;padding:18px 20px;margin-top:18px;
+}
+.lock h3{font-size:16px;color:var(--gold);}
+.lock p{font-size:13.5px;color:var(--dim);margin-top:4px;}
+.lock .in{display:flex;gap:9px;align-items:center;margin-top:12px;flex-wrap:wrap;}
+.lock input{
+  font-family:"Consolas",monospace;font-size:24px;letter-spacing:9px;width:150px;text-align:center;
+  background:#0a0806;color:var(--gold);border:1px solid var(--line);border-radius:10px;padding:7px 10px;
+}
+.lock input:focus{outline:none;border-color:var(--gold);}
+.msg{font-size:13.5px;margin-top:9px;min-height:20px;}
+.msg.ok{color:var(--green);}
+.msg.no{color:var(--red);}
+
+/* ── 퀴즈 ── */
+.q{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:16px 18px;margin-top:14px;}
+.q .qt{font-weight:700;font-size:15px;margin-bottom:10px;}
+.opts{display:grid;gap:8px;}
+.opt{
+  text-align:left;background:var(--panel2);border:1px solid var(--line);color:var(--text);
+  border-radius:10px;padding:10px 14px;font-size:14px;
+}
+.opt:hover{border-color:var(--gold);}
+.opt.ok{border-color:var(--green);background:#14311f;}
+.opt.no{border-color:var(--red);background:#331a17;}
+.expl{font-size:13.5px;color:var(--dim);margin-top:10px;padding-left:10px;border-left:2px solid var(--gold-dim);}
+
+/* ── 순서 맞추기 ── */
+.order{display:grid;gap:9px;margin-top:12px;}
+.oi{
+  display:flex;align-items:center;gap:11px;background:var(--panel2);border:1px solid var(--line);
+  border-radius:12px;padding:11px 14px;text-align:left;color:var(--text);
+}
+.oi .n{
+  width:26px;height:26px;border-radius:50%;flex:0 0 auto;background:#0a0806;border:1px solid var(--gold-dim);
+  color:var(--gold);font-weight:800;font-size:13px;display:grid;place-items:center;
+}
+.oi .t{font-weight:700;font-size:14.5px;}
+.oi .d{font-size:12.5px;color:var(--dim);}
+.oi.picked{border-color:var(--gold);}
+
+/* ── 짝 맞추기 ── */
+.pairs{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:12px;}
+.pcol{display:grid;gap:8px;align-content:start;}
+.pit{
+  background:var(--panel2);border:1px solid var(--line);border-radius:10px;padding:10px 12px;
+  font-size:13.5px;text-align:left;color:var(--text);
+}
+.pit:hover{border-color:var(--gold);}
+.pit.sel{border-color:var(--gold);background:#2e2617;}
+.pit.done{border-color:var(--green);opacity:.6;pointer-events:none;}
+
+/* ── OX ── */
+.ox{display:grid;gap:10px;margin-top:12px;}
+.oxq{background:var(--panel2);border:1px solid var(--line);border-radius:12px;padding:12px 14px;}
+.oxq .t{font-size:14px;margin-bottom:8px;}
+.oxb{display:flex;gap:8px;}
+.oxb button{
+  width:52px;height:38px;border-radius:10px;border:1px solid var(--line);background:#0a0806;
+  color:var(--text);font-size:17px;font-weight:800;
+}
+.oxb button:hover{border-color:var(--gold);}
+.oxb button.ok{border-color:var(--green);background:#14311f;color:var(--green);}
+.oxb button.no{border-color:var(--red);background:#331a17;color:var(--red);}
+
+/* ── 지도 ── */
+.mapwrap{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:14px;margin-top:14px;text-align:center;}
+.mapwrap svg{max-width:300px;width:100%;height:auto;margin:0 auto;}
+.spot{cursor:pointer;}
+.spot circle{fill:#0a0806;stroke:var(--gold);stroke-width:2.5;transition:all .15s;}
+.spot:hover circle{fill:var(--gold);}
+.spot.ok circle{fill:var(--green);stroke:var(--green);}
+.spot text{fill:var(--text);font-size:11px;font-weight:700;}
+.mapland{fill:#1c1710;stroke:var(--gold-dim);stroke-width:1.4;}
+
+/* ── 서랍(학습 노트 / 영상) ── */
+.drawer{
+  position:fixed;top:0;right:0;bottom:0;width:min(410px,92vw);z-index:60;
+  background:var(--panel);border-left:1px solid var(--line);
+  transform:translateX(102%);transition:transform .28s ease;overflow-y:auto;padding:18px;
+}
+.drawer.open{transform:none;}
+.drawer h3{font-size:17px;color:var(--gold);margin-bottom:4px;}
+.drawer .sub{font-size:12.5px;color:var(--dim);margin-bottom:14px;}
+.drawer .close{position:absolute;top:14px;right:16px;background:none;border:0;color:var(--dim);font-size:22px;}
+.note{background:var(--panel2);border:1px solid var(--line);border-left:3px solid var(--gold);
+  border-radius:10px;padding:11px 13px;margin-bottom:10px;font-size:13.5px;}
+.vid{display:flex;gap:10px;background:var(--panel2);border:1px solid var(--line);border-radius:12px;
+  padding:9px;margin-bottom:9px;cursor:pointer;text-align:left;width:100%;color:var(--text);}
+.vid:hover{border-color:var(--gold);}
+.vid img{width:104px;height:59px;object-fit:cover;border-radius:7px;flex:0 0 auto;background:#000;}
+.vid .vt{font-size:12.5px;font-weight:700;line-height:1.45;}
+.vid .va{font-size:11.5px;color:var(--dim);margin-top:3px;}
+.scrim{position:fixed;inset:0;background:rgba(0,0,0,.6);z-index:55;display:none;}
+.scrim.on{display:block;}
+
+/* ── 영상 모달 ── */
+.modal{position:fixed;inset:0;z-index:80;display:none;align-items:center;justify-content:center;padding:18px;
+  background:rgba(0,0,0,.86);}
+.modal.on{display:flex;}
+.modal .box{width:min(900px,100%);}
+.modal .frame{position:relative;padding-top:56.25%;border-radius:14px;overflow:hidden;border:1px solid var(--line);}
+.modal iframe{position:absolute;inset:0;width:100%;height:100%;border:0;}
+.modal .mclose{margin-top:10px;}
+
+/* ── 엔딩 ── */
+.timeline{border-left:2px solid var(--gold-dim);margin:16px 0 0 8px;padding-left:16px;}
+.tl{margin-bottom:14px;position:relative;}
+.tl::before{content:"";position:absolute;left:-22px;top:7px;width:9px;height:9px;border-radius:50%;
+  background:var(--gold);box-shadow:0 0 0 3px rgba(226,180,85,.2);}
+.tl .d{font-size:12.5px;font-weight:800;color:var(--gold);}
+.tl .e{font-size:14.5px;}
+.closing{background:var(--panel);border:1px solid var(--gold-dim);border-radius:14px;padding:16px 18px;margin-top:18px;
+  font-size:14.5px;color:#f3e6c8;}
+
+@media (max-width:560px){
+  .hero h1{font-size:21px;}
+  .pairs{grid-template-columns:1fr;}
+  main{padding:16px 12px 80px;}
+}
+</style>
+</head>
+<body>
+
+<header>
+  <span class="h-title">🔓 빼앗긴 이름, 되찾은 나라</span>
+  <span class="chip" id="timer">⏱ 00:00</span>
+  <span class="chip" id="hintCount">💡 0</span>
+  <button class="chip" id="btnNotes">📓 학습 노트</button>
+  <button class="chip" id="btnTube">📚 학습 영상</button>
+  <span class="dots" id="dots"></span>
+</header>
+
+<main>
+  <!-- 인트로 -->
+  <section class="screen active" id="s-intro">
+    <div class="hero">
+      <img src="img/intro.jpg" alt="" onerror="this.remove()">
+      <div class="h-in">
+        <h1>빼앗긴 이름, 되찾은 나라</h1>
+        <p>일제의 식민 통치와 우리 민족의 저항을 배우는 스토리텔링 방탈출 · 5학년 2학기</p>
+      </div>
+    </div>
+    <div class="story" id="introStory"></div>
+    <div class="row"><button class="btn" id="btnStart">전시실로 들어가기 →</button></div>
+  </section>
+
+  <!-- 방 1~5 -->
+  <section class="screen" id="s-room"></section>
+
+  <!-- 엔딩 -->
+  <section class="screen" id="s-end">
+    <div class="hero">
+      <img src="img/end.jpg" alt="" onerror="this.remove()">
+      <div class="h-in"><h1>🎉 탈출 성공!</h1><p>35년의 기억을 모두 되찾았습니다.</p></div>
+    </div>
+    <h2 style="font-size:19px;color:var(--gold);margin-bottom:4px;">📌 한눈에 정리 — 일제 식민 통치와 우리 민족의 저항</h2>
+    <div class="timeline" id="timeline"></div>
+    <div class="closing">
+      일제는 우리의 국권과 땅, 말과 이름까지 빼앗으려 했습니다. 그러나 우리 민족은 만세를 부르고, 글을 지키고,
+      먼 땅에서 싸우며 한 번도 포기하지 않았습니다. <b>광복은 거저 주어진 것이 아니라 수많은 사람들이 만들어 낸 결과</b>입니다.
+      오늘 되찾은 이름들을 기억해 주세요.
+    </div>
+    <div class="row">
+      <button class="btn" id="btnNotes2">📓 학습 노트 보기</button>
+      <button class="btn ghost" onclick="location.reload()">↻ 다시 하기</button>
+    </div>
+  </section>
+</main>
+
+<!-- 서랍 -->
+<div class="scrim" id="scrim"></div>
+<aside class="drawer" id="drawerNotes">
+  <button class="close" data-close>×</button>
+  <h3>📓 학습 노트</h3>
+  <div class="sub">퍼즐을 풀 때마다 핵심 내용이 자동으로 정리됩니다.</div>
+  <div id="notesList"></div>
+</aside>
+<aside class="drawer" id="drawerTube">
+  <button class="close" data-close>×</button>
+  <h3>📚 일제강점기 학습 영상</h3>
+  <div class="sub">게임 안에서 바로 재생됩니다. 선생님이 검토한 영상만 담겨 있어요.</div>
+  <div id="tubeList"></div>
+</aside>
+
+<!-- 영상 모달 -->
+<div class="modal" id="videoModal">
+  <div class="box">
+    <div class="frame"><iframe id="videoFrame" allow="accelerometer; encrypted-media; picture-in-picture" allowfullscreen></iframe></div>
+    <div class="row mclose"><button class="btn ghost" id="btnCloseVideo">✕ 닫기</button></div>
+  </div>
+</div>
+
+<script>
+'use strict';
+
+/* ══════════════ 학습 데이터 ══════════════ */
+const ROOMS = [
+  {
+    id:1, title:'📜 빼앗긴 국권', sub:'나라의 힘은 어떻게 사라졌을까?', img:'img/room1.jpg',
+    type:'docs', code:'1905',
+    lockTitle:'문서 보관함', lockHint:'암호: 대한제국이 외교권을 빼앗긴 해 (네 자리)',
+    story:[
+      {s:'의문의 목소리', t:'전시실 문이 잠겼구나. 나가고 싶다면 빼앗긴 35년을 하나씩 되찾아라.'},
+      {s:'나', t:'…35년? 1910년부터 1945년까지, 일제강점기잖아.'},
+      {s:'의문의 목소리', t:'그 시작은 총성이 아니라 도장 하나였다. 문서 세 장을 읽어 보아라.'}
+    ],
+    docs:[
+      { t:'문서 A · 빼앗긴 외교권', s:'1905년, 도장 하나로 시작된 일',
+        story:'러일 전쟁에서 이긴 일제는 1905년 대한제국에 을사늑약을 강요했다. 이 조약으로 대한제국은 다른 나라와 스스로 조약을 맺을 권리, 곧 외교권을 빼앗겼다. 통감부가 설치되어 나라의 일에 간섭하기 시작했다.',
+        q:'1905년 을사늑약으로 대한제국이 빼앗긴 것은?',
+        opts:['외교권','한글','농사지을 땅','왕의 이름'], a:0,
+        expl:'을사늑약으로 외교권을 빼앗겨 스스로 다른 나라와 관계를 맺을 수 없게 되었다.',
+        reveal:'🔑 암호의 네 자리 = 이 조약이 맺어진 해',
+        note:'🏛 [국권] 1905년 을사늑약으로 대한제국이 외교권을 빼앗기고 통감부가 설치되었다.' },
+      { t:'문서 B · 헤이그의 호소', s:'세계에 알리려 했지만…',
+        story:'1907년 고종은 네덜란드 헤이그에서 열린 만국 평화 회의에 특사를 보내 을사늑약이 강제로 맺어진 것임을 알리려 했다. 그러나 뜻을 이루지 못했고, 일제는 이를 구실로 고종을 강제로 물러나게 하고 대한제국의 군대까지 해산시켰다.',
+        q:'1907년에 일어난 일이 &lt;u&gt;아닌&lt;/u&gt; 것은?',
+        opts:['헤이그 특사 파견','고종의 강제 퇴위','대한제국 군대 해산','광복군 창설'], a:3,
+        expl:'한국광복군은 훨씬 뒤인 1940년에 창설되었다. 1907년에는 헤이그 특사, 고종 강제 퇴위, 군대 해산이 있었다.',
+        reveal:'🔑 나라를 지킬 군대마저 사라졌다.',
+        note:'🏛 [국권] 1907년 헤이그 특사가 좌절되고 고종이 강제 퇴위, 대한제국 군대가 해산되었다.' },
+      { t:'문서 C · 1910년 8월', s:'끝내 빼앗긴 나라',
+        story:'1910년, 일제는 대한제국의 국권을 완전히 빼앗았다. 조선 총독부를 세우고 우리 민족을 지배하기 시작했다. 이때부터 1945년 광복까지 35년의 일제강점기가 이어진다.',
+        q:'1910년 국권을 빼앗은 뒤 일제가 우리나라를 다스리기 위해 세운 기관은?',
+        opts:['조선 총독부','대한민국 임시정부','독립 협회','서당'], a:0,
+        expl:'조선 총독부가 설치되어 우리 민족을 지배했다. 총독은 일본 군인이 맡았다.',
+        reveal:'🔑 세 문서를 모두 읽었다. 보관함을 열어라.',
+        note:'🏛 [국권] 1910년 국권을 빼앗기고 조선 총독부가 설치되어 35년의 일제강점기가 시작되었다.' }
+    ],
+    success:{ t:'🗝 국권 침탈 정리',
+      d:'1905년 을사늑약(외교권 박탈) → 1907년 헤이그 특사 좌절·고종 퇴위·군대 해산 → 1910년 국권 피탈과 조선 총독부 설치.' },
+    hints:['문서 A를 다시 읽어 보자. 연도가 그대로 암호란다.','암호는 을사늑약이 맺어진 해, 1905이다.']
+  },
+  {
+    id:2, title:'⛓ 무단 통치와 수탈', sub:'무엇을 어떻게 빼앗아 갔을까?', img:'img/room2.jpg',
+    type:'pairs', code:'1910',
+    lockTitle:'총독부 서류함', lockHint:'암호: 국권을 완전히 빼앗긴 해 (네 자리)',
+    story:[
+      {s:'나', t:'거리에 칼을 찬 사람들이 서 있어… 경찰인가?'},
+      {s:'의문의 목소리', t:'헌병이 경찰 일을 하던 시대다. 학교 선생님까지 칼을 차고 수업을 했지.'},
+      {s:'나', t:'땅에는 측량 기구가 잔뜩… 무엇을 재는 거지?'},
+      {s:'의문의 목소리', t:'땅의 주인을 가리는 척하며 빼앗기 위함이다. 네 가지 정책을 짝지어 보아라.'}
+    ],
+    pairs:[
+      { term:'헌병 경찰 제도', def:'군인인 헌병이 경찰 일까지 맡아 우리 민족을 감시하고 재판 없이 처벌했다.' },
+      { term:'토지 조사 사업', def:'복잡한 절차로 기한 안에 신고하지 못한 땅을 빼앗아 일본인에게 넘겼다.' },
+      { term:'회사령', def:'회사를 세울 때 총독부의 허가를 받게 하여 우리 민족의 산업 성장을 막았다.' },
+      { term:'조선 교육령', def:'우리말과 우리 역사 교육을 줄이고, 일본에 순종하는 사람을 기르려 했다.' }
+    ],
+    success:{ t:'🗝 무단 통치 정리',
+      d:'헌병 경찰로 감시하고, 토지 조사 사업으로 땅을 빼앗고, 회사령으로 산업을 묶고, 교육령으로 우리말과 역사를 줄였다.' },
+    note:'⛓ [통치] 1910년대 무단 통치 — 헌병 경찰 · 토지 조사 사업 · 회사령 · 조선 교육령으로 감시와 수탈이 이어졌다.',
+    hints:['이 시대가 시작된 해를 떠올려 보자.','국권을 완전히 빼앗긴 해, 1910이다.']
+  },
+  {
+    id:3, title:'📢 만세의 함성', sub:'그날, 온 나라가 한목소리로', img:'img/room3.jpg',
+    type:'map', code:'0301',
+    lockTitle:'공원의 종', lockHint:'암호: 만세 운동이 시작된 날 (월월일일, 네 자리)',
+    story:[
+      {s:'나', t:'사람들이 손에 무언가를 들고 거리로 쏟아져 나오고 있어!'},
+      {s:'군중', t:'대한 독립 만세! 대한 독립 만세!'},
+      {s:'의문의 목소리', t:'1919년 봄, 학생과 시민이 모여 시작된 외침이다. 어디에서 시작되었는지 찾아라.'}
+    ],
+    spots:[
+      { id:'seoul', name:'서울', x:115.2, y:169.8, ok:true,
+        yes:'정확하다! 1919년 3월 1일, 서울 탑골 공원에서 독립 선언서가 낭독되며 만세 운동이 시작되어 전국으로, 그리고 나라 밖까지 퍼져 나갔다.',
+        no:'' },
+      { id:'pyeong', name:'평양', x:87.6, y:128, ok:false,
+        no:'평양에서도 만세 운동이 일어났지만, 독립 선언서가 처음 낭독된 곳은 아니다.' },
+      { id:'busan', name:'부산', x:162.3, y:236.3, ok:false,
+        no:'부산은 만세 운동이 시작된 곳이 아니다. 더 북쪽, 수도를 생각해 보자.' }
+    ],
+    q:{ q:'충청남도 아우내 장터에서 만세 운동을 이끌다 감옥에서 순국한 인물은?',
+        opts:['유관순','신사임당','장영실','허준'], a:0,
+        expl:'정답! 유관순은 아우내 장터 만세 운동을 이끌었고, 감옥에서도 만세를 부르다 순국했다. 3·1 운동 뒤에는 중국 상하이에 대한민국 임시정부가 세워졌다.' },
+    success:{ t:'🗝 3·1 운동 정리',
+      d:'1919년 3월 1일 서울 탑골 공원에서 시작 → 전국과 나라 밖으로 확산 → 그 힘을 모아 중국 상하이에 대한민국 임시정부 수립.' },
+    note:'📢 [저항] 1919.3.1 서울 탑골 공원에서 시작된 3·1 운동이 전국으로 퍼졌고, 그 뒤 대한민국 임시정부가 세워졌다.',
+    hints:['만세 운동이 일어난 날짜를 떠올려 보자.','3월 1일 → 0301이다.']
+  },
+  {
+    id:4, title:'🏔 만주의 새벽', sub:'국경 너머에서 이어진 싸움', img:'img/room4.jpg',
+    type:'order', code:'1920',
+    lockTitle:'독립군 야영지 상자', lockHint:'암호: 봉오동·청산리에서 크게 이긴 해 (네 자리)',
+    story:[
+      {s:'나', t:'여기는… 우리나라가 아니야. 눈 덮인 산과 자작나무 숲.'},
+      {s:'의문의 목소리', t:'만주다. 나라 안에서 싸우기 어려워지자 많은 이들이 국경을 넘었다.'},
+      {s:'나', t:'추운 곳에서도 포기하지 않았구나.'},
+      {s:'의문의 목소리', t:'그들이 걸어온 순서를 맞춰 보아라.'}
+    ],
+    order:[
+      { t:'봉오동 전투 (1920. 6.)', d:'홍범도가 이끈 독립군이 봉오동에서 일본군을 크게 무찔렀다.' },
+      { t:'청산리 대첩 (1920. 10.)', d:'김좌진과 홍범도의 부대가 청산리 일대에서 큰 승리를 거두었다.' },
+      { t:'한인 애국단의 의거 (1932)', d:'김구가 조직한 한인 애국단의 이봉창·윤봉길이 의거를 일으켰다.' },
+      { t:'한국광복군 창설 (1940)', d:'대한민국 임시정부가 정식 군대인 한국광복군을 만들었다.' }
+    ],
+    success:{ t:'🗝 무장 독립 투쟁 정리',
+      d:'1920년 봉오동 전투·청산리 대첩의 승리 → 1932년 한인 애국단의 의거 → 1940년 대한민국 임시정부의 한국광복군 창설.' },
+    note:'🏔 [저항] 1920년 봉오동 전투와 청산리 대첩 → 1932년 한인 애국단 의거 → 1940년 한국광복군 창설로 무장 독립 투쟁이 이어졌다.',
+    hints:['가장 먼저 일어난 두 전투는 같은 해에 있었다.','봉오동·청산리가 있었던 해, 1920이다.']
+  },
+  {
+    id:5, title:'🕯 이름을 지운 시대, 그리고 광복', sub:'말과 이름까지 빼앗으려 하다', img:'img/room5.jpg',
+    type:'ox', code:'0815',
+    lockTitle:'해방의 문', lockHint:'암호: 광복을 맞이한 날 (월월일일, 네 자리)',
+    story:[
+      {s:'나', t:'교실인데… 우리말 책이 하나도 없어.'},
+      {s:'의문의 목소리', t:'전쟁이 커지자 일제는 우리말과 이름, 그리고 사람까지 빼앗아 갔다.'},
+      {s:'나', t:'이름까지…?'},
+      {s:'의문의 목소리', t:'그래도 우리는 지켜 냈다. 마지막 다섯 물음에 답하라.'}
+    ],
+    ox:[
+      { q:'일제는 우리말 대신 일본어를 쓰게 하고, 성과 이름까지 일본식으로 바꾸도록 강요했다.', a:'O',
+        e:'맞다. 이를 창씨개명이라 하며, 학교에서 우리말을 쓰지 못하게 했다.' },
+      { q:'일제는 우리 민족에게 신사에 참배하도록 강요했다.', a:'O',
+        e:'맞다. 신사 참배를 강요하며 우리 민족의 정신을 없애려 했다.' },
+      { q:'전쟁이 커지자 일제는 청년들을 전쟁터로, 사람들을 공장과 탄광으로 강제로 끌고 갔다.', a:'O',
+        e:'맞다. 많은 사람들이 강제로 동원되어 고통을 겪었다.' },
+      { q:'광복은 우리 민족의 노력과 상관없이 그냥 주어진 것이다.', a:'X',
+        e:'아니다. 3·1 운동, 임시정부, 무장 독립 투쟁, 우리말을 지킨 노력 등 수많은 사람들의 힘이 모여 이룬 결과이다.' },
+      { q:'1945년 8월 15일, 우리 민족은 마침내 광복을 맞이했다.', a:'O',
+        e:'맞다. 35년 만에 되찾은 나라, 그날을 광복절로 기념한다.' }
+    ],
+    success:{ t:'', d:'' },
+    note:'🕯 [광복] 민족 말살 통치(창씨개명·신사 참배·강제 동원)를 견디고, 1945년 8월 15일 광복을 맞이했다.',
+    hints:['광복절이 언제인지 떠올려 보자.','8월 15일 → 0815이다.']
+  }
+];
+
+const TIMELINE = [
+  ['1905', '을사늑약 — 대한제국의 <b>외교권</b>을 빼앗김'],
+  ['1907', '헤이그 특사 좌절 → 고종 강제 퇴위, 대한제국 <b>군대 해산</b>'],
+  ['1910', '국권 피탈 — <b>조선 총독부</b> 설치, 무단 통치 시작'],
+  ['1910년대', '헌병 경찰 · <b>토지 조사 사업</b> · 회사령으로 감시와 수탈'],
+  ['1919. 3. 1.', '<b>3·1 운동</b> — 서울 탑골 공원에서 시작해 전국으로 확산'],
+  ['1919', '중국 상하이에 <b>대한민국 임시정부</b> 수립'],
+  ['1920', '<b>봉오동 전투 · 청산리 대첩</b> 승리'],
+  ['1932', '한인 애국단 — 이봉창 · <b>윤봉길</b> 의거'],
+  ['1930년대 후반~', '민족 말살 통치 — <b>창씨개명</b> · 신사 참배 · 강제 동원'],
+  ['1940', '대한민국 임시정부, <b>한국광복군</b> 창설'],
+  ['1945. 8. 15.', '<b>광복</b> — 35년 만에 되찾은 나라']
+];
+
+/* ══════════════ 상태 ══════════════ */
+let cur = 0, notes = [], hints = 0, t0 = Date.now(), solved = false;
+const $ = s => document.querySelector(s);
+const esc = s => String(s==null?'':s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+// docs/story 등에서 <u> 강조를 쓰기 위해 신뢰된 문자열은 그대로 사용
+const raw = s => String(s==null?'':s);
+
+/* 타이머 · 진행 도트 */
+setInterval(()=>{
+  const s = Math.floor((Date.now()-t0)/1000);
+  $('#timer').textContent = '⏱ ' + String(Math.floor(s/60)).padStart(2,'0') + ':' + String(s%60).padStart(2,'0');
+}, 1000);
+function paintDots(){
+  $('#dots').innerHTML = ROOMS.map((_,i)=>`<i class="${i<cur?'on':''}"></i>`).join('');
+}
+
+/* 학습 노트 */
+function addNote(txt){
+  if(!txt || notes.includes(txt)) return;
+  notes.push(txt);
+  $('#notesList').innerHTML = notes.map(n=>`<div class="note">${raw(n)}</div>`).join('');
+}
+$('#notesList').innerHTML = '<div class="note" style="border-left-color:#3a2f22;color:var(--dim)">아직 기록이 없어요. 방을 탐험하며 단서를 찾아보세요!</div>';
+
+/* 서랍 */
+function openDrawer(id){ $('#scrim').classList.add('on'); $(id).classList.add('open'); }
+function closeDrawers(){ $('#scrim').classList.remove('on'); document.querySelectorAll('.drawer').forEach(d=>d.classList.remove('open')); }
+$('#scrim').onclick = closeDrawers;
+document.querySelectorAll('[data-close]').forEach(b=>b.onclick=closeDrawers);
+$('#btnNotes').onclick = ()=>openDrawer('#drawerNotes');
+$('#btnNotes2').onclick = ()=>openDrawer('#drawerNotes');
+$('#btnTube').onclick = ()=>openDrawer('#drawerTube');
+
+/* 영상 모달 (youtube-nocookie · 광고/추천 최소화) */
+function playVideo(id){
+  $('#videoFrame').src = `https://www.youtube-nocookie.com/embed/${id}?rel=0&modestbranding=1&playsinline=1&autoplay=1`;
+  $('#videoModal').classList.add('on');
+}
+function closeVideo(){ $('#videoFrame').src=''; $('#videoModal').classList.remove('on'); }
+$('#btnCloseVideo').onclick = closeVideo;
+$('#videoModal').onclick = e => { if(e.target.id==='videoModal') closeVideo(); };
+
+/* 학습 영상 목록 (videos.json → CI가 검증한 것만 들어옴) */
+fetch('videos.json').then(r=>r.ok?r.json():[]).then(list=>{
+  if(!Array.isArray(list) || !list.length){
+    $('#tubeList').innerHTML = '<div class="note" style="border-left-color:#3a2f22;color:var(--dim)">아직 등록된 영상이 없습니다.</div>';
+    return;
+  }
+  $('#tubeList').innerHTML = list.map(v=>`
+    <button class="vid" data-id="${esc(v.id)}">
+      <img src="https://i.ytimg.com/vi/${esc(v.id)}/mqdefault.jpg" alt="" loading="lazy">
+      <span><span class="vt">${esc(v.title)}</span><span class="va">${esc(v.author||'')}</span></span>
+    </button>`).join('');
+  document.querySelectorAll('.vid').forEach(b=>b.onclick=()=>playVideo(b.dataset.id));
+}).catch(()=>{});
+
+/* ══════════════ 스토리 재생 ══════════════ */
+function runStory(el, lines, done){
+  let i = 0;
+  function show(){
+    if(i >= lines.length){ el.innerHTML = `<div class="spk">${esc(lines[lines.length-1].s)}</div><div class="line">${raw(lines[lines.length-1].t)}</div>`; done && done(); return; }
+    const l = lines[i];
+    el.innerHTML = `<div class="spk">${esc(l.s)}</div><div class="line">${raw(l.t)}</div>` +
+                   (i < lines.length-1 ? '<div class="next">계속</div>' : '');
+    i++;
+    if(i >= lines.length) done && done();
+  }
+  el.onclick = show;
+  show();
+}
+runStory($('#introStory'), [
+  {s:'안내 방송', t:'관람 시간이 종료되었습니다. 출구는 저쪽입니다…'},
+  {s:'나', t:'어? 문이 안 열려. 여긴 「일제강점기 특별 전시실」인데…'},
+  {s:'의문의 목소리', t:'이 방을 나가려면 빼앗긴 35년의 기억을 되찾아야 한다. 다섯 개의 방, 다섯 개의 자물쇠. 준비되었는가?'}
+]);
+$('#btnStart').onclick = ()=>{ cur = 0; renderRoom(); };
+
+/* ══════════════ 방 렌더 ══════════════ */
+function show(id){ document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active')); $(id).classList.add('active'); window.scrollTo({top:0}); }
+
+function renderRoom(){
+  const r = ROOMS[cur];
+  paintDots();
+  solved = false;
+  const el = $('#s-room');
+  el.innerHTML = `
+    <div class="hero">
+      <img src="${r.img}" alt="" onerror="this.remove()">
+      <div class="h-in"><h2>${esc(r.title)}</h2><p>${esc(r.sub)}</p></div>
+    </div>
+    <div class="story" id="roomStory"></div>
+    <div id="puzzle"></div>
+    <div class="lock" id="lockBox" style="display:none">
+      <h3>🔒 ${esc(r.lockTitle)}</h3>
+      <p>${esc(r.lockHint)}</p>
+      <div class="in">
+        <input id="codeIn" maxlength="4" inputmode="numeric" placeholder="0000">
+        <button class="btn" id="btnUnlock">열기</button>
+        <button class="btn ghost" id="btnHint">💡 힌트</button>
+      </div>
+      <div class="msg" id="lockMsg"></div>
+    </div>`;
+  show('#s-room');
+  runStory($('#roomStory'), r.story, ()=>renderPuzzle(r));
+  $('#btnUnlock').onclick = tryUnlock;
+  $('#btnHint').onclick = ()=>{
+    hints++; $('#hintCount').textContent = '💡 ' + hints;
+    const h = r.hints[Math.min(hints-1, r.hints.length-1)];
+    $('#lockMsg').className = 'msg'; $('#lockMsg').textContent = '💡 ' + h;
+  };
+  $('#codeIn') && ($('#codeIn').onkeydown = e => { if(e.key==='Enter') tryUnlock(); });
+}
+
+function openLock(){ $('#lockBox').style.display='block'; $('#lockBox').scrollIntoView({behavior:'smooth',block:'center'}); }
+
+function tryUnlock(){
+  const r = ROOMS[cur], v = ($('#codeIn').value||'').trim();
+  const m = $('#lockMsg');
+  if(v === r.code){
+    m.className='msg ok'; m.textContent='✅ 잠금 해제!';
+    addNote(r.note);
+    if(r.success && r.success.t){
+      $('#puzzle').insertAdjacentHTML('beforeend',
+        `<div class="q" style="border-color:var(--green)"><div class="qt" style="color:var(--green)">${esc(r.success.t)}</div><div class="expl">${raw(r.success.d)}</div></div>`);
+    }
+    setTimeout(()=>{
+      cur++;
+      if(cur >= ROOMS.length){ renderEnd(); } else { renderRoom(); }
+    }, 900);
+  } else {
+    m.className='msg no'; m.textContent='❌ 맞지 않는 암호입니다. 단서를 다시 살펴보세요.';
+  }
+}
+
+/* ── 퍼즐: 문서 퀴즈 ── */
+function pzDocs(r){
+  const box = $('#puzzle'); let done = 0;
+  box.innerHTML = `<div class="grid" id="docGrid"></div><div id="docView"></div>`;
+  const grid = $('#docGrid');
+  r.docs.forEach((d,i)=>{
+    const b = document.createElement('button');
+    b.className='clue'; b.innerHTML = `<div class="c-t">${esc(d.t)}</div><div class="c-s">${esc(d.s)}</div><span class="badge">읽기</span>`;
+    b.onclick = ()=>openDoc(d,i,b);
+    grid.appendChild(b);
+  });
+  function openDoc(d,i,btn){
+    $('#docView').innerHTML = `
+      <div class="q">
+        <div class="expl" style="margin-bottom:12px">${raw(d.story)}</div>
+        <div class="qt">${raw(d.q)}</div>
+        <div class="opts">${d.opts.map((o,j)=>`<button class="opt" data-j="${j}">${esc(o)}</button>`).join('')}</div>
+        <div id="docExpl"></div>
+      </div>`;
+    $('#docView').scrollIntoView({behavior:'smooth',block:'center'});
+    document.querySelectorAll('#docView .opt').forEach(o=>{
+      o.onclick = ()=>{
+        const j = +o.dataset.j;
+        document.querySelectorAll('#docView .opt').forEach(x=>x.style.pointerEvents='none');
+        if(j === d.a){
+          o.classList.add('ok');
+          $('#docExpl').innerHTML = `<div class="expl">${raw(d.expl)}<br><b style="color:var(--gold)">${raw(d.reveal)}</b></div>`;
+          if(!btn.classList.contains('done')){
+            btn.classList.add('done'); btn.querySelector('.badge').textContent='해독 완료'; done++;
+            addNote(d.note);
+            if(done === r.docs.length) openLock();
+          }
+        } else {
+          o.classList.add('no');
+          $('#docExpl').innerHTML = `<div class="expl">다시 생각해 보자. ${raw(d.expl)}</div>`;
+          setTimeout(()=>document.querySelectorAll('#docView .opt').forEach(x=>{x.style.pointerEvents='';x.classList.remove('no');}), 1200);
+        }
+      };
+    });
+  }
+}
+
+/* ── 퍼즐: 짝 맞추기 ── */
+function pzPairs(r){
+  const box = $('#puzzle');
+  const terms = r.pairs.map((p,i)=>({...p,i}));
+  const defs = terms.slice().sort(()=>Math.random()-0.5);
+  box.innerHTML = `<div class="q"><div class="qt">정책과 설명을 짝지어 보세요.</div>
+    <div class="pairs">
+      <div class="pcol" id="colT">${terms.map(p=>`<button class="pit" data-i="${p.i}">${esc(p.term)}</button>`).join('')}</div>
+      <div class="pcol" id="colD">${defs.map(p=>`<button class="pit" data-i="${p.i}">${esc(p.def)}</button>`).join('')}</div>
+    </div><div id="pairMsg" class="expl" style="display:none"></div></div>`;
+  let selT = null, matched = 0;
+  function clearSel(){ document.querySelectorAll('#colT .pit').forEach(x=>x.classList.remove('sel')); }
+  document.querySelectorAll('#colT .pit').forEach(b=> b.onclick = ()=>{ clearSel(); b.classList.add('sel'); selT = b; });
+  document.querySelectorAll('#colD .pit').forEach(b=> b.onclick = ()=>{
+    if(!selT){ $('#pairMsg').style.display='block'; $('#pairMsg').textContent='왼쪽에서 정책을 먼저 고르세요.'; return; }
+    if(selT.dataset.i === b.dataset.i){
+      selT.classList.add('done'); b.classList.add('done'); clearSel(); selT=null; matched++;
+      $('#pairMsg').style.display='block'; $('#pairMsg').textContent = `✅ 잘했어요! (${matched}/${r.pairs.length})`;
+      if(matched === r.pairs.length){ $('#pairMsg').innerHTML='✅ 네 가지를 모두 짝지었습니다. 서류함이 열렸어요.'; openLock(); }
+    } else {
+      $('#pairMsg').style.display='block'; $('#pairMsg').textContent='❌ 다시 살펴보세요.';
+    }
+  });
+}
+
+/* ── 퍼즐: 지도 + 인물 퀴즈 ── */
+function pzMap(r){
+  const box = $('#puzzle');
+  box.innerHTML = `<div class="mapwrap">
+      <div style="font-size:14px;margin-bottom:8px">만세 운동이 <b style="color:var(--gold)">처음 시작된 곳</b>을 지도에서 찾아 눌러 보세요.</div>
+      <svg viewBox="0 0 260 300" xmlns="http://www.w3.org/2000/svg">
+        <path class="mapland" d="M146.474,139.731L145.666,140.18L144.293,142.57L143.082,145.654L141.871,147.293L140.417,148.187L138.964,148.733L135.895,148.981L133.23,148.783L132.342,148.435L128.627,148.634L127.577,148.832L122.248,148.634L119.421,148.882L117.645,149.428L115.868,150.667L114.253,152.551L112.88,154.531L110.135,158.141L108.116,159.918L108.116,162.434L108.116,163.223L107.389,163.765L107.147,163.519L106.016,163.321L101.494,161.004L97.779,162.434L96.81,164.258L95.841,164.849L94.307,161.251L91.884,161.152L88.008,157.943L86.312,158.585L85.909,159.869L83.809,162.829L80.821,165.193L79.852,165.538L78.802,165.39L78.964,164.701L77.753,161.99L73.069,160.905L71.373,159.77L70.485,159.474L75.088,156.46L76.299,155.916L75.411,155.224L74.442,154.878L70.646,155.323L68.708,154.333L65.801,154.68L63.863,153.888L67.981,150.915L68.143,149.13L68.062,147.79L70.162,143.814L72.261,141.624L77.672,138.534L80.094,138.086L81.79,138.235L83.163,137.936L81.71,136.738L80.256,136.189L77.43,136.289L74.522,134.491L74.28,132.591L79.933,120.552L80.014,119.444L79.125,116.523L78.883,113.647L74.765,111.98L72.988,111.778L67.82,108.542L65.72,106.871L64.913,107.377L64.751,109.958L64.025,110.565L62.652,111.071L61.925,108.086L60.794,105.959L57.403,103.728L56.111,102.56L56.757,99.919L56.434,99.716L56.999,96.765L59.099,94.473L64.267,90.442L65.64,88.551L68.304,86.301L69.435,86.352L70.727,86.147L71.05,85.174L71.373,84.406L72.423,83.74L74.926,82.459L77.833,80.868L80.094,80.406L82.921,77.941L84.051,76.861L85.263,76.861L85.505,76.347L86.232,75.112L87.12,74.288L88.331,74.134L90.35,73.516L92.934,73.155L94.711,71.093L95.276,69.597L96.407,67.996L98.91,66.239L100.525,63.6L102.463,60.75L103.351,59.817L104.159,59.661L104.724,58.572L105.289,55.507L106.178,52.593L106.662,51.187L108.843,49.623L109.408,48.892L109.892,48.632L110.861,48.84L112.154,47.953L113.446,46.961L114.576,47.327L115.787,48.11L116.999,49.779L117.564,51.082L118.533,52.176L118.695,53.738L119.664,54.466L121.682,54.779L125.074,55.87L127.254,55.922L128.466,56.754L131.05,57.169L136.218,56.546L138.318,56.91L139.206,57.897L140.579,58.727L141.386,58.779L142.517,57.377L143.809,55.195L144.616,53.53L144.536,52.176L143.809,50.717L142.113,49.414L140.982,47.327L139.933,45.185L139.287,44.453L138.802,43.407L138.721,41.837L139.044,40.737L141.628,40.003L144.939,39.584L147.604,40.056L152.126,39.741L154.872,39.112L156.891,39.217L158.748,39.217L159.636,38.273L162.221,36.069L163.513,35.281L164.885,33.756L165.128,32.178L165.37,30.915L166.177,29.545L167.55,27.858L168.681,27.067L169.973,27.173L171.346,27.964L172.234,28.702L173.203,28.491L174.011,27.173L174.576,26.909L176.11,26.803L176.595,25.959L177.241,22.048L177.806,18.924L177.967,16.803L179.34,13.192L179.825,11.011L180.632,10L181.601,10.053L182.409,10.692L183.378,11.065L184.751,10.745L185.72,11.277L186.285,12.448L188.304,13.245L188.465,13.83L188.465,17.758L189.515,19.559L190.969,21.201L192.988,22.735L194.118,23.053L194.764,24.11L195.329,25.959L196.783,27.753L197.51,29.071L197.671,30.441L198.317,31.231L197.187,32.073L195.652,31.547L193.149,31.231L190,33.914L188.223,34.808L186.931,37.434L184.428,39.007L183.055,40.632L181.278,43.459L180.148,46.23L177.483,49.049L175.868,52.541L175.787,55.559L177.483,58.623L177.644,61.269L176.433,66.652L177.16,72.33L176.352,74.546L168.116,78.455L166.016,80.355L162.947,85.379L159.233,87.222L156.972,89.267L153.822,90.493L151.723,94.014L149.542,96.001L146.877,97.223L144.859,98.75L140.417,98.851L137.268,99.919L135.087,102.865L128.385,106.212L127.416,108.693L127.9,112.587L127.9,115.514L127.335,117.984L125.882,117.279L125.074,118.085L124.186,120.3L124.509,122.865L126.77,123.719L128.627,124.723L131.292,125.276L133.23,126.48L137.429,131.841L140.821,134.191L141.709,135.04L143.647,136.239L145.424,138.086ZM68.627,113.344L67.335,114.202L67.335,112.688L68.304,111.425L69.274,111.273Z"/><path class="mapland" d="M107.389,163.765L108.116,163.223L108.116,162.434L108.116,159.918L110.135,158.141L112.88,154.531L114.253,152.551L115.868,150.667L117.645,149.428L119.421,148.882L122.248,148.634L127.577,148.832L128.627,148.634L132.342,148.435L133.23,148.783L135.895,148.981L138.964,148.733L140.417,148.187L141.871,147.293L143.082,145.654L144.293,142.57L145.666,140.18L146.474,139.731L151.965,152.551L157.133,160.757L161.655,166.719L168.035,178.103L169.892,184.162L170.054,187.916L171.103,193.074L170.215,195.987L170.457,200.641L170.054,203.012L169.327,204.753L169.246,208.134L169.488,209.918L169.569,212.28L170.054,213.195L170.78,213.532L171.911,212.665L173.365,212.328L173.122,215.168L171.346,222.371L169.892,227.591L167.873,232.13L165.289,236.279L162.221,237.899L160.04,238.517L155.922,238.708L152.449,237.994L149.542,238.517L148.331,239.374L147.443,240.848L148.089,243.129L148.008,244.839L146.716,244.696L144.213,243.699L141.467,243.604L140.175,243.082L138.883,240.658L137.51,240.753L135.168,242.227L131.615,242.512L130.404,243.319L130,244.317L130.485,245.551L132.261,247.211L131.696,248.917L129.838,249.769L128.304,247.685L127.335,245.645L126.285,245.551L124.67,246.12L124.347,248.301L125.155,249.817L126.366,251.521L124.59,253.508L124.186,254.926L122.894,255.918L119.502,253.697L119.987,252.089L121.44,250.527L121.682,248.917L121.198,247.969L116.272,252.042L113.284,256.579L111.75,256.248L111.023,255.067L110.135,254.595L106.905,257.57L106.259,259.882L105.128,259.976L104.563,258.986L104.563,256.862L103.997,255.115L100.687,252.467L99.152,250.196L99.96,248.917L102.705,249.627L104.966,249.533L104.482,248.443L103.755,247.922L105.289,247.353L106.501,246.072L105.451,245.74L103.917,246.452L102.625,246.12L102.14,243.129L100.525,240.04L99.718,237.041L101.252,235.326L102.059,232.655L103.513,228.786L104.24,227.495L106.259,226.586L106.985,225.581L105.855,225.054L104.078,224.623L104.159,223.474L105.37,222.899L106.662,221.652L109.246,220.117L110.054,217.283L109.327,216.562L107.712,215.889L108.116,214.446L108.762,213.339L108.52,212.665L106.582,210.834L105.289,209.099L105.693,207.168L105.37,204.27L105.532,201.803L105.451,200.447L104.563,197.443L104.159,194.385L102.867,194.871L101.898,195.599L98.345,194.531L97.214,194.482L96.81,192.199L98.022,189.426L101.09,186.991L102.786,186.698L104.078,185.626L106.178,185.284L108.6,186.942L110.781,187.283L111.992,190.156L112.719,190.74L112.88,189.669L114.657,188.452L115.061,187.527L114.738,186.991L112.719,186.503L110.861,182.942L110.619,181.379L109.892,180.402L110.942,177.516L108.843,174.233L107.793,173.204L107.954,170.308L106.824,168.391L106.178,167.359L105.855,165.587L106.178,164.799L107.147,164.504ZM154.711,246.784L152.53,248.49L149.704,246.215L149.058,244.981L151.157,243.129L153.015,241.039L154.226,240.896ZM139.529,246.594L139.287,249.248L137.672,249.391L136.783,247.685L135.733,248.49L135.249,248.538L134.441,246.404L134.28,244.696L136.137,243.462L137.268,244.222L138.883,244.601ZM98.425,258.467L96.972,258.891L96.164,257.948L95.599,257.665L95.922,256.437L98.264,254.028L98.748,253.224L100.929,253.697L101.736,254.973L100.687,256.957ZM104.886,165.046L104.724,168.784L103.513,168.588L102.705,168.244L102.302,167.506L101.494,164.011L102.382,162.582L104.24,163.716ZM110.054,259.174L110.458,260.447L108.681,260.212L107.712,258.986L107.793,257.901L108.923,257.759ZM133.553,251.805L133.311,252.657L132.18,251.379L133.311,249.959ZM102.544,200.011L102.221,201.851L100.767,200.641L100.364,196.666L101.898,197.83ZM97.053,248.633L96.73,249.296L95.761,249.106L94.792,247.211L94.388,245.74L93.338,244.886L94.953,243.604L96.972,245.93ZM203.485,172.32L202.436,173.204L201.224,172.32L201.063,171.437L201.709,170.701L203.162,170.209L203.889,170.897ZM100.525,289.395L99.475,290L98.587,289.628L98.345,289.348L97.214,287.812L96.891,287.02L97.699,285.528L100.767,283.056L108.762,280.674L110.215,280.58L113.365,281.561L114.092,283.522L113.526,285.155L112.8,286.274L109.085,288.138L106.259,289.022Z"/>
+        ${r.spots.map(s=>`<g class="spot" data-id="${s.id}"><circle cx="${s.x}" cy="${s.y}" r="7"/><text x="${s.x+12}" y="${s.y+4}">${esc(s.name)}</text></g>`).join('')}
+      </svg>
+      <div id="mapMsg" class="expl" style="display:none;text-align:left"></div>
+    </div><div id="mapQ"></div>`;
+  document.querySelectorAll('.spot').forEach(g=>{
+    g.onclick = ()=>{
+      const s = r.spots.find(x=>x.id===g.dataset.id);
+      const m = $('#mapMsg'); m.style.display='block';
+      if(s.ok){
+        g.classList.add('ok'); m.innerHTML = raw(s.yes);
+        document.querySelectorAll('.spot').forEach(x=>x.style.pointerEvents='none');
+        askQ();
+      } else { m.textContent = s.no; }
+    };
+  });
+  function askQ(){
+    $('#mapQ').innerHTML = `<div class="q"><div class="qt">${raw(r.q.q)}</div>
+      <div class="opts">${r.q.opts.map((o,j)=>`<button class="opt" data-j="${j}">${esc(o)}</button>`).join('')}</div>
+      <div id="mapQE"></div></div>`;
+    $('#mapQ').scrollIntoView({behavior:'smooth',block:'center'});
+    document.querySelectorAll('#mapQ .opt').forEach(o=>{
+      o.onclick = ()=>{
+        const j = +o.dataset.j;
+        if(j === r.q.a){
+          o.classList.add('ok');
+          document.querySelectorAll('#mapQ .opt').forEach(x=>x.style.pointerEvents='none');
+          $('#mapQE').innerHTML = `<div class="expl">${raw(r.q.expl)}</div>`;
+          openLock();
+        } else { o.classList.add('no'); setTimeout(()=>o.classList.remove('no'),900); }
+      };
+    });
+  }
+}
+
+/* ── 퍼즐: 순서 맞추기 ── */
+function pzOrder(r){
+  const box = $('#puzzle');
+  const shuffled = r.order.map((o,i)=>({...o,i})).sort(()=>Math.random()-0.5);
+  let picked = [];
+  box.innerHTML = `<div class="q"><div class="qt">일어난 순서대로 눌러 보세요.</div>
+    <div class="order" id="orderList">${shuffled.map(o=>`<button class="oi" data-i="${o.i}"><span class="n">?</span><span><span class="t">${esc(o.t)}</span><br><span class="d">${esc(o.d)}</span></span></button>`).join('')}</div>
+    <div id="orderMsg" class="expl" style="display:none"></div></div>`;
+  document.querySelectorAll('#orderList .oi').forEach(b=>{
+    b.onclick = ()=>{
+      if(b.classList.contains('picked')) return;
+      b.classList.add('picked'); picked.push(+b.dataset.i);
+      b.querySelector('.n').textContent = picked.length;
+      if(picked.length === r.order.length){
+        const ok = picked.every((v,i)=>v===i);
+        const m = $('#orderMsg'); m.style.display='block';
+        if(ok){ m.innerHTML='✅ 정확한 순서입니다! 상자가 열렸어요.'; openLock(); }
+        else {
+          m.innerHTML='❌ 순서가 맞지 않아요. 다시 해 봅시다.';
+          setTimeout(()=>{ picked=[]; document.querySelectorAll('#orderList .oi').forEach(x=>{x.classList.remove('picked');x.querySelector('.n').textContent='?';}); m.style.display='none'; }, 1400);
+        }
+      }
+    };
+  });
+}
+
+/* ── 퍼즐: OX ── */
+function pzOX(r){
+  const box = $('#puzzle');
+  box.innerHTML = `<div class="q"><div class="qt">다섯 물음에 O 또는 X로 답하세요.</div>
+    <div class="ox">${r.ox.map((o,i)=>`
+      <div class="oxq"><div class="t">${i+1}. ${esc(o.q)}</div>
+        <div class="oxb"><button data-i="${i}" data-v="O">O</button><button data-i="${i}" data-v="X">X</button></div>
+        <div class="expl" id="oxe${i}" style="display:none"></div></div>`).join('')}</div>
+    <div id="oxMsg" class="expl" style="display:none"></div></div>`;
+  let right = 0; const answered = new Set();
+  document.querySelectorAll('.oxb button').forEach(b=>{
+    b.onclick = ()=>{
+      const i = +b.dataset.i;
+      if(answered.has(i)) return;
+      const o = r.ox[i];
+      if(b.dataset.v === o.a){
+        b.classList.add('ok'); answered.add(i); right++;
+        $('#oxe'+i).style.display='block'; $('#oxe'+i).textContent = o.e;
+        document.querySelectorAll(`.oxb button[data-i="${i}"]`).forEach(x=>x.style.pointerEvents='none');
+        if(right === r.ox.length){ $('#oxMsg').style.display='block'; $('#oxMsg').innerHTML='✅ 모두 맞혔습니다! 해방의 문이 열립니다.'; openLock(); }
+      } else {
+        b.classList.add('no'); setTimeout(()=>b.classList.remove('no'), 800);
+      }
+    };
+  });
+}
+
+function renderPuzzle(r){
+  ({docs:pzDocs, pairs:pzPairs, map:pzMap, order:pzOrder, ox:pzOX})[r.type](r);
+}
+
+/* ── 엔딩 ── */
+function renderEnd(){
+  paintDots();
+  $('#timeline').innerHTML = TIMELINE.map(([d,e])=>`<div class="tl"><div class="d">${esc(d)}</div><div class="e">${raw(e)}</div></div>`).join('');
+  show('#s-end');
+}
+paintDots();
+</script>
+</body>
+</html>
