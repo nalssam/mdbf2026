@@ -135,6 +135,25 @@ jobs:
           done
           ls -la "$out"
 
+      - name: Fetch 5-2-3 visual-thinking doodles
+        run: |
+          set -euo pipefail
+          jq -e 'has("visual523_images")' assets/sources.json >/dev/null || { echo "no visual523_images"; exit 0; }
+          IM=$(command -v magick || command -v convert)
+          out=public/social/units/5-2-3/visual/img
+          mkdir -p "$out"
+          tmp=$(mktemp -d)
+          for name in $(jq -r '.visual523_images | keys[]' assets/sources.json); do
+            if [ -f "$out/$name" ]; then echo "skip existing $name"; continue; fi
+            url=$(jq -r ".visual523_images[\"${name}\"]" assets/sources.json)
+            echo "downloading doodle $name"
+            curl -sSfL --retry 3 -o "$tmp/src" "$url"
+            # 옅은 회색 배경을 흰색으로 밀어낸 뒤 여백 트림 → 480px 박스에 맞춤 (선화라 흰 배경 유지)
+            "$IM" "$tmp/src" -colorspace sRGB -level 0%,80% -fuzz 18% -trim +repage \
+              -bordercolor white -border 10 -resize 480x480 -quality 88 -strip "$out/$name"
+          done
+          ls -la "$out"
+
       - name: Verify and build 5-2-3 YouTube list
         run: |
           set -euo pipefail
