@@ -108,8 +108,16 @@ window.MDBF_CURRICULUM = {
               href:   "units/5-2-3/escape/",
               note:   "빼앗긴 이름, 되찾은 나라 — 일제강점기 스토리텔링 방탈출"
             },
-            visual: { status: "준비중" },
-            craft:  { status: "준비중" }
+            visual: {
+              status: "ready",
+              href:   "units/5-2-3/visual/",
+              note:   "나라를 빼앗기고, 되찾기까지 — 비주얼싱킹 학습지 (A4 가로 2쪽 · PDF)"
+            },
+            craft:  {
+              status: "ready",
+              href:   "units/5-2-3/craft/",
+              note:   "탑골 공원 팔각정 — 입체 페이퍼크래프트 도안 (A4 2쪽 · PDF)"
+            }
           }
         },
         // ★ 6·25 세트 — 3종(방탈출·비주얼싱킹·페이퍼크래프트) 모두 공개
