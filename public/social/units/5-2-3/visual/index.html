@@ -1,0 +1,327 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>일제의 침략과 광복을 위한 노력 비주얼싱킹 학습지 (5-2-3)</title>
+<meta name="description" content="국권 침탈부터 3·1 운동, 무장 독립 투쟁, 광복까지를 그림과 빈칸으로 정리하는 비주얼싱킹 학습지 (A4 가로 2쪽, 몽당분필 날쌤)">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;700;900&family=Gaegu:wght@700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../../../templates/print/print-base.css?v=2">
+<style>
+/* ══ 가로 A4 (297×210mm) — 비주얼싱킹 학습지 ══ */
+@page { size: A4 landscape; margin: 0; }
+.a4-page { width: 297mm; height: 210mm; padding: 8mm; }
+.a4-page .pc { position: absolute; inset: 8mm; }
+.abs { position: absolute; }
+
+/* ── 머리띠 ── */
+.vh-unit { display: flex; align-items: center; gap: 3mm; }
+.vh-unit .vh-flower { font-size: 12pt; line-height: 1; }
+.vh-unit .vh-u {
+  font-size: 12pt; font-weight: 900; color: #e06aa0;
+  background: #fdeaf3; border-radius: 2mm; padding: 0.6mm 3mm;
+}
+.vh-unit .vh-mid { font-size: 12pt; font-weight: 900; color: #222; margin-left: auto; }
+.vh-unit .vh-name { font-size: 9.5pt; font-weight: 700; color: #333; margin-left: 6mm; white-space: nowrap; }
+.vh-unit .vh-name i { display: inline-block; width: 11mm; border-bottom: 0.35mm solid #333; font-style: normal; }
+.vh-dots { height: 1.2mm; margin: 1.6mm 0 2mm;
+  background: repeating-linear-gradient(90deg, #f4b9d4 0 3mm, transparent 3mm 6mm); }
+.vh-bar { display: flex; align-items: stretch; gap: 3mm; }
+.vh-goal {
+  flex: 1; background: #fdeaf3; border-radius: 2mm; padding: 1.4mm 4mm;
+  font-size: 9.5pt; font-weight: 700; color: #b93b78;
+}
+.vh-key {
+  background: #fff3d6; border-radius: 2mm; padding: 1.4mm 4mm;
+  font-size: 9.5pt; font-weight: 700; color: #8a6410; white-space: nowrap;
+}
+.vh-key b { color: #c8931d; letter-spacing: .6px; }
+
+/* ── 두들 카드 ── */
+.card {
+  position: absolute; border: 0.5mm solid #333; border-radius: 2.4mm;
+  background: #fff; padding: 2mm 2.4mm; text-align: center;
+}
+.card .c-img { display: block; margin: 0 auto 0.8mm; object-fit: contain; }
+.card .c-title {
+  display: inline-block; font-size: 9pt; font-weight: 900; color: #fff;
+  background: #5b6b80; border-radius: 6mm; padding: 0.4mm 3mm; margin-bottom: 1mm;
+}
+.card .c-title.pink { background: #e06aa0; }
+.card .c-title.gold { background: #d79a1c; }
+.card .c-title.blue { background: #4c7fbe; }
+.card .c-title.green { background: #4e9d78; }
+.card .c-title.plum { background: #8a6bbf; }
+.card p { font-size: 8pt; line-height: 1.5; text-align: left; margin-top: 0.6mm; }
+.card p.center { text-align: center; }
+.b { font-weight: 900; color: #111; }
+
+/* 빈칸 ( ) */
+.k { display: inline-block; min-width: 12mm; text-align: center; font-weight: 900; color: #111; }
+.k::before { content: "("; color: #111; font-weight: 700; }
+.k::after  { content: ")"; color: #111; font-weight: 700; }
+.k i { font-style: normal; color: transparent; padding: 0 1mm; }
+
+/* 화살표 */
+.arrow { position: absolute; }
+.arrow svg { display: block; }
+.ar-line { stroke: #8a93a3; stroke-width: 1.6; fill: none; }
+.ar-head { fill: #8a93a3; }
+
+/* ── 세로 연표 ── */
+.tlbox { position: absolute; text-align: center; }
+.vtl { width: 100%; height: auto; display: block; }
+.tl-axis { stroke: #c9a34a; stroke-width: 2.4; }
+.tl-tick { stroke: #c9a34a; stroke-width: 1.6; }
+.tl-dot  { fill: #fff; stroke: #c9a34a; stroke-width: 2.4; }
+.tl-pole { stroke: #333; stroke-width: 1.6; }
+.tl-flag { fill: #fff; stroke: #333; stroke-width: 1.6; }
+.tl-yr   { font-size: 12px; font-weight: 900; fill: #111; }
+.tl-ev   { font-size: 10px; font-weight: 700; fill: #333; }
+.tl-sub  { font-size: 8.4px; fill: #7c8794; }
+.tlbox .t-cap { font-size: 7.6pt; font-weight: 700; color: #8a6410; margin-bottom: 0.8mm; }
+.tlbox .t-cap2 { font-size: 7.2pt; color: #777; margin-top: 0.6mm; }
+
+/* ── 동아시아 지도 ── */
+.eamap { width: 100%; height: auto; display: block; }
+.ea-sea  { fill: #f2f7fb; }
+.ea-land { fill: #fff; stroke: #9aa6b4; stroke-width: 0.7; }
+.ea-kor  { fill: #fff; stroke: #111; stroke-width: 1.4; }
+.ea-dot  { fill: #fff; stroke: #d2492f; stroke-width: 1.6; }
+.ea-name { font-size: 7.6px; font-weight: 900; fill: #111;
+  paint-order: stroke fill; stroke: #fff; stroke-width: 2.4; stroke-linejoin: round; }
+.ea-note { font-size: 6.4px; font-weight: 700; fill: #d2492f;
+  paint-order: stroke fill; stroke: #fff; stroke-width: 2; stroke-linejoin: round; }
+.mapbox { position: absolute; text-align: center; }
+.mapbox .m-cap { font-size: 7.6pt; font-weight: 700; color: #555; margin-top: 0.6mm; }
+
+/* ── 정리 띠 ── */
+.summary {
+  position: absolute; border: 0.5mm dashed #b98; border-radius: 2.4mm;
+  background: #fffdf5; padding: 2mm 4mm; font-size: 8.4pt; line-height: 1.6;
+}
+.summary .s-t { font-weight: 900; color: #b07d15; margin-right: 2mm; }
+
+/* 화면 전용 정답 */
+.teacher-key {
+  max-width: 297mm; margin: 0 auto 30px; background: #141a2b; color: #e8ecf8;
+  border: 1px solid #2a3555; border-radius: 12px; padding: 4px 18px 14px;
+}
+.teacher-key summary { cursor: pointer; font-weight: 700; padding: 10px 0; color: #f5c04e; }
+.teacher-key li { margin: 4px 0 4px 18px; font-size: 14px; line-height: 1.6; }
+</style>
+</head>
+<body>
+
+<nav class="print-toolbar no-print">
+  <span class="tb-title">🎨 일제의 침략과 광복을 위한 노력 — 비주얼싱킹 학습지 (A4 <b>가로</b> 2쪽)</span>
+  <a class="ghost" href="../../../#/grade/5">← 자료실로</a>
+  <a href="visual.pdf" download>⬇ PDF 다운로드</a>
+  <button onclick="window.print()">🖨 인쇄하기</button>
+  <span class="print-tip">인쇄 팁: <b>가로(Landscape)</b> · 배율 100% · 여백 없음 · "배경 그래픽" 켜기 — A4 가로 2쪽입니다.</span>
+</nav>
+
+<!-- ══════════ 1쪽: 나라를 빼앗기고, 만세를 부르다 ══════════ -->
+<section class="a4-page"><div class="pc">
+  <div class="vh-unit">
+    <span class="vh-flower">🌸</span>
+    <span class="vh-u">3단원. 일제의 침략과 광복을 위한 노력</span>
+    <span class="vh-mid">1. 나라를 빼앗기고, 만세를 부르다</span>
+    <span class="vh-name">5학년 <i></i>반 <i></i></span>
+  </div>
+  <div class="vh-dots"></div>
+  <div class="vh-bar">
+    <span class="vh-goal">01. 일제가 국권을 빼앗은 과정과 3·1 운동을 알아보기</span>
+    <span class="vh-key">핵심단어: <b>ㅇㅅㄴㅇ · ㄱㄱㅍㅌ · ㅁㄷㅌㅊ · ㅌㅈㅈㅅ · ㅁㅅㅇㄷ · ㄷㄹㅅㅇㅅ</b></span>
+  </div>
+
+  <!-- 중앙 연표 -->
+  <div class="tlbox" style="left:114mm; top:33mm; width:53mm;">
+    <div class="t-cap">암호 연표 — 깃발을 색칠하며 순서를 익혀요</div>
+<svg class="vtl" viewBox="0 0 118 218" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="일제 강점기 연표"><line class="tl-axis" x1="40" y1="14" x2="40" y2="236"/><line class="tl-pole" x1="9" y1="11" x2="9" y2="39"/><path class="tl-flag" d="M9,11 L28,11 L24,17 L28,23 L9,23 Z"/><line class="tl-tick" x1="30" y1="28" x2="40" y2="28"/><circle class="tl-dot" cx="40" cy="28" r="4.4"/><text class="tl-yr" x="48" y="27">1905</text><text class="tl-ev" x="48" y="39">을사늑약</text><text class="tl-sub" x="48" y="49">외교권을 빼앗기다</text><line class="tl-pole" x1="9" y1="51" x2="9" y2="79"/><path class="tl-flag" d="M9,51 L28,51 L24,57 L28,63 L9,63 Z"/><line class="tl-tick" x1="30" y1="68" x2="40" y2="68"/><circle class="tl-dot" cx="40" cy="68" r="4.4"/><text class="tl-yr" x="48" y="67">1910</text><text class="tl-ev" x="48" y="79">국권 피탈</text><text class="tl-sub" x="48" y="89">나라를 빼앗기다</text><line class="tl-pole" x1="9" y1="91" x2="9" y2="119"/><path class="tl-flag" d="M9,91 L28,91 L24,97 L28,103 L9,103 Z"/><line class="tl-tick" x1="30" y1="108" x2="40" y2="108"/><circle class="tl-dot" cx="40" cy="108" r="4.4"/><text class="tl-yr" x="48" y="107">1919</text><text class="tl-ev" x="48" y="119">3·1 운동</text><text class="tl-sub" x="48" y="129">전국에 울린 만세</text><line class="tl-pole" x1="9" y1="131" x2="9" y2="159"/><path class="tl-flag" d="M9,131 L28,131 L24,137 L28,143 L9,143 Z"/><line class="tl-tick" x1="30" y1="148" x2="40" y2="148"/><circle class="tl-dot" cx="40" cy="148" r="4.4"/><text class="tl-yr" x="48" y="147">1920</text><text class="tl-ev" x="48" y="159">봉오동·청산리</text><text class="tl-sub" x="48" y="169">독립군의 큰 승리</text><line class="tl-pole" x1="9" y1="171" x2="9" y2="199"/><path class="tl-flag" d="M9,171 L28,171 L24,177 L28,183 L9,183 Z"/><line class="tl-tick" x1="30" y1="188" x2="40" y2="188"/><circle class="tl-dot" cx="40" cy="188" r="4.4"/><text class="tl-yr" x="48" y="187">1945</text><text class="tl-ev" x="48" y="199">8·15 광복</text><text class="tl-sub" x="48" y="209">되찾은 나라</text></svg>
+    <div class="t-cap2">방탈출 자물쇠 5개가 바로 이 다섯 해예요.</div>
+  </div>
+
+  <!-- ① 을사늑약 -->
+  <div class="card" style="left:0; top:32mm; width:52mm; height:50mm;">
+    <span class="c-title pink">① 을사늑약</span>
+    <img class="c-img" src="img/d01-treaty.jpg" alt="" style="width:20mm;height:20mm;">
+    <p><span class="k"><i>1905</i></span>년, 일제가 대한 제국의<br><span class="k"><i>외교</i></span>권을 강제로 빼앗았어요.</p>
+  </div>
+
+  <!-- ② 국권 피탈 -->
+  <div class="card" style="left:0; top:86mm; width:52mm; height:50mm;">
+    <span class="c-title pink">② 국권 피탈</span>
+    <img class="c-img" src="img/d02-gate.jpg" alt="" style="width:20mm;height:20mm;">
+    <p><span class="k"><i>1910</i></span>년, 나라의 <span class="k"><i>주권</i></span>까지<br>완전히 빼앗겼어요.</p>
+  </div>
+
+  <!-- ③ 무단 통치 -->
+  <div class="card" style="left:0; top:140mm; width:52mm; height:50mm;">
+    <span class="c-title gold">③ 무단 통치</span>
+    <img class="c-img" src="img/d03-sword.jpg" alt="" style="width:20mm;height:20mm;">
+    <p><span class="k"><i>헌병 경찰</i></span>이 칼을 차고 다니며<br>우리 민족을 억눌렀어요.</p>
+  </div>
+
+  <!-- ④ 토지 조사 사업 -->
+  <div class="card" style="left:57mm; top:140mm; width:52mm; height:50mm;">
+    <span class="c-title gold">④ 토지 조사 사업</span>
+    <img class="c-img" src="img/d04-survey.jpg" alt="" style="width:20mm;height:20mm;">
+    <p>정해진 날까지 신고하게 해<br>많은 농민이 <span class="k"><i>땅</i></span>을 잃었어요.</p>
+  </div>
+
+  <!-- ⑤ 3·1 운동 -->
+  <div class="card" style="left:172mm; top:32mm; width:52mm; height:50mm;">
+    <span class="c-title blue">⑤ 3·1 운동</span>
+    <img class="c-img" src="img/d08-manse.jpg" alt="" style="width:20mm;height:20mm;">
+    <p>1919년 <span class="k"><i>3</i></span>월 <span class="k"><i>1</i></span>일,<br>전국에 <span class="k"><i>만세</i></span> 소리가 퍼졌어요.</p>
+  </div>
+
+  <!-- ⑥ 탑골 공원 -->
+  <div class="card" style="left:172mm; top:86mm; width:52mm; height:50mm;">
+    <span class="c-title blue">⑥ 탑골 공원</span>
+    <img class="c-img" src="img/d07-pavilion.jpg" alt="" style="width:20mm;height:20mm;">
+    <p>서울 <span class="k"><i>탑골 공원</i></span>에서<br>만세 운동이 시작되었어요.</p>
+  </div>
+
+  <!-- ⑦ 독립 선언서 -->
+  <div class="card" style="left:229mm; top:32mm; width:52mm; height:50mm;">
+    <span class="c-title green">⑦ 독립 선언서</span>
+    <img class="c-img" src="img/d09-declaration.jpg" alt="" style="width:20mm;height:20mm;">
+    <p>민족 대표들이 <span class="k"><i>독립 선언서</i></span>를<br>발표했어요.</p>
+  </div>
+
+  <!-- ⑧ 유관순 -->
+  <div class="card" style="left:229mm; top:86mm; width:52mm; height:50mm;">
+    <span class="c-title green">⑧ 유관순</span>
+    <img class="c-img" src="img/d06-handflag.jpg" alt="" style="width:20mm;height:20mm;object-fit:cover;object-position:50% 0%;">
+    <p><span class="k"><i>유관순</i></span>은 천안 아우내 장터에서<br>태극기를 들고 만세를 외쳤어요.</p>
+  </div>
+
+  <!-- 화살표 -->
+  <div class="arrow" style="left:22mm; top:82mm;"><svg width="26" height="14" viewBox="0 0 26 14"><path class="ar-line" d="M13,1 L13,7"/><path class="ar-head" d="M8,7 L13,13 L18,7 Z"/></svg></div>
+  <div class="arrow" style="left:22mm; top:136mm;"><svg width="26" height="14" viewBox="0 0 26 14"><path class="ar-line" d="M13,1 L13,7"/><path class="ar-head" d="M8,7 L13,13 L18,7 Z"/></svg></div>
+  <div class="arrow" style="left:52mm; top:161mm;"><svg width="18" height="20" viewBox="0 0 18 20"><path class="ar-line" d="M1,10 L9,10"/><path class="ar-head" d="M9,5 L17,10 L9,15 Z"/></svg></div>
+  <div class="arrow" style="left:194mm; top:82mm;"><svg width="26" height="14" viewBox="0 0 26 14"><path class="ar-line" d="M13,1 L13,7"/><path class="ar-head" d="M8,7 L13,13 L18,7 Z"/></svg></div>
+  <div class="arrow" style="left:251mm; top:82mm;"><svg width="26" height="14" viewBox="0 0 26 14"><path class="ar-line" d="M13,1 L13,7"/><path class="ar-head" d="M8,7 L13,13 L18,7 Z"/></svg></div>
+
+  <!-- 아래 정리 -->
+  <div class="summary" style="left:114mm; top:140mm; width:167mm; height:50mm;">
+    <div><span class="s-t">한 문장 정리</span>일제는 <span class="k"><i>1905</i></span>년 외교권을, <span class="k"><i>1910</i></span>년에는 주권까지 빼앗았지만, 우리 민족은 <span class="k"><i>3·1 운동</i></span>으로 온 나라에서 독립을 외쳤다.</div>
+    <div style="margin-top:1.6mm;"><span class="s-t">생각해 보기</span>총도 무기도 없이 손에 태극기만 들었던 사람들은, 무엇을 믿고 거리로 나섰을까요?</div>
+    <div style="border-bottom:0.3mm solid #ccb; height:7mm; margin-top:1mm;"></div>
+    <div style="border-bottom:0.3mm solid #ccb; height:7mm;"></div>
+  </div>
+
+  <footer class="print-foot">
+    <span>몽당분필 날쌤 · 초등사회 교육콘텐츠 클라우드 @nalssam</span>
+    <span>일제의 침략과 광복을 위한 노력 비주얼싱킹 · 1 / 2</span>
+  </footer>
+</div></section>
+
+<!-- ══════════ 2쪽: 독립을 위한 노력과 광복 ══════════ -->
+<section class="a4-page"><div class="pc">
+  <div class="vh-unit">
+    <span class="vh-flower">🌸</span>
+    <span class="vh-u">3단원. 일제의 침략과 광복을 위한 노력</span>
+    <span class="vh-mid">2. 독립을 위한 노력과 광복</span>
+    <span class="vh-name">5학년 <i></i>반 <i></i></span>
+  </div>
+  <div class="vh-dots"></div>
+  <div class="vh-bar">
+    <span class="vh-goal">02. 나라 안팎에서 이어진 독립운동과 광복의 의미를 알아보기</span>
+    <span class="vh-key">핵심단어: <b>ㅇㅅㅈㅂ · ㅂㅇㄷ · ㅊㅅㄹ · ㅊㅆㄱㅁ · ㅈㅅㅇㅎㅎ · ㄱㅂ</b></span>
+  </div>
+
+  <!-- 흐름 4단계 -->
+  <div class="card" style="left:0; top:32mm; width:66mm; height:60mm;">
+    <span class="c-title blue">① 대한민국 임시 정부</span>
+    <img class="c-img" src="img/d11-govbuilding.jpg" alt="" style="width:22mm;height:22mm;">
+    <p>1919년, 중국 <span class="k"><i>상하이</i></span>에 대한민국<br><span class="k"><i>임시 정부</i></span>가 세워져 나라 밖에서<br>독립운동을 이끌었어요.</p>
+  </div>
+
+  <div class="card" style="left:71mm; top:32mm; width:66mm; height:60mm;">
+    <span class="c-title plum">② 무장 독립 투쟁</span>
+    <img class="c-img" src="img/d10-mountain.jpg" alt="" style="width:22mm;height:22mm;">
+    <p><span class="k"><i>1920</i></span>년 만주 <span class="k"><i>봉오동</i></span>과 <span class="k"><i>청산리</i></span>에서<br>독립군이 일본군을 크게 물리쳤어요.</p>
+  </div>
+
+  <div class="card" style="left:142mm; top:32mm; width:66mm; height:60mm;">
+    <span class="c-title">③ 민족 말살 통치</span>
+    <img class="c-img" src="img/d12-nametag.jpg" alt="" style="width:22mm;height:22mm;">
+    <p>일제는 우리 <span class="k"><i>이름</i></span>을 일본식으로 바꾸게 하고<br>신사에 절하도록 강요했어요. (창씨개명)</p>
+  </div>
+
+  <div class="card" style="left:213mm; top:32mm; width:68mm; height:60mm;">
+    <span class="c-title green">④ 8·15 광복</span>
+    <img class="c-img" src="img/d14-sunrise.jpg" alt="" style="width:22mm;height:22mm;">
+    <p><span class="k"><i>1945</i></span>년 <span class="k"><i>8</i></span>월 <span class="k"><i>15</i></span>일, 마침내 <span class="k"><i>광복</i></span>을 맞이했어요.<br>수많은 사람의 노력이 만든 날이에요.</p>
+  </div>
+
+  <div class="arrow" style="left:66mm; top:56mm;"><svg width="16" height="18" viewBox="0 0 16 18"><path class="ar-line" d="M1,9 L8,9"/><path class="ar-head" d="M8,4 L15,9 L8,14 Z"/></svg></div>
+  <div class="arrow" style="left:137mm; top:56mm;"><svg width="16" height="18" viewBox="0 0 16 18"><path class="ar-line" d="M1,9 L8,9"/><path class="ar-head" d="M8,4 L15,9 L8,14 Z"/></svg></div>
+  <div class="arrow" style="left:208mm; top:56mm;"><svg width="16" height="18" viewBox="0 0 16 18"><path class="ar-line" d="M1,9 L8,9"/><path class="ar-head" d="M8,4 L15,9 L8,14 Z"/></svg></div>
+
+  <!-- 빼앗긴 것들 -->
+  <div class="card" style="left:0; top:98mm; width:64mm; height:56mm;">
+    <span class="c-title gold">빼앗긴 것들</span>
+    <img class="c-img" src="img/d05-rice.jpg" alt="" style="width:19mm;height:19mm;">
+    <p>쌀과 자원을 <span class="k"><i>수탈</i></span>해 갔고,<br>사람들까지 전쟁터와 공장으로 끌려갔어요.</p>
+  </div>
+
+  <!-- 지켜 낸 것들 -->
+  <div class="card" style="left:68mm; top:98mm; width:64mm; height:56mm;">
+    <span class="c-title green">지켜 낸 것들</span>
+    <img class="c-img" src="img/d13-bookchain.jpg" alt="" style="width:19mm;height:19mm;">
+    <p>우리말 사용을 막았지만 <span class="k"><i>조선어 학회</i></span>는<br>몰래 우리말 사전을 만들며 지켜 냈어요.</p>
+  </div>
+
+  <!-- 동아시아 지도 -->
+  <div class="mapbox" style="left:136mm; top:96mm; width:76mm;">
+<svg class="eamap" viewBox="0 0 220 170" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="동아시아 독립운동 무대 지도">
+<rect class="ea-sea" x="0" y="0" width="220" height="170"/><path class="ea-land" d="M0,43.473L7.741,47.765L15.153,47.751L17.867,50.31L25.014,45.881L34.897,43.006L44.096,42.696L51.243,39.761L55.655,35.27L59.935,32.421L58.942,29.614L56.979,26.326L60.2,20.759L63.641,21.537L69.95,23.294L76.061,18.697L85.392,15.307L89.892,9.463L94.194,6.93L103.106,5.75L107.937,6.749L108.599,3.563L105.482,0L197.972,0L197.972,0L196.486,2.084L194.368,11.863L190.265,20.391L182.809,18.86L177.558,21.918L179.169,29.281L178.286,39.265L175.154,39.492L175.198,43.722L171.249,38.812L168.801,43.484L159.337,47.04L160.308,51.376L154.991,51.072L152.101,48.504L147.888,54.303L141.138,58.662L136.13,63.812L127.571,66.12L123.07,69.838L116.453,71.988L119.717,68.324L118.438,65.23L123.291,59.849L120.048,55.609L114.71,58.471L107.783,64.056L104.011,69.182L98.01,69.57L94.878,73.239L98.121,78.533L103.128,79.809L103.327,83.281L108.18,85.537L115.041,80.019L120.489,83.033L124.438,83.229L125.431,87.265L116.761,89.402L113.894,93.512L107.937,97.3L104.805,102.558L111.401,106.655L113.805,113.912L117.533,120.597L121.703,126.154L121.592,131.484L117.754,133.428L119.21,137.216L122.828,139.419L121.879,145.147L120.313,150.676L116.894,151.3L112.416,158.79L107.452,167.764L105.876,170L0,170Z"/><path class="ea-land" d="M176.058,45.181L176.058,45.181L176.058,45.181ZM175.198,43.722L176.058,45.181L173.72,44.677L171.073,47.473L169.242,50.282L169.462,56.13L166.308,57.91L165.205,59.344L162.911,61.712L158.83,63.027L156.16,65.176L155.962,68.619L155.256,69.49L157.705,70.774L161.168,74.222L160.286,76.117L157.683,76.633L153.337,77.016L150.954,80.518L148.219,80.243L147.844,80.951L144.866,79.48L144.116,80.938L142.329,81.581L142.108,80.111L140.52,79.401L138.865,78.164L140.542,74.726L141.998,73.81L141.446,72.374L143.013,68.11L142.616,66.82L139.02,65.945L136.13,63.812L141.138,58.662L147.888,54.303L152.101,48.504L154.991,51.072L160.308,51.376L159.337,47.04L168.801,43.484L171.249,38.812Z"/><path class="ea-land" d="M147.844,80.951L148.219,80.243L150.954,80.518L153.337,77.016L157.683,76.633L160.286,76.117L161.168,74.222L166.462,83.399L167.962,88.38L168.029,97.134L165.712,101.267L160.153,102.697L155.256,105.788L149.741,106.429L149.057,102.369L150.182,96.738L147.491,88.833L152.035,87.551Z"/><path class="ea-land" d="M220,104.628L215.502,104.818L206.766,113.266L202.663,110.438L202.398,104.894L191.743,106.529L184.485,110.026L177.316,110.163L183.537,115.574L179.434,127.894L175.485,130.903L172.507,128.125L174.029,121.616L170.146,119.502L167.654,114.496L173.455,112.233L176.654,107.597L182.831,103.746L187.309,98.638L199.508,96.381L206.06,97.924L212.479,84.391L216.56,88.056L220,85.11L220,104.628ZM185.809,113.266L189.206,108.875L192.692,109.726L195.206,106.617L199.707,108.211L200.479,110.75L197.037,115.19L194.523,112.843L191.368,114.545L189.758,118.824L185.765,116.75Z"/><path class="ea-land" d="M220,12.193L213.318,20.406L205.067,30.335L201.118,35.341L192.956,40.256L189.096,40.369L185.235,36.296L177.007,42.415L176.058,45.181L176.058,45.181L175.198,43.722L175.154,39.492L178.286,39.265L179.169,29.281L177.558,21.918L182.809,18.86L190.265,20.391L194.368,11.863L196.486,2.084L197.972,0L220,0Z"/><path class="ea-land" d="M105.482,0L108.599,3.563L107.937,6.749L103.106,5.75L94.194,6.93L89.892,9.463L85.392,15.307L76.061,18.697L69.95,23.294L63.641,21.537L60.2,20.759L56.979,26.326L58.942,29.614L59.935,32.421L55.655,35.27L51.243,39.761L44.096,42.696L34.897,43.006L25.014,45.881L17.867,50.31L15.153,47.751L7.741,47.765L0,43.473L0,0Z"/><path class="ea-kor"  d="M176.058,45.181L176.058,45.181L176.058,45.181ZM175.198,43.722L176.058,45.181L173.72,44.677L171.073,47.473L169.242,50.282L169.462,56.13L166.308,57.91L165.205,59.344L162.911,61.712L158.83,63.027L156.16,65.176L155.962,68.619L155.256,69.49L157.705,70.774L161.168,74.222L160.286,76.117L157.683,76.633L153.337,77.016L150.954,80.518L148.219,80.243L147.844,80.951L144.866,79.48L144.116,80.938L142.329,81.581L142.108,80.111L140.52,79.401L138.865,78.164L140.542,74.726L141.998,73.81L141.446,72.374L143.013,68.11L142.616,66.82L139.02,65.945L136.13,63.812L141.138,58.662L147.888,54.303L152.101,48.504L154.991,51.072L160.308,51.376L159.337,47.04L168.801,43.484L171.249,38.812ZM147.844,80.951L148.219,80.243L150.954,80.518L153.337,77.016L157.683,76.633L160.286,76.117L161.168,74.222L166.462,83.399L167.962,88.38L168.029,97.134L165.712,101.267L160.153,102.697L155.256,105.788L149.741,106.429L149.057,102.369L150.182,96.738L147.491,88.833L152.035,87.551Z"/><circle class="ea-dot" cx="27.6" cy="141.3" r="2.6"/><text class="ea-name" x="27.6" y="151.3" text-anchor="middle">충칭</text><text class="ea-note" x="27.6" y="156.3" text-anchor="middle">임시 정부(1940~)</text><circle class="ea-dot" cx="119" cy="129.5" r="2.6"/><text class="ea-name" x="119" y="139.5" text-anchor="middle">상하이</text><text class="ea-note" x="119" y="144.5" text-anchor="middle">임시 정부(1919)</text><circle class="ea-dot" cx="166.4" cy="41.2" r="2.6"/><text class="ea-name" x="160.4" y="34.2" text-anchor="end">만주</text><text class="ea-note" x="160.4" y="39.2" text-anchor="end">봉오동·청산리(1920)</text><circle class="ea-dot" cx="183.5" cy="25.1" r="2.6"/><text class="ea-name" x="178.5" y="22.1" text-anchor="end">연해주</text><text class="ea-note" x="178.5" y="27.1" text-anchor="end">독립군 기지</text><circle class="ea-dot" cx="145.2" cy="70.9" r="2.6"/><text class="ea-name" x="137.2" y="71.9" text-anchor="end">평양</text><circle class="ea-dot" cx="152.8" cy="82.3" r="2.6"/><text class="ea-name" x="138.8" y="85.3" text-anchor="end">경성(서울)</text><text class="ea-note" x="138.8" y="90.3" text-anchor="end">3·1 운동 · 탑골 공원</text>
+</svg>
+    <div class="m-cap">독립운동은 나라 밖에서도 이어졌어요</div>
+  </div>
+
+  <!-- 암호 복습 -->
+  <div class="summary" style="left:216mm; top:98mm; width:65mm; height:56mm;">
+    <div><span class="s-t">방탈출 암호로 복습!</span></div>
+    <div style="margin-top:1mm;">1905 = <span class="k"><i>을사늑약</i></span></div>
+    <div>1910 = <span class="k"><i>국권 피탈</i></span></div>
+    <div>0301 = <span class="k"><i>3·1 운동</i></span></div>
+    <div>1920 = <span class="k"><i>봉오동·청산리</i></span></div>
+    <div>0815 = <span class="k"><i>광복</i></span></div>
+    <div style="margin-top:1.6mm; font-size:7.6pt; color:#8a7a55;">다섯 자물쇠를 순서대로 이으면<br>어떤 이야기가 되나요?</div>
+  </div>
+
+  <!-- 아래 한 줄 정리 -->
+  <div class="summary" style="left:0; top:160mm; width:281mm; height:30mm;">
+    <div><span class="s-t">한 문장 정리</span>일제는 우리의 땅과 말과 이름까지 빼앗으려 했지만, 나라 안팎에서 이어진 독립운동 끝에 <span class="k"><i>1945</i></span>년 <span class="k"><i>8</i></span>월 <span class="k"><i>15</i></span>일 <span class="k"><i>광복</i></span>을 맞이했다.</div>
+    <div style="margin-top:1.2mm;"><span class="s-t">오늘의 다짐</span>광복은 저절로 온 것이 아니에요. 내가 기억하고 싶은 사람이나 장면 하나를 골라, 그 까닭을 짝에게 이야기해 보세요.</div>
+    <div style="margin-top:1mm; font-size:7.6pt; color:#8a7a55;">※ 오늘 배운 낱말 중 가장 마음에 남는 것에 동그라미를 치고, 왜 그런지 한 줄로 적어 보세요.</div>
+  </div>
+
+  <footer class="print-foot">
+    <span>몽당분필 날쌤 · 초등사회 교육콘텐츠 클라우드 @nalssam</span>
+    <span>일제의 침략과 광복을 위한 노력 비주얼싱킹 · 2 / 2</span>
+  </footer>
+</div></section>
+
+<!-- 화면 전용 교사용 정답 -->
+<details class="teacher-key screen-only">
+  <summary>👩‍🏫 교사용 정답 보기 (화면 전용 — 인쇄되지 않아요)</summary>
+  <ul>
+    <li><b>1쪽</b> ① 1905 / 외교 ② 1910 / 주권 ③ 헌병 경찰 ④ 땅 ⑤ 3 / 1 / 만세 ⑥ 탑골 공원 ⑦ 독립 선언서 ⑧ 유관순</li>
+    <li><b>1쪽 정리</b> 1905 · 1910 · 3·1 운동</li>
+    <li><b>2쪽</b> ① 상하이 / 대한민국 임시 정부 ② 1920 / 봉오동 / 청산리 ③ 이름 ④ 1945 / 8 / 15 / 광복</li>
+    <li><b>2쪽 그 밖</b> 수탈 · 조선어 학회 · <b>암호</b> 1905=을사늑약, 1910=국권 피탈, 0301=3·1 운동, 1920=봉오동·청산리, 0815=광복</li>
+    <li><b>2쪽 정리</b> 1945년 8월 15일 · 광복</li>
+    <li>핵심단어 초성 — 1쪽: 을사늑약·국권피탈·무단통치·토지조사·만세운동·독립선언서 / 2쪽: 임시정부·봉오동·청산리·창씨개명·조선어학회·광복</li>
+  </ul>
+</details>
+
+</body>
+</html>

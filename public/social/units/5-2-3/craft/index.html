@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>탑골 공원 팔각정 만들기 — 페이퍼크래프트 도안 (5-2-3)</title>
+<meta name="description" content="오려·접어·붙여 만드는 입체 페이퍼크래프트 — 3·1 운동이 시작된 탑골 공원 팔각정과 받침판 (A4 2쪽, 몽당분필 날쌤)">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;700;900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../../../templates/print/print-base.css?v=2">
+<style>
+/* ── 단원 전용 (5-2-3 탑골 공원 팔각정 페이퍼크래프트) ── */
+.abs { position: absolute; }
+.craft-legend { font-size: 7pt; gap: 4mm; }
+
+/* 전개도 선 규약 — SVG 1 단위 = 1mm 이므로 굵기도 mm 값으로 직접 지정 */
+.cutline  { stroke: #111; stroke-width: 0.6; fill: none; stroke-linecap: square; }
+.cutline2 { stroke: #111; stroke-width: 0.6; fill: none; }
+.foldline { stroke: #6a7a90; stroke-width: 0.32; fill: none; stroke-dasharray: 2.6 1.7; }
+.tab      { fill: #eceff4; stroke: #111; stroke-width: 0.35; }
+.tablab   { font-size: 3.1px; font-weight: 700; fill: #8a93a3; }
+.tablab2  { font-size: 3.4px; font-weight: 700; fill: #a1785f; }
+
+/* 팔각정 면 — 한지·나무·기와 (색칠하기 좋게 옅게) */
+.wood     { fill: #fffdf8; stroke: none; }
+.beam     { fill: #cfe0d6; stroke: none; }   /* 창방(단청 녹) */
+.beam2    { fill: #e8bda9; stroke: none; }   /* 단청 붉은 띠 */
+.rail     { fill: #f5ece0; stroke: none; }   /* 난간 */
+.railtop  { stroke: #b9a184; stroke-width: 0.45; }
+.railbar  { stroke: #c9b49b; stroke-width: 0.32; }
+.pillar   { fill: #e4cfb6; stroke: none; }
+.arch     { fill: #f8f3ec; stroke: #cbb99f; stroke-width: 0.32; }
+.roof     { fill: #bccbd7; stroke: none; }   /* 기와 */
+.rooftile { fill: none; stroke: #9dadbb; stroke-width: 0.34; }
+.facelab  { font-size: 5px; font-weight: 900; fill: #6d7d8b; }
+
+/* 2쪽 받침판 */
+.plate      { fill: #eef4e8; stroke: none; }
+.plate2     { fill: #e2ecd8; stroke: none; }
+.footprint  { fill: none; stroke: #8fa876; stroke-width: 0.4; stroke-dasharray: 2.4 1.6; }
+.fplab      { font-size: 3.5px; font-weight: 700; fill: #6f8a5c; }
+.platetitle { font-size: 5.4px; font-weight: 900; fill: #46603a; }
+.platesub   { font-size: 4.4px; font-weight: 900; fill: #46603a; }
+.platesub2  { font-size: 3.3px; font-weight: 700; fill: #6f8a5c; }
+.striptitle { font-size: 3.3px; font-weight: 700; fill: #a1785f; }
+.strip      { fill: #fffdf4; stroke: none; }
+.ruled      { stroke: #bbb; stroke-width: 0.3; }
+.card       { fill: #fffdf4; stroke: none; }
+.cardbig    { font-size: 7px; font-weight: 900; fill: #c8931d; }
+.cardsub    { font-size: 3.8px; font-weight: 700; fill: #333; }
+.cardsub2   { font-size: 3.2px; fill: #777; }
+.foldnote   { font-size: 2.9px; fill: #8a93a3; }
+.taegeuk-r  { fill: #cd2e3a; }
+.taegeuk-b  { fill: #0047a0; }
+.trigram    { fill: #111; }
+
+/* 완성 예시 도해 */
+.ax-plate { fill: #eef4e8; stroke: #9bb08a; stroke-width: 0.6; }
+.ax-wall  { fill: #fffdf8; stroke: #5c6672; stroke-width: 0.5; }
+.ax-rail  { fill: none; stroke: #c0a98d; stroke-width: 0.45; }
+.ax-roof  { fill: #c6d3dd; stroke: #5c6672; stroke-width: 0.5; }
+.ax-dim   { stroke: #8a93a3; stroke-width: 0.4; }
+.ax-lab   { font-size: 4.6px; font-weight: 700; fill: #6a7482; }
+
+/* 만드는 법 */
+.steps { display: flex; gap: 2.2mm; }
+.step {
+  flex: 1; border: 0.45mm solid #333; border-radius: 2.6mm; padding: 2mm 1.4mm;
+  font-size: 7pt; line-height: 1.5; background: #fff; text-align: center;
+}
+.step .sp-no {
+  display: inline-block; width: 6mm; height: 6mm; border-radius: 50%;
+  background: var(--gold-print); color: #fff; font-weight: 900; font-size: 8.5pt;
+  line-height: 6mm; margin-bottom: 1mm;
+}
+.step svg { display: block; margin: 0.6mm auto 1mm; }
+.st-line  { fill: none; stroke: #222; stroke-width: 1.1; }
+.st-dash  { fill: none; stroke: #666; stroke-width: 0.9; stroke-dasharray: 2.6 1.8; }
+.st-wall  { fill: #fffdf8; stroke: #222; stroke-width: 1.1; }
+.st-roof  { fill: #c6d3dd; stroke: #222; stroke-width: 1.1; }
+.st-plate { fill: #eef4e8; stroke: #222; stroke-width: 1.1; }
+
+/* 활동/준비물 */
+.usage {
+  border: 0.5mm solid var(--blue-print); border-radius: 3mm; background: #f7faff;
+  padding: 2.6mm 3.2mm; font-size: 7.6pt; line-height: 1.62;
+}
+.usage h4 { font-size: 9.5pt; font-weight: 900; color: var(--blue-print); margin-bottom: 1mm; }
+.usage b { color: var(--blue-print); }
+.materials {
+  border: 0.45mm dashed #999; border-radius: 3mm; padding: 2mm 3mm;
+  font-size: 7.4pt; line-height: 1.6; background: #fafafa;
+}
+.example { text-align: center; }
+.example .ex-box {
+  border: 0.4mm solid var(--line-soft); border-radius: 3mm; background: #fff; padding: 1.5mm;
+}
+.example .ex-cap { font-size: 7pt; color: var(--ink-dim); margin-top: 1.2mm; }
+.tl-box {
+  border: 0.5mm solid var(--gold-pale); border-radius: 3mm; background: #fffdf5;
+  padding: 2.4mm 3.2mm;
+}
+.tl-box h4 { font-size: 9pt; font-weight: 900; color: var(--gold-print); margin-bottom: 1.4mm; }
+.tl { display: flex; gap: 2mm; }
+.tl-i {
+  flex: 1; border-left: 0.8mm solid var(--gold-pale); padding-left: 2.2mm;
+  font-size: 7.2pt; line-height: 1.5;
+}
+.tl-y { display: block; font-weight: 900; color: var(--gold-print); font-size: 7.6pt; }
+.tl-t { display: block; color: var(--ink); }
+.tl-t b { color: #111; }
+.spec {
+  font-size: 7.2pt; line-height: 1.65; color: var(--ink-dim);
+  border-left: 0.8mm solid var(--gold-pale); padding-left: 2.6mm;
+}
+.spec b { color: var(--ink); }
+</style>
+</head>
+<body>
+
+<nav class="print-toolbar no-print">
+  <span class="tb-title">✂️ 탑골 공원 팔각정 만들기 — 페이퍼크래프트 도안 (A4 2쪽)</span>
+  <a class="ghost" href="../../../#/grade/5">← 자료실로</a>
+  <a href="craft.pdf" download>⬇ PDF 다운로드</a>
+  <button onclick="window.print()">🖨 인쇄하기</button>
+  <span class="print-tip">인쇄 팁: 배율 100%(실제 크기) 필수 · 두꺼운 종이(120g~)에 인쇄하면 더 튼튼해요 · A4 세로 2쪽.</span>
+</nav>
+
+<!-- ═════════════════ 1쪽: 몸체 + 지붕 전개도 ═════════════════ -->
+<section class="a4-page"><div class="pc">
+  <header class="print-head" style="margin-bottom:1mm;">
+    <div class="ph-brand">
+      <svg width="34" height="34" viewBox="0 0 34 34"><rect x="5" y="12" width="24" height="10" rx="2.5" fill="#fff" stroke="#c8931d" stroke-width="1.6" transform="rotate(-18 17 17)"/><rect x="22.5" y="10.6" width="6" height="10" rx="2" fill="#c8931d" transform="rotate(-18 17 17)"/><path d="M7 26 Q13 23 19 25.5" stroke="#c8931d" stroke-width="1.3" fill="none" stroke-linecap="round"/></svg>
+      <span class="ph-brandname">몽당분필 날쌤<small>초등사회 마무리활동</small></span>
+    </div>
+    <div class="ph-main">
+      <div class="ph-title">탑골 공원 팔각정 만들기 <span style="font-size:9pt;font-weight:700;color:#888;">— 몸체 · 지붕 전개도 (1/2)</span></div>
+      <div class="ph-sub">1919년 3월 1일, 만세의 함성이 시작된 자리 · 완성 크기 약 57 × 71mm · 준비물: 가위 · 풀 · 자</div>
+      <div class="ph-chips">
+        <span class="chip">5학년 2학기 · 5-2-3</span>
+        <span class="chip dim">[6사06-01] 일제 식민 통치와 저항(참고 요약)</span>
+      </div>
+    </div>
+    <div class="craft-legend">
+      <span><svg width="26" height="6"><line x1="1" y1="3" x2="25" y2="3" stroke="#111" stroke-width="2.2"/></svg> 실선 = 자르기</span>
+      <span><svg width="26" height="6"><line x1="1" y1="3" x2="25" y2="3" stroke="#6a7a90" stroke-width="1.4" stroke-dasharray="4 2.6"/></svg> 점선 = 접기</span>
+      <span><svg width="26" height="10"><rect x="1" y="1" width="24" height="8" fill="#eceff4" stroke="#111" stroke-width="1"/></svg> 회색 = 풀칠</span>
+    </div>
+  </header>
+
+  <div class="abs" style="left:0; top:37mm;">
+<svg viewBox="0 10 190 130" xmlns="http://www.w3.org/2000/svg" style="width:190mm;height:130mm;display:block">
+<path class="tab" d="M179,16 L187,18.2 L187,53.8 L179,56 Z"/><text class="tablab" transform="rotate(90 183.4 36)" x="183.4" y="37.2" text-anchor="middle">풀칠</text><path class="tab" d="M3,56 L5.2,64 L176.8,64 L179,56 Z"/><text class="tablab" x="91" y="61.6" text-anchor="middle">받침에 붙이는 곳 · 풀칠</text><rect class="wood" x="3" y="16" width="22" height="40"/><rect class="beam" x="3" y="16" width="22" height="5"/><rect class="beam2" x="3" y="21" width="22" height="1.6"/><rect class="rail" x="3" y="45" width="22" height="11"/><line class="railtop" x1="3" y1="45" x2="25" y2="45"/><line class="railbar" x1="7.4" y1="46.6" x2="7.4" y2="55.2"/><line class="railbar" x1="11.8" y1="46.6" x2="11.8" y2="55.2"/><line class="railbar" x1="16.2" y1="46.6" x2="16.2" y2="55.2"/><line class="railbar" x1="20.6" y1="46.6" x2="20.6" y2="55.2"/><rect class="pillar" x="4.2" y="21" width="2.8" height="24"/><rect class="pillar" x="21" y="21" width="2.8" height="24"/><path class="arch" d="M8.4,45 L8.4,30 Q14,24.6 19.6,30 L19.6,45 Z"/><rect class="wood" x="25" y="16" width="22" height="40"/><rect class="beam" x="25" y="16" width="22" height="5"/><rect class="beam2" x="25" y="21" width="22" height="1.6"/><rect class="rail" x="25" y="45" width="22" height="11"/><line class="railtop" x1="25" y1="45" x2="47" y2="45"/><line class="railbar" x1="29.4" y1="46.6" x2="29.4" y2="55.2"/><line class="railbar" x1="33.8" y1="46.6" x2="33.8" y2="55.2"/><line class="railbar" x1="38.2" y1="46.6" x2="38.2" y2="55.2"/><line class="railbar" x1="42.6" y1="46.6" x2="42.6" y2="55.2"/><rect class="pillar" x="26.2" y="21" width="2.8" height="24"/><rect class="pillar" x="43" y="21" width="2.8" height="24"/><path class="arch" d="M30.4,45 L30.4,30 Q36,24.6 41.6,30 L41.6,45 Z"/><rect class="wood" x="47" y="16" width="22" height="40"/><rect class="beam" x="47" y="16" width="22" height="5"/><rect class="beam2" x="47" y="21" width="22" height="1.6"/><rect class="rail" x="47" y="45" width="22" height="11"/><line class="railtop" x1="47" y1="45" x2="69" y2="45"/><line class="railbar" x1="51.4" y1="46.6" x2="51.4" y2="55.2"/><line class="railbar" x1="55.8" y1="46.6" x2="55.8" y2="55.2"/><line class="railbar" x1="60.2" y1="46.6" x2="60.2" y2="55.2"/><line class="railbar" x1="64.6" y1="46.6" x2="64.6" y2="55.2"/><rect class="pillar" x="48.2" y="21" width="2.8" height="24"/><rect class="pillar" x="65" y="21" width="2.8" height="24"/><path class="arch" d="M52.4,45 L52.4,30 Q58,24.6 63.6,30 L63.6,45 Z"/><rect class="wood" x="69" y="16" width="22" height="40"/><rect class="beam" x="69" y="16" width="22" height="5"/><rect class="beam2" x="69" y="21" width="22" height="1.6"/><rect class="rail" x="69" y="45" width="22" height="11"/><line class="railtop" x1="69" y1="45" x2="91" y2="45"/><line class="railbar" x1="73.4" y1="46.6" x2="73.4" y2="55.2"/><line class="railbar" x1="77.8" y1="46.6" x2="77.8" y2="55.2"/><line class="railbar" x1="82.2" y1="46.6" x2="82.2" y2="55.2"/><line class="railbar" x1="86.6" y1="46.6" x2="86.6" y2="55.2"/><rect class="pillar" x="70.2" y="21" width="2.8" height="24"/><rect class="pillar" x="87" y="21" width="2.8" height="24"/><path class="arch" d="M74.4,45 L74.4,30 Q80,24.6 85.6,30 L85.6,45 Z"/><rect class="wood" x="91" y="16" width="22" height="40"/><rect class="beam" x="91" y="16" width="22" height="5"/><rect class="beam2" x="91" y="21" width="22" height="1.6"/><rect class="rail" x="91" y="45" width="22" height="11"/><line class="railtop" x1="91" y1="45" x2="113" y2="45"/><line class="railbar" x1="95.4" y1="46.6" x2="95.4" y2="55.2"/><line class="railbar" x1="99.8" y1="46.6" x2="99.8" y2="55.2"/><line class="railbar" x1="104.2" y1="46.6" x2="104.2" y2="55.2"/><line class="railbar" x1="108.6" y1="46.6" x2="108.6" y2="55.2"/><rect class="pillar" x="92.2" y="21" width="2.8" height="24"/><rect class="pillar" x="109" y="21" width="2.8" height="24"/><path class="arch" d="M96.4,45 L96.4,30 Q102,24.6 107.6,30 L107.6,45 Z"/><rect class="wood" x="113" y="16" width="22" height="40"/><rect class="beam" x="113" y="16" width="22" height="5"/><rect class="beam2" x="113" y="21" width="22" height="1.6"/><rect class="rail" x="113" y="45" width="22" height="11"/><line class="railtop" x1="113" y1="45" x2="135" y2="45"/><line class="railbar" x1="117.4" y1="46.6" x2="117.4" y2="55.2"/><line class="railbar" x1="121.8" y1="46.6" x2="121.8" y2="55.2"/><line class="railbar" x1="126.2" y1="46.6" x2="126.2" y2="55.2"/><line class="railbar" x1="130.6" y1="46.6" x2="130.6" y2="55.2"/><rect class="pillar" x="114.2" y="21" width="2.8" height="24"/><rect class="pillar" x="131" y="21" width="2.8" height="24"/><path class="arch" d="M118.4,45 L118.4,30 Q124,24.6 129.6,30 L129.6,45 Z"/><rect class="wood" x="135" y="16" width="22" height="40"/><rect class="beam" x="135" y="16" width="22" height="5"/><rect class="beam2" x="135" y="21" width="22" height="1.6"/><rect class="rail" x="135" y="45" width="22" height="11"/><line class="railtop" x1="135" y1="45" x2="157" y2="45"/><line class="railbar" x1="139.4" y1="46.6" x2="139.4" y2="55.2"/><line class="railbar" x1="143.8" y1="46.6" x2="143.8" y2="55.2"/><line class="railbar" x1="148.2" y1="46.6" x2="148.2" y2="55.2"/><line class="railbar" x1="152.6" y1="46.6" x2="152.6" y2="55.2"/><rect class="pillar" x="136.2" y="21" width="2.8" height="24"/><rect class="pillar" x="153" y="21" width="2.8" height="24"/><path class="arch" d="M140.4,45 L140.4,30 Q146,24.6 151.6,30 L151.6,45 Z"/><rect class="wood" x="157" y="16" width="22" height="40"/><rect class="beam" x="157" y="16" width="22" height="5"/><rect class="beam2" x="157" y="21" width="22" height="1.6"/><rect class="rail" x="157" y="45" width="22" height="11"/><line class="railtop" x1="157" y1="45" x2="179" y2="45"/><line class="railbar" x1="161.4" y1="46.6" x2="161.4" y2="55.2"/><line class="railbar" x1="165.8" y1="46.6" x2="165.8" y2="55.2"/><line class="railbar" x1="170.2" y1="46.6" x2="170.2" y2="55.2"/><line class="railbar" x1="174.6" y1="46.6" x2="174.6" y2="55.2"/><rect class="pillar" x="158.2" y="21" width="2.8" height="24"/><rect class="pillar" x="175" y="21" width="2.8" height="24"/><path class="arch" d="M162.4,45 L162.4,30 Q168,24.6 173.6,30 L173.6,45 Z"/><text class="tablab2" x="91" y="13.6" text-anchor="middle">팔각정 몸체 — 점선을 모두 접어 여덟모 기둥을 만들어요</text><path class="tab" d="M95,94 L59.18,72.08 L50.88,70.48 L52.13,68.27 Z"/><path class="roof" d="M95,94 L59.18,72.08 A42,42 0 1 0 130.82,72.08 Z"/><path class="rooftile" d="M82.82,86.55 A14.28,14.28 0 1 0 107.18,86.55"/><path class="rooftile" d="M76.37,82.6 A21.84,21.84 0 1 0 113.63,82.6"/><path class="rooftile" d="M69.92,78.65 A29.4,29.4 0 1 0 120.08,78.65"/><path class="rooftile" d="M63.47,74.71 A36.96,36.96 0 1 0 126.53,74.71"/><text class="facelab" x="27" y="106" text-anchor="middle">지 붕</text><text class="tablab2" x="27" y="113" text-anchor="middle">마루선(점선) 7개를 접으면</text><text class="tablab2" x="27" y="118" text-anchor="middle">여덟모 지붕이 됩니다</text><text class="tablab2" x="163" y="106" text-anchor="middle">밑변 길이가 몸체 둘레</text><text class="tablab2" x="163" y="111" text-anchor="middle">176mm와 꼭 맞아요</text><text class="tablab2" x="163" y="118" text-anchor="middle">몸체에 붙이지 말고</text><text class="tablab2" x="163" y="123" text-anchor="middle">얹기만 하세요</text><text class="tablab" x="51.03" y="71.28" text-anchor="middle">풀칠</text><line class="foldline" x1="25" y1="16" x2="25" y2="56"/><line class="foldline" x1="47" y1="16" x2="47" y2="56"/><line class="foldline" x1="69" y1="16" x2="69" y2="56"/><line class="foldline" x1="91" y1="16" x2="91" y2="56"/><line class="foldline" x1="113" y1="16" x2="113" y2="56"/><line class="foldline" x1="135" y1="16" x2="135" y2="56"/><line class="foldline" x1="157" y1="16" x2="157" y2="56"/><line class="foldline" x1="179" y1="16" x2="179" y2="56"/><line class="foldline" x1="3" y1="56" x2="179" y2="56"/><line class="foldline" x1="95" y1="94" x2="53.01" y2="93.19"/><line class="foldline" x1="95" y1="94" x2="58.36" y2="114.53"/><line class="foldline" x1="95" y1="94" x2="73.77" y2="130.24"/><line class="foldline" x1="95" y1="94" x2="95" y2="136"/><line class="foldline" x1="95" y1="94" x2="116.23" y2="130.24"/><line class="foldline" x1="95" y1="94" x2="131.64" y2="114.53"/><line class="foldline" x1="95" y1="94" x2="136.99" y2="93.19"/><line class="foldline" x1="95" y1="94" x2="59.18" y2="72.08"/><line class="cutline" x1="179" y1="16" x2="187" y2="18.2"/><line class="cutline" x1="187" y1="18.2" x2="187" y2="53.8"/><line class="cutline" x1="187" y1="53.8" x2="179" y2="56"/><line class="cutline" x1="3" y1="56" x2="5.2" y2="64"/><line class="cutline" x1="5.2" y1="64" x2="176.8" y2="64"/><line class="cutline" x1="176.8" y1="64" x2="179" y2="56"/><line class="cutline" x1="3" y1="16" x2="179" y2="16"/><line class="cutline" x1="3" y1="16" x2="3" y2="56"/><line class="cutline" x1="95" y1="94" x2="52.13" y2="68.27"/><line class="cutline" x1="52.13" y1="68.27" x2="50.88" y2="70.48"/><line class="cutline" x1="50.88" y1="70.48" x2="59.18" y2="72.08"/><path class="cutline" fill="none" d="M59.18,72.08 A42,42 0 1 0 130.82,72.08"/><line class="cutline" x1="95" y1="94" x2="130.82" y2="72.08"/>
+</svg>
+  </div>
+
+  <!-- 만드는 법 -->
+  <div class="abs" style="left:0; top:172mm; width:190mm;">
+    <div class="steps">
+      <div class="step"><span class="sp-no">1</span>
+        <svg width="40" height="24" viewBox="0 0 40 24"><rect x="10" y="4" width="26" height="16" rx="1.5" class="st-line"/><path d="M2,5 L9,12 L2,19" class="st-line"/><circle cx="2.5" cy="4" r="1.8" class="st-line"/><circle cx="2.5" cy="20" r="1.8" class="st-line"/></svg>
+        바깥 <b>실선</b>을 따라 몸체 띠와 지붕을 오려요
+      </div>
+      <div class="step"><span class="sp-no">2</span>
+        <svg width="40" height="24" viewBox="0 0 40 24"><path d="M3,19 L11,19 L11,6" class="st-line"/><path d="M11,19 L19,19" class="st-dash"/><path d="M19,19 L27,19 L27,6" class="st-line"/><path d="M27,19 L35,19" class="st-dash"/></svg>
+        몸체의 <b>점선 7개</b>를 접어 여덟모 기둥을 만들어요
+      </div>
+      <div class="step"><span class="sp-no">3</span>
+        <svg width="40" height="24" viewBox="0 0 40 24"><path d="M20,3 L33,20 L7,20 Z" class="st-roof"/><path d="M20,3 L20,20" class="st-dash"/><path d="M20,3 L13.5,20" class="st-dash"/><path d="M20,3 L26.5,20" class="st-dash"/></svg>
+        지붕의 <b>마루선</b>을 접고 탭에 풀칠해 고깔처럼 붙여요
+      </div>
+      <div class="step"><span class="sp-no">4</span>
+        <svg width="40" height="24" viewBox="0 0 40 24"><path d="M8,17 L14,13 L26,13 L32,17 L26,21 L14,21 Z" class="st-plate"/><rect x="14" y="5" width="12" height="9" class="st-wall"/><path d="M14,14 L26,14" class="st-dash"/></svg>
+        몸체 아래 탭을 벌려 2쪽 <b>받침판</b> 위에 붙여요
+      </div>
+      <div class="step"><span class="sp-no">5</span>
+        <svg width="40" height="24" viewBox="0 0 40 24"><path d="M8,20 L14,16 L26,16 L32,20 L26,23.4 L14,23.4 Z" class="st-plate"/><rect x="14" y="9" width="12" height="8" class="st-wall"/><path d="M20,1 L31,9 L9,9 Z" class="st-roof"/></svg>
+        지붕을 몸체 위에 <b>얹으면</b> 완성!
+      </div>
+    </div>
+  </div>
+
+  <div class="abs spec" style="left:0; top:208mm; width:190mm;">
+    <b>도안 치수</b> — 팔각 한 변 22mm · 몸체 높이 40mm · 둘레 176mm(22×8) · 지붕 부채꼴 반지름 42mm(중심각 242.9°) · 지붕 높이 30.6mm.<br>
+    지붕은 <b>부채꼴 한 장</b>이에요. 마루선 7개를 접으면 저절로 여덟모(팔각) 지붕이 되고, 밑변 길이가 몸체 둘레와 정확히 맞습니다.
+  </div>
+
+  <!-- 만들면서 읽는 3·1 운동 흐름 -->
+  <div class="abs tl-box" style="left:0; top:225mm; width:190mm;">
+    <h4>만들면서 읽어요 — 3·1 운동은 이렇게 번졌어요</h4>
+    <div class="tl">
+      <div class="tl-i"><span class="tl-y">1919. 2. 8.</span><span class="tl-t">일본 도쿄에서 유학생들이 먼저 독립을 선언했어요.</span></div>
+      <div class="tl-i"><span class="tl-y">1919. 3. 1.</span><span class="tl-t">서울 <b>탑골 공원</b>에서 독립 선언서를 읽고 만세를 불렀어요.</span></div>
+      <div class="tl-i"><span class="tl-y">1919. 봄</span><span class="tl-t">만세 운동이 전국 200여 곳, 나라 밖까지 퍼졌어요.</span></div>
+      <div class="tl-i"><span class="tl-y">1919. 4. 11.</span><span class="tl-t">중국 상하이에 <b>대한민국 임시 정부</b>가 세워졌어요.</span></div>
+    </div>
+  </div>
+
+  <footer class="print-foot">
+    <span>몽당분필 날쌤 · 초등사회 마무리활동 — 일제의 침략과 광복을 위한 노력(5-2-3)</span>
+    <span>탑골 공원 팔각정 페이퍼크래프트 · 1 / 2</span>
+  </footer>
+</div></section>
+
+<!-- ═════════════════ 2쪽: 받침판 + 팻말 + 활동 ═════════════════ -->
+<section class="a4-page"><div class="pc">
+  <header class="print-head" style="margin-bottom:1mm;">
+    <div class="ph-brand">
+      <svg width="34" height="34" viewBox="0 0 34 34"><rect x="5" y="12" width="24" height="10" rx="2.5" fill="#fff" stroke="#c8931d" stroke-width="1.6" transform="rotate(-18 17 17)"/><rect x="22.5" y="10.6" width="6" height="10" rx="2" fill="#c8931d" transform="rotate(-18 17 17)"/><path d="M7 26 Q13 23 19 25.5" stroke="#c8931d" stroke-width="1.3" fill="none" stroke-linecap="round"/></svg>
+      <span class="ph-brandname">몽당분필 날쌤<small>초등사회 마무리활동</small></span>
+    </div>
+    <div class="ph-main">
+      <div class="ph-title">탑골 공원 받침판 <span style="font-size:9pt;font-weight:700;color:#888;">— 받침판 · 팻말 · 태극기 (2/2)</span></div>
+      <div class="ph-sub">팔각정을 받침판 위에 세우고, 팻말과 태극기를 놓으면 1919년 3월 1일의 그 자리가 완성돼요.</div>
+      <div class="ph-chips">
+        <span class="chip">5학년 2학기 · 5-2-3</span>
+        <span class="chip dim">받침판은 오리기만, 팻말·태극기는 반으로 접기</span>
+      </div>
+    </div>
+    <div class="craft-legend">
+      <span><svg width="26" height="6"><line x1="1" y1="3" x2="25" y2="3" stroke="#111" stroke-width="2.2"/></svg> 실선 = 자르기</span>
+      <span><svg width="26" height="6"><line x1="1" y1="3" x2="25" y2="3" stroke="#6a7a90" stroke-width="1.4" stroke-dasharray="4 2.6"/></svg> 점선 = 접기</span>
+    </div>
+  </header>
+
+  <div class="abs" style="left:0; top:33mm;">
+<svg viewBox="0 0 190 144" xmlns="http://www.w3.org/2000/svg" style="width:190mm;height:144mm;display:block">
+<path class="plate" d="M68.84,92.65 L92.65,68.84 L92.65,35.16 L68.84,11.35 L35.16,11.35 L11.35,35.16 L11.35,68.84 L35.16,92.65 Z"/><path class="plate2" d="M67.31,88.96 L88.96,67.31 L88.96,36.69 L67.31,15.04 L36.69,15.04 L15.04,36.69 L15.04,67.31 L36.69,88.96 Z"/><path class="footprint" d="M63,78.56 L78.56,63 L78.56,41 L63,25.44 L41,25.44 L25.44,41 L25.44,63 L41,78.56 Z"/><text class="fplab" x="52" y="51" text-anchor="middle">팔각정을</text><text class="fplab" x="52" y="56.6" text-anchor="middle">여기에 세워요</text><text class="platetitle" x="52" y="19" text-anchor="middle">탑골 공원</text><text class="platesub" x="52" y="84" text-anchor="middle">1919. 3. 1.</text><text class="platesub2" x="52" y="89" text-anchor="middle">만세의 함성이 시작된 자리</text><path class="cutline2" fill="none" d="M68.84,92.65 L92.65,68.84 L92.65,35.16 L68.84,11.35 L35.16,11.35 L11.35,35.16 L11.35,68.84 L35.16,92.65 Z"/><rect class="card" x="102" y="12" width="84" height="54" rx="1.5"/><text class="cardbig"  x="144" y="53" text-anchor="middle">1919. 3. 1.</text><text class="cardsub"  x="144" y="59.5" text-anchor="middle">탑골 공원에서 시작된 만세 운동</text><text class="cardsub2" x="144" y="64.5" text-anchor="middle">전국으로, 그리고 나라 밖까지 퍼져 나갔어요</text><g transform="rotate(180 144 25.5)"><text class="cardbig" x="144" y="28.5" text-anchor="middle">1919. 3. 1.</text><text class="cardsub" x="144" y="35" text-anchor="middle">3·1 운동 · 방탈출 암호 0301</text></g><line class="foldline" x1="102" y1="39" x2="186" y2="39"/><text class="foldnote" x="183.5" y="37" text-anchor="end">여기를 접어 세워요</text><rect class="cutline2" fill="none" x="102" y="12" width="84" height="54" rx="1.5"/><rect class="card" x="104" y="74" width="40" height="26" rx="1"/><line class="foldline" x1="124" y1="74" x2="124" y2="100"/><circle class="taegeuk-r" cx="134" cy="87" r="4.2"/><path class="taegeuk-b" d="M129.8,87 a4.2,4.2 0 0 1 8.4,0 a2.1,2.1 0 0 1 -4.2,0 a2.1,2.1 0 0 0 -4.2,0 Z" transform="rotate(-34 134 87)"/><rect class="trigram" x="125.5" y="79.6" width="3.8" height="0.75"/><rect class="trigram" x="125.5" y="80.8" width="3.8" height="0.75"/><rect class="trigram" x="125.5" y="82" width="3.8" height="0.75"/><rect class="trigram" x="138.7" y="79.6" width="3.8" height="0.75"/><rect class="trigram" x="138.7" y="80.8" width="3.8" height="0.75"/><rect class="trigram" x="138.7" y="82" width="3.8" height="0.75"/><rect class="trigram" x="125.5" y="92" width="3.8" height="0.75"/><rect class="trigram" x="125.5" y="93.2" width="3.8" height="0.75"/><rect class="trigram" x="125.5" y="94.4" width="3.8" height="0.75"/><rect class="trigram" x="138.7" y="92" width="3.8" height="0.75"/><rect class="trigram" x="138.7" y="93.2" width="3.8" height="0.75"/><rect class="trigram" x="138.7" y="94.4" width="3.8" height="0.75"/><text class="foldnote" x="124" y="103.4" text-anchor="middle">반 접어 이쑤시개에 끼우면 깃발</text><rect class="cutline2" fill="none" x="104" y="74" width="40" height="26" rx="1"/><rect class="card" x="150" y="74" width="40" height="26" rx="1"/><line class="foldline" x1="170" y1="74" x2="170" y2="100"/><circle class="taegeuk-r" cx="180" cy="87" r="4.2"/><path class="taegeuk-b" d="M175.8,87 a4.2,4.2 0 0 1 8.4,0 a2.1,2.1 0 0 1 -4.2,0 a2.1,2.1 0 0 0 -4.2,0 Z" transform="rotate(-34 180 87)"/><rect class="trigram" x="171.5" y="79.6" width="3.8" height="0.75"/><rect class="trigram" x="171.5" y="80.8" width="3.8" height="0.75"/><rect class="trigram" x="171.5" y="82" width="3.8" height="0.75"/><rect class="trigram" x="184.7" y="79.6" width="3.8" height="0.75"/><rect class="trigram" x="184.7" y="80.8" width="3.8" height="0.75"/><rect class="trigram" x="184.7" y="82" width="3.8" height="0.75"/><rect class="trigram" x="171.5" y="92" width="3.8" height="0.75"/><rect class="trigram" x="171.5" y="93.2" width="3.8" height="0.75"/><rect class="trigram" x="171.5" y="94.4" width="3.8" height="0.75"/><rect class="trigram" x="184.7" y="92" width="3.8" height="0.75"/><rect class="trigram" x="184.7" y="93.2" width="3.8" height="0.75"/><rect class="trigram" x="184.7" y="94.4" width="3.8" height="0.75"/><text class="foldnote" x="170" y="103.4" text-anchor="middle">반 접어 이쑤시개에 끼우면 깃발</text><rect class="cutline2" fill="none" x="150" y="74" width="40" height="26" rx="1"/><text class="striptitle" x="8" y="114.6">팔각정 여덟 면에 붙일 낱말 띠 — 한 칸에 한 낱말씩 적어 오려 붙이세요</text><rect class="strip" x="8" y="118" width="22" height="8" rx="1"/><rect class="cutline2" fill="none" x="8" y="118" width="22" height="8" rx="1"/><rect class="strip" x="32.4" y="118" width="22" height="8" rx="1"/><rect class="cutline2" fill="none" x="32.4" y="118" width="22" height="8" rx="1"/><rect class="strip" x="56.8" y="118" width="22" height="8" rx="1"/><rect class="cutline2" fill="none" x="56.8" y="118" width="22" height="8" rx="1"/><rect class="strip" x="81.2" y="118" width="22" height="8" rx="1"/><rect class="cutline2" fill="none" x="81.2" y="118" width="22" height="8" rx="1"/><rect class="strip" x="8" y="128.4" width="22" height="8" rx="1"/><rect class="cutline2" fill="none" x="8" y="128.4" width="22" height="8" rx="1"/><rect class="strip" x="32.4" y="128.4" width="22" height="8" rx="1"/><rect class="cutline2" fill="none" x="32.4" y="128.4" width="22" height="8" rx="1"/><rect class="strip" x="56.8" y="128.4" width="22" height="8" rx="1"/><rect class="cutline2" fill="none" x="56.8" y="128.4" width="22" height="8" rx="1"/><rect class="strip" x="81.2" y="128.4" width="22" height="8" rx="1"/><rect class="cutline2" fill="none" x="81.2" y="128.4" width="22" height="8" rx="1"/><rect class="card" x="108" y="114" width="78" height="26" rx="1.5"/><line class="foldline" x1="108" y1="127" x2="186" y2="127"/><text class="cardsub" x="112" y="133">만든 사람</text><line class="ruled" x1="130" y1="133.6" x2="182" y2="133.6"/><text class="cardsub2" x="112" y="137.4">전시할 때 팔각정 옆에 세워 두세요</text><text class="foldnote" x="183.5" y="125" text-anchor="end">여기를 접어 세워요</text><rect class="cutline2" fill="none" x="108" y="114" width="78" height="26" rx="1.5"/>
+</svg>
+  </div>
+
+  <!-- 완성 예시 -->
+  <div class="abs example" style="left:100mm; top:182mm; width:90mm;">
+    <div class="ex-box">
+<svg viewBox="0 0 170 96" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:auto;display:block">
+<path class="ax-plate" d="M75.47,94.86 L94.52,86.86 L94.52,75.54 L75.47,67.54 L48.53,67.54 L29.48,75.54 L29.48,86.86 L48.53,94.86 Z"/><path class="ax-wall" d="M70.8,71.08 L53.2,71.08 L53.2,39.08 L70.8,39.08 Z"/><path class="ax-rail" d="M70.8,62.28 L53.2,62.28"/><path class="ax-rail" d="M70.8,44.36 L53.2,44.36"/><path class="ax-wall" d="M83.25,76.3 L70.8,71.08 L70.8,39.08 L83.25,44.3 Z"/><path class="ax-rail" d="M83.25,67.5 L70.8,62.28"/><path class="ax-rail" d="M83.25,49.58 L70.8,44.36"/><path class="ax-wall" d="M53.2,71.08 L40.75,76.3 L40.75,44.3 L53.2,39.08 Z"/><path class="ax-rail" d="M53.2,62.28 L40.75,67.5"/><path class="ax-rail" d="M53.2,44.36 L40.75,49.58"/><path class="ax-wall" d="M83.25,83.7 L83.25,76.3 L83.25,44.3 L83.25,51.7 Z"/><path class="ax-rail" d="M83.25,74.9 L83.25,67.5"/><path class="ax-rail" d="M83.25,56.98 L83.25,49.58"/><path class="ax-wall" d="M40.75,76.3 L40.75,83.7 L40.75,51.7 L40.75,44.3 Z"/><path class="ax-rail" d="M40.75,67.5 L40.75,74.9"/><path class="ax-rail" d="M40.75,49.58 L40.75,56.98"/><path class="ax-wall" d="M70.8,88.92 L83.25,83.7 L83.25,51.7 L70.8,56.92 Z"/><path class="ax-rail" d="M70.8,80.12 L83.25,74.9"/><path class="ax-rail" d="M70.8,62.2 L83.25,56.98"/><path class="ax-wall" d="M40.75,83.7 L53.2,88.92 L53.2,56.92 L40.75,51.7 Z"/><path class="ax-rail" d="M40.75,74.9 L53.2,80.12"/><path class="ax-rail" d="M40.75,56.98 L53.2,62.2"/><path class="ax-wall" d="M53.2,88.92 L70.8,88.92 L70.8,56.92 L53.2,56.92 Z"/><path class="ax-rail" d="M53.2,80.12 L70.8,80.12"/><path class="ax-rail" d="M53.2,62.2 L70.8,62.2"/><path class="ax-roof" d="M70.8,39.08 L53.2,39.08 L62,23.5 Z"/><path class="ax-roof" d="M83.25,44.3 L70.8,39.08 L62,23.5 Z"/><path class="ax-roof" d="M53.2,39.08 L40.75,44.3 L62,23.5 Z"/><path class="ax-roof" d="M83.25,51.7 L83.25,44.3 L62,23.5 Z"/><path class="ax-roof" d="M40.75,44.3 L40.75,51.7 L62,23.5 Z"/><path class="ax-roof" d="M70.8,56.92 L83.25,51.7 L62,23.5 Z"/><path class="ax-roof" d="M40.75,51.7 L53.2,56.92 L62,23.5 Z"/><path class="ax-roof" d="M53.2,56.92 L70.8,56.92 L62,23.5 Z"/><line class="ax-dim" x1="122" y1="23.5" x2="122" y2="89.66"/><line class="ax-dim" x1="119.6" y1="23.5" x2="124.4" y2="23.5"/><line class="ax-dim" x1="119.6" y1="89.66" x2="124.4" y2="89.66"/><text class="ax-lab" x="126" y="56.58">약 70.62mm</text>
+</svg>
+    </div>
+    <div class="ex-cap">완성한 모습 — 받침판 위에 세운 팔각정</div>
+  </div>
+
+  <div class="abs materials" style="left:0; top:182mm; width:94mm;">
+    <b>더 튼튼하게 만들기</b><br>
+    · 얇은 종이라면 오리기 전에 도안을 마분지(과자 상자도 좋아요)에 풀로 붙였다가 함께 오리세요.<br>
+    · 받침판은 접지 않고 <b>오리기만</b> 하면 됩니다.<br>
+    · 지붕은 몸체에 붙이지 말고 <b>얹기만</b> 하면 여닫을 수 있어요. 안쪽에 소원을 적어 넣어 보세요.<br>
+    · 색칠은 오리기 <b>전에</b> 하는 편이 편해요. 기와는 푸른 회색, 기둥은 붉은 갈색이 어울려요.
+  </div>
+
+  <div class="abs usage" style="left:0; top:236mm; width:190mm;">
+    <h4>만들고 나서 — 이야기해 봐요</h4>
+    ① 팔각정 <b>여덟 면</b>에 3·1 운동에서 기억하고 싶은 낱말을 한 면에 하나씩 적어 보세요. (독립 · 만세 · 태극기 · 선언서 …)<br>
+    ② 방탈출에서 찾은 암호 <b>0301</b>은 무슨 날인가요? 그날 이 자리에서 무슨 일이 있었는지 짝에게 설명해 보세요.<br>
+    ③ 탑골 공원에서 시작된 만세 소리는 어디까지 퍼졌을까요? 우리 반 지도에 표시하고, 왜 그렇게 빨리 퍼졌을지 이야기해 봐요.
+  </div>
+
+  <footer class="print-foot">
+    <span>몽당분필 날쌤 · 초등사회 마무리활동 — 일제의 침략과 광복을 위한 노력(5-2-3)</span>
+    <span>탑골 공원 팔각정 페이퍼크래프트 · 2 / 2</span>
+  </footer>
+</div></section>
+
+</body>
+</html>
