@@ -99,7 +99,7 @@ function hideOverlay(id) {
 }
 
 // ---------- 장식 블록 / 코스메틱 정보 ----------
-const DECOR_TYPES = ['sand', 'snow', 'ice', 'glass', 'gold', 'tramp', 'fan'];
+const DECOR_TYPES = ['sand', 'snow', 'ice', 'glass', 'gold', 'tramp', 'fan', 'diamond', 'emerald', 'ruby', 'amethyst'];
 const DECOR_INFO = {
   sand: { emoji: '🏜️', label: '모래' },
   snow: { emoji: '⛄', label: '눈' },
@@ -108,6 +108,10 @@ const DECOR_INFO = {
   gold: { emoji: '🪙', label: '황금' },
   tramp: { emoji: '🤸', label: '트램펄린' },
   fan: { emoji: '🌀', label: '바람개비' },
+  diamond: { emoji: '💎', label: '다이아몬드' },
+  emerald: { emoji: '🟩', label: '에메랄드' },
+  ruby: { emoji: '🔴', label: '루비' },
+  amethyst: { emoji: '🟪', label: '자수정' },
 };
 function cosmeticLabel(type) {
   // 'hat:cap' / 'pet:chick' 형식
@@ -250,6 +254,16 @@ function doBreak(hit) {
   if (!type) return;
   BQ.sound('break');
   if (socket.connected) socket.emit('w:break', { key: hit.key });
+  if (type === 'tnt') {
+    // TNT를 곡괭이로 부수면 즉시 폭발 (인접 파괴 + 연쇄) — 폭탄과 동일하게 동기화
+    const [bx, by, bz] = engine.parseKey(hit.key);
+    const center = new engine.THREE.Vector3(bx, by, bz);
+    const destroyed = engine.explodeAt(center, { radius: 4.6 });
+    if (socket.connected && destroyed.length) socket.emit('w:bomb', { x: bx, y: by, z: bz, keys: destroyed.map((d) => d.key) });
+    destroyed.filter((d) => d.type === 'crate').slice(0, 2).forEach(() => grantLoot());
+    toast('💥 TNT 폭발!', 1200);
+    return;
+  }
   if (type === 'crate') grantLoot();
   else if (Math.random() < 0.25) { inv.blocks += 1; renderHotbar(); }
 }
@@ -586,7 +600,7 @@ function showIntro() {
   $('intro-title').textContent = quiz.title;
   $('intro-summary').textContent = quiz.summary || '';
   $('intro-objectives').innerHTML = (quiz.objectives || []).map((o) => `<li>${BQ.esc(o)}</li>`).join('');
-  $('intro-desc').textContent = `월드에 흩어진 황금 퀴즈 블록 ${quiz.questions.length}개를 찾아 문제를 풀어보세요! 빨리 맞힐수록, 연속으로 맞힐수록 보너스!`;
+  $('intro-desc').textContent = `넓은 월드 곳곳에 흩어진 황금 퀴즈 블록 ${quiz.questions.length}개(빛기둥으로 표시)를 찾아 문제를 풀어보세요! 한 번 푼 문항은 다른 장소로 옮겨가요. 빨리·연속으로 맞힐수록 보너스!`;
   showOverlay('intro-overlay');
 }
 $('intro-go').addEventListener('click', () => {

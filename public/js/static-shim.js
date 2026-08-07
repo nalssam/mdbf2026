@@ -41,7 +41,7 @@
   ];
 
   // ---------- 인벤토리/복습 보상 (서버 계약과 동일 값) ----------
-  const DECOR_TYPES = ['sand', 'snow', 'ice', 'glass', 'gold', 'tramp', 'fan'];
+  const DECOR_TYPES = ['sand', 'snow', 'ice', 'glass', 'gold', 'tramp', 'fan', 'diamond', 'emerald', 'ruby', 'amethyst'];
   // 코스메틱(모자/펫) — 보유 목록에는 'hat:키'/'pet:키' 형식으로 저장
   const COSMETIC_POOL = [
     'hat:cap', 'hat:crown', 'hat:wizard', 'hat:leaf',

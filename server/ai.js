@@ -283,7 +283,7 @@ function sanitizeQuiz(quiz, numQuestions) {
 }
 
 async function generateQuiz({ sourceText, title, numQuestions = 8 }) {
-  numQuestions = Math.min(Math.max(Number(numQuestions) || 8, 3), 15);
+  numQuestions = Math.min(Math.max(Number(numQuestions) || 8, 3), 20);
   const hasKey = Boolean(process.env.ANTHROPIC_API_KEY || process.env.ANTHROPIC_AUTH_TOKEN);
   if (hasKey) {
     try {
