@@ -19,6 +19,22 @@ export const BLOCK_TYPES = {
   ice: { color: 0xa8d8f0, breakable: true, slippery: true },
   glass: { color: 0xd8f0f4, breakable: true, transparent: true, opacity: 0.45 },
   gold: { color: 0xf5c518, breakable: true, sparkle: true },
+  // ── 신규 광물·암석 15종 (저마다 고유한 성격) ──
+  granite:   { color: 0xb07a68, breakable: true },                                    // 화강암 — 단단한 분홍빛 암석
+  basalt:    { color: 0x3b3a44, breakable: true },                                    // 현무암 — 검은 화산암
+  sandstone: { color: 0xdcc07a, breakable: true },                                    // 사암 — 사막 지층
+  marble:    { color: 0xeef0f4, breakable: true },                                    // 대리석 — 매끈한 흰 돌(성 재료)
+  clay:      { color: 0xb56a4c, breakable: true },                                    // 점토(테라코타)
+  copper:    { color: 0xc9784a, breakable: true, sparkle: true },                     // 구리 광석
+  coal:      { color: 0x2c2c33, breakable: true },                                    // 석탄
+  moss:      { color: 0x5f8f3a, breakable: true },                                    // 이끼돌
+  diamond:   { color: 0x54e6df, breakable: true, sparkle: true, glow: 0x1fbfd6 },     // 다이아몬드 — 빛나는 보석
+  emerald:   { color: 0x2ec76a, breakable: true, sparkle: true, glow: 0x18a557 },     // 에메랄드
+  ruby:      { color: 0xe23a54, breakable: true, sparkle: true, glow: 0xb01e34 },     // 루비
+  amethyst:  { color: 0xa15fe0, breakable: true, sparkle: true, glow: 0x7a3ec0 },     // 자수정
+  crystal:   { color: 0xbfeaff, breakable: true, transparent: true, opacity: 0.6, glow: 0x8fd0ff }, // 수정 — 반투명·발광
+  obsidian:  { color: 0x1b1626, breakable: true, glow: 0x2a1e40 },                    // 흑요석 — 검은 유리질(은은한 광)
+  tnt:       { color: 0xd6392b, breakable: true, explosive: true, glow: 0x5a1008 },   // TNT 폭탄 — 부수거나 쏘면 폭발!
   // 기능 블록 (게임 요소용 — 장식 5종 카운트와 별개)
   water: { color: 0x3f7fd9, breakable: false, swim: true, transparent: true, opacity: 0.6 }, // 충돌 없음
   lava: { color: 0xe85d1a, breakable: false, hazard: true }, // 충돌 없음, 닿으면 리스폰
@@ -390,6 +406,134 @@ export function createEngine({ canvas, classSeed, avatarKey, playerName, mapKey 
     }
   }
 
+  // ---------- 대형 랜드마크 (맵을 매우 복잡하게: 성 · 신전 · 미로 · 광맥 · 다리) ----------
+  const inBounds = (x, z) => Math.abs(x) < WORLD_R - 1 && Math.abs(z) < WORLD_R - 1;
+  function put(x, y, z, type) { if (inBounds(x, z) && y >= 1) setBlock(x, y, z, type); }
+  // 벽/기둥 상자 (속을 비우면 hollow=true)
+  function box(x0, y0, z0, x1, y1, z1, type, hollow) {
+    for (let x = x0; x <= x1; x++) for (let y = y0; y <= y1; y++) for (let z = z0; z <= z1; z++) {
+      if (hollow && x > x0 && x < x1 && z > z0 && z < z1 && y > y0 && y < y1) continue;
+      put(x, y, z, type);
+    }
+  }
+  // 사각 성탑: 3×3 벽 + 크레넬레이션 + 창(glass) + 꼭대기 장식
+  function keepTower(cx, cz, h, wallType, capType) {
+    for (let y = 1; y <= h; y++) for (let dx = -1; dx <= 1; dx++) for (let dz = -1; dz <= 1; dz++) {
+      if (Math.abs(dx) === 1 || Math.abs(dz) === 1) put(cx + dx, y, cz + dz, (y % 3 === 0 && (dx === 0 || dz === 0)) ? 'glass' : wallType);
+    }
+    for (let dx = -1; dx <= 1; dx++) for (let dz = -1; dz <= 1; dz++) {
+      if ((Math.abs(dx) === 1 || Math.abs(dz) === 1) && (dx + dz + 2) % 2 === 0) put(cx + dx, h + 1, cz + dz, wallType);
+    }
+    if (capType) put(cx, h + 1, cz, capType);
+  }
+  // 지표 광맥 덩어리 (작은 보석 언덕) — 채굴 보상용
+  function oreVein(cx, cz, type, n) {
+    for (let i = 0; i < n; i++) {
+      const dx = Math.floor(rnd() * 3) - 1, dz = Math.floor(rnd() * 3) - 1;
+      const hh = 1 + Math.floor(rnd() * 2);
+      for (let y = 1; y <= hh; y++) put(cx + dx, y, cz + dz, type);
+    }
+  }
+  // 공중 다리 (from→to를 잇는 판자 통로 + 난간)
+  function skyBridge(x0, z0, x1, z1, y, type) {
+    const steps = Math.max(Math.abs(x1 - x0), Math.abs(z1 - z0));
+    for (let i = 0; i <= steps; i++) {
+      const x = Math.round(x0 + ((x1 - x0) * i) / steps);
+      const z = Math.round(z0 + ((z1 - z0) * i) / steps);
+      for (let w = -1; w <= 1; w++) {
+        const bx = x + (Math.abs(x1 - x0) >= Math.abs(z1 - z0) ? 0 : w);
+        const bz = z + (Math.abs(x1 - x0) >= Math.abs(z1 - z0) ? w : 0);
+        put(bx, y, bz, type);
+        if (Math.abs(w) === 1 && i % 3 === 0) put(bx, y + 1, bz, 'brick'); // 난간 기둥
+      }
+    }
+  }
+
+  function genLandmarks() {
+    const C = ZONE_CENTERS;
+    // ── 1) 중앙 대성(Grand Castle): 성벽 링 + 4모서리 탑 + 사방 성문 ──
+    const RC = 12; // 성벽 반경
+    for (let x = -RC; x <= RC; x++) for (let z = -RC; z <= RC; z++) {
+      const edge = Math.abs(x) === RC || Math.abs(z) === RC;
+      if (!edge) continue;
+      // 사방 성문(중앙 3칸)은 비워 통행
+      if ((Math.abs(x) <= 1 && Math.abs(z) === RC) || (Math.abs(z) <= 1 && Math.abs(x) === RC)) continue;
+      for (let y = 1; y <= 5; y++) put(x, y, z, y >= 4 ? 'marble' : 'brick');
+      if ((x + z) % 2 === 0) put(x, 6, z, 'marble'); // 크레넬레이션
+    }
+    keepTower(-RC, -RC, 10, 'marble', 'gold');
+    keepTower(RC, -RC, 10, 'marble', 'gold');
+    keepTower(-RC, RC, 10, 'marble', 'gold');
+    keepTower(RC, RC, 10, 'marble', 'gold');
+    // 성문 아치 위 다이아 장식
+    put(0, 6, RC, 'diamond'); put(0, 6, -RC, 'diamond'); put(RC, 6, 0, 'diamond'); put(-RC, 6, 0, 'diamond');
+
+    // ── 2) 사방 존을 잇는 공중 다리 (중앙 성문 → 각 존 중심) ──
+    skyBridge(0, -RC - 1, C[1].x, C[1].z + 10, 3, 'plank');
+    skyBridge(RC + 1, 0, C[2].x - 10, C[2].z, 3, 'plank');
+    skyBridge(0, RC + 1, C[3].x, C[3].z - 10, 3, 'plank');
+    skyBridge(-RC - 1, 0, C[4].x + 10, C[4].z, 3, 'plank');
+
+    // ── 3) 북: 얼음·수정 궁전 ──
+    {
+      const cx = C[1].x, cz = C[1].z;
+      box(cx - 6, 1, cz - 6, cx + 6, 5, cz + 6, 'ice', true); // 얼음 성벽(속 빔)
+      for (let dx = -6; dx <= 6; dx += 12) for (let dz = -6; dz <= 6; dz += 12) keepTower(cx + dx, cz + dz, 9, 'marble', 'crystal');
+      put(cx, 1, cz, 'crystal'); box(cx - 1, 1, cz - 1, cx + 1, 8, cz + 1, 'crystal'); // 중앙 수정 첨탑
+      put(cx, 9, cz, 'diamond');
+      for (let i = 0; i < 10; i++) { const [sx, sz] = zoneSpot(cx, cz, 15); oreVein(sx, sz, i % 2 ? 'diamond' : 'crystal', 3); }
+    }
+    // ── 4) 동: 사암 지구라트 + 미로 ──
+    {
+      const cx = C[2].x, cz = C[2].z;
+      for (let lvl = 0; lvl < 6; lvl++) { // 6단 계단식 지구라트(속 빔)
+        const half = 7 - lvl;
+        box(cx - half, lvl + 1, cz - half, cx + half, lvl + 1, cz + half, lvl === 5 ? 'gold' : 'sandstone', lvl < 5);
+      }
+      // 사암 미로 (격자 벽, 결정적 구멍)
+      const mx = cx - 4, mz = cz + 12;
+      for (let x = 0; x < 14; x++) for (let z = 0; z < 14; z++) {
+        if ((x % 2 === 0 || z % 2 === 0) && rnd() < 0.72) { put(mx + x, 1, mz + z, 'granite'); put(mx + x, 2, mz + z, 'moss'); }
+      }
+      for (let i = 0; i < 8; i++) { const [sx, sz] = zoneSpot(cx, cz, 16); oreVein(sx, sz, i % 3 === 0 ? 'ruby' : i % 3 === 1 ? 'gold' : 'copper', 3); }
+    }
+    // ── 5) 남: 트리하우스 마을 + 공중 다리 ──
+    {
+      const cx = C[3].x, cz = C[3].z;
+      const posts = [[cx - 8, cz - 6], [cx + 7, cz - 5], [cx + 6, cz + 7], [cx - 7, cz + 6], [cx, cz]];
+      for (const [px, pz] of posts) {
+        for (let y = 1; y <= 7; y++) put(px, y, pz, 'wood');
+        box(px - 2, 8, pz - 2, px + 2, 8, pz + 2, 'plank'); // 나무집 바닥
+        box(px - 2, 9, pz - 2, px + 2, 10, pz + 2, 'wood', true); // 벽
+        for (let dx = -2; dx <= 2; dx++) for (let dz = -2; dz <= 2; dz++) put(px + dx, 11, pz + dz, 'leaf'); // 지붕
+      }
+      for (let i = 0; i < posts.length - 1; i++) skyBridge(posts[i][0], posts[i][1], posts[i + 1][0], posts[i + 1][1], 8, 'plank');
+      for (let i = 0; i < 8; i++) { const [sx, sz] = zoneSpot(cx, cz, 16); oreVein(sx, sz, i % 2 ? 'emerald' : 'moss', 3); }
+    }
+    // ── 6) 서: 흑요석 요새 + TNT 보관소 ──
+    {
+      const cx = C[4].x, cz = C[4].z;
+      box(cx - 7, 1, cz - 7, cx + 7, 6, cz + 7, 'basalt', true); // 현무암 성벽
+      for (let dx = -7; dx <= 7; dx += 14) for (let dz = -7; dz <= 7; dz += 14) keepTower(cx + dx, cz + dz, 11, 'obsidian', 'ruby');
+      box(cx - 2, 1, cz - 2, cx + 2, 7, cz + 2, 'obsidian', true); // 중앙 흑요석 아성
+      put(cx, 8, cz, 'diamond');
+      // 용암 해자 (요새 앞) — 바닥 한 줄을 용암으로 (floor 교체)
+      for (let x = cx - 8; x <= cx + 8; x++) if (inBounds(x, cz - 9)) setBlock(x, 0, cz - 9, 'lava');
+      // TNT 보관소 — 요새 안뜰의 폭탄 더미 (쏘거나 부수면 연쇄 폭발!)
+      for (let dx = -1; dx <= 1; dx++) for (let dz = -1; dz <= 1; dz++) { put(cx + dx, 1, cz + dz + 4, 'tnt'); put(cx + dx, 2, cz + dz + 4, 'tnt'); }
+      for (let i = 0; i < 8; i++) { const [sx, sz] = zoneSpot(cx, cz, 16); oreVein(sx, sz, i % 3 === 0 ? 'diamond' : i % 3 === 1 ? 'ruby' : 'coal', 3); }
+    }
+
+    // ── 7) 맵 전역에 흩뿌린 광맥·바위 (탐험·채굴 재미) ──
+    const veinTypes = ['coal', 'copper', 'granite', 'basalt', 'diamond', 'emerald', 'ruby', 'amethyst', 'clay', 'moss'];
+    for (let i = 0; i < 70; i++) {
+      const ang = rnd() * Math.PI * 2, rad = 22 + rnd() * (WORLD_R - 28);
+      const vx = clampW(Math.round(Math.cos(ang) * rad)), vz = clampW(Math.round(Math.sin(ang) * rad));
+      if (Math.hypot(vx, vz) < RC + 3) continue; // 중앙 성 안뜰은 비움
+      oreVein(vx, vz, veinTypes[Math.floor(rnd() * veinTypes.length)], 2 + Math.floor(rnd() * 3));
+    }
+  }
+
   function generateWorld() {
     // 바닥: 존별 바닥 블록 + 외곽 벽 (파괴 불가)
     for (let x = -WORLD_R; x <= WORLD_R; x++) {
@@ -414,6 +558,8 @@ export function createEngine({ canvas, classSeed, avatarKey, playerName, mapKey 
       const c = ZONE_CENTERS[zi];
       genZone(map.zones[zi], c.x, c.z);
     }
+    // 대형 랜드마크(성/신전/미로/광맥/다리) — 존 생성 뒤에 덧쌓아 맵을 매우 복잡하게 (결정적)
+    genLandmarks();
   }
   generateWorld();
 
@@ -437,6 +583,7 @@ export function createEngine({ canvas, classSeed, avatarKey, playerName, mapKey 
     const def = BLOCK_TYPES[type];
     const mat = new THREE.MeshLambertMaterial({ color: def.color });
     if (def.transparent) { mat.transparent = true; mat.opacity = def.opacity || 1; } // glass/water 투명 재질
+    if (def.glow) { mat.emissive = new THREE.Color(def.glow); mat.emissiveIntensity = 0.6; } // 다이아·에메랄드·TNT 등 발광 광물
     const mesh = new THREE.InstancedMesh(blockGeo, mat, Math.max(keys.length, 1));
     mesh.count = keys.length;
     keys.forEach((k, i) => {
@@ -875,7 +1022,7 @@ export function createEngine({ canvas, classSeed, avatarKey, playerName, mapKey 
     scene.add(bomb);
     return bomb;
   }
-  function explodeAt(pos, { radius = 2.6, remote } = {}) {
+  function explodeAt(pos, { radius = 2.6, remote, depth = 0 } = {}) {
     // 파괴 가능한 블록 수집
     const destroyed = [];
     const r = Math.ceil(radius);
@@ -889,6 +1036,15 @@ export function createEngine({ canvas, classSeed, avatarKey, playerName, mapKey 
     }
     for (const d of destroyed) removeBlock(d.key, { silent: true });
     flushDirty();
+    // TNT 연쇄 폭발 — 이번 폭발로 부서진 TNT를 다시 터뜨린다 (깊이 제한으로 폭주 방지)
+    if (depth < 4) {
+      for (const d of destroyed) {
+        if (!BLOCK_TYPES[d.type] || !BLOCK_TYPES[d.type].explosive) continue;
+        const [ex, ey, ez] = parseKey(d.key);
+        const more = explodeAt(new THREE.Vector3(ex, ey, ez), { radius, remote, depth: depth + 1 });
+        for (const m of more) destroyed.push(m);
+      }
+    }
     // 좀비 폭발 피해 (범위 내 좀비에게 큰 피해)
     damageZombiesInRadius(pos, radius + 0.6, 160);
     // 연출
@@ -934,9 +1090,10 @@ export function createEngine({ canvas, classSeed, avatarKey, playerName, mapKey 
   // ---------- 발사체 (총) ----------
   const projectiles = [];
   // 불꽃 총알: 밝은 주황 코어(강화) + 꼬리 불꽃 파티클
-  const projGeo = new THREE.SphereGeometry(0.19, 8, 8);
+  const projGeo = new THREE.SphereGeometry(0.22, 8, 8);
   const projMat = new THREE.MeshBasicMaterial({ color: 0xff7a1a });
-  const PROJ_LIFE = 4.2; // 사정거리 3배 (기존 1.4) — 멀리서도 좀비 처치
+  const PROJ_SPEED = 140; // 근접 히트스캔급 속도 (기존 26 → 5배 이상 빠르게, 정면 직선 관통)
+  const PROJ_LIFE = 4.2;  // 사정거리 ≈ PROJ_SPEED×LIFE ≈ 580칸 (기존 대비 10배 이상 — 맵 끝까지 관통)
   function shootFrom(origin, dir, { remote } = {}) {
     const p = new THREE.Mesh(projGeo, projMat);
     p.position.copy(origin);
@@ -945,44 +1102,57 @@ export function createEngine({ canvas, classSeed, avatarKey, playerName, mapKey 
     scene.add(p);
     if (window.BQ) BQ.sound('shoot');
   }
-  // 플레이어 시점 사격 (크로스헤어 방향)
+  // 플레이어 시점 사격 — 캐릭터 정면(크로스헤어) 방향으로 가슴 높이에서 직선 발사
   function shoot() {
     const dir = new THREE.Vector3();
     camera.getWorldDirection(dir);
-    const origin = player.pos.clone().add(new THREE.Vector3(0, 1.45, 0)).addScaledVector(dir, 0.6);
+    dir.normalize();
+    // 총구를 캐릭터 정면 중앙(가슴 높이)에 두고 총알이 몸을 통과하지 않도록 살짝 앞에서 출발
+    const origin = player.pos.clone().add(new THREE.Vector3(0, 1.4, 0)).addScaledVector(dir, 0.9);
     shootFrom(origin, dir);
     return { origin, dir };
   }
   let onProjectileHit = null;
   function updateProjectiles(dt) {
-    const SPEED = 26;
     for (let i = projectiles.length - 1; i >= 0; i--) {
       const p = projectiles[i];
       p.userData.life -= dt;
       if (p.userData.life <= 0) { scene.remove(p); projectiles.splice(i, 1); continue; }
-      const move = SPEED * dt;
-      const hit = raycastVoxel(p.position, p.userData.dir, move);
-      // 좀비 명중 (내 발사체만 피해 — 블록보다 가까우면 좀비 우선)
-      if (!p.userData.remote) {
-        const zHit = zombieHitByRay(p.position, p.userData.dir, move);
-        if (zHit && (!hit || zHit.t < hit.dist)) {
-          burst(zHit.z.position.clone().add(new THREE.Vector3(0, 1, 0)), 0xff8c1a, 10, 0.6);
-          damageZombie(zHit.z, gunDamage(), false);
-          scene.remove(p);
-          projectiles.splice(i, 1);
-          continue;
+      // 초고속 총알이 벽을 관통(터널링)하지 않도록 한 프레임 이동을 여러 스텝으로 잘게 나눠 검사
+      const move = PROJ_SPEED * dt;
+      const steps = Math.max(1, Math.ceil(move / 1.5));
+      let consumed = false;
+      for (let s = 0; s < steps && !consumed; s++) {
+        const seg = move / steps;
+        const hit = raycastVoxel(p.position, p.userData.dir, seg);
+        // 좀비 명중 (내 발사체만 피해 — 블록보다 가까우면 좀비 우선)
+        if (!p.userData.remote) {
+          const zHit = zombieHitByRay(p.position, p.userData.dir, seg);
+          if (zHit && (!hit || zHit.t < hit.dist)) {
+            burst(zHit.z.position.clone().add(new THREE.Vector3(0, 1, 0)), 0xff8c1a, 10, 0.6);
+            damageZombie(zHit.z, gunDamage(), false);
+            scene.remove(p); projectiles.splice(i, 1); consumed = true; break;
+          }
         }
+        if (hit) {
+          if (BLOCK_TYPES[hit.type].explosive) {
+            // TNT 명중 → 대폭발 (인접 파괴 + 연쇄), 서버 동기화는 폭탄 경로 재사용
+            removeBlock(hit.key, { silent: true });
+            const center = new THREE.Vector3(hit.pos.x, hit.pos.y, hit.pos.z);
+            const destroyed = explodeAt(center, { radius: 4.6, remote: p.userData.remote });
+            destroyed.push({ key: hit.key, type: 'tnt' });
+            if (!p.userData.remote && onBombExploded) onBombExploded(center, destroyed);
+          } else {
+            burst(new THREE.Vector3(hit.pos.x, hit.pos.y, hit.pos.z), 0xff8c1a, 8, 0.6);
+            if (!p.userData.remote && BLOCK_TYPES[hit.type].breakable && onProjectileHit) onProjectileHit(hit);
+          }
+          scene.remove(p); projectiles.splice(i, 1); consumed = true; break;
+        }
+        p.position.addScaledVector(p.userData.dir, seg);
       }
-      if (hit) {
-        burst(new THREE.Vector3(hit.pos.x, hit.pos.y, hit.pos.z), 0xff8c1a, 8, 0.6);
-        if (!p.userData.remote && BLOCK_TYPES[hit.type].breakable && onProjectileHit) onProjectileHit(hit);
-        scene.remove(p);
-        projectiles.splice(i, 1);
-        continue;
-      }
-      p.position.addScaledVector(p.userData.dir, move);
+      if (consumed) continue;
       // 불꽃 꼬리 (프레임마다 작은 불꽃 파티클) + 코어 깜빡임
-      if (Math.random() < 0.7) burst(p.position, Math.random() < 0.5 ? 0xff8c1a : 0xffd23f, 1, 0.32);
+      if (Math.random() < 0.85) burst(p.position, Math.random() < 0.5 ? 0xff8c1a : 0xffd23f, 1, 0.34);
       p.scale.setScalar(0.85 + Math.random() * 0.35);
     }
   }
@@ -1106,38 +1276,68 @@ export function createEngine({ canvas, classSeed, avatarKey, playerName, mapKey 
   const quizGroup = new THREE.Group();
   scene.add(quizGroup);
   const QUIZ_COLORS = { pending: 0xffcf3f, correct: 0x4cc94c, wrong: 0x777777 };
+  let quizId_ = 'none';
+  // 맵 전역에서 걸어서 닿을 수 있는(낮은) 지상 한 칸을 "순수 함수"로 고른다 (씨앗만으로 결정 →
+  // 폴링 재빌드 때도 같은 위치, 학생마다·문항마다 다른 곳). 용암/물/허공/고지대는 회피.
+  function pickQuizSpot(rndFn) {
+    for (let tries = 0; tries < 80; tries++) {
+      const ang = rndFn() * Math.PI * 2;
+      const radius = 12 + rndFn() * (WORLD_R - 20); // 중앙 성 밖 ~ 외곽까지 넓게 흩뿌림
+      const x = clampW(Math.round(Math.cos(ang) * radius));
+      const z = clampW(Math.round(Math.sin(ang) * radius));
+      const gy = topY(x, z);
+      if (gy > 4) continue;                              // 탑/다리 위 등 고지대 제외 (걸어서 도달 가능하게)
+      const surf = blocks.get(keyOf(x, gy, z));
+      if (!surf) continue;                               // 허공(하늘섬 구멍)
+      const d = BLOCK_TYPES[surf];
+      if (!d || d.hazard || d.swim) continue;            // 용암/물 위 금지
+      return { x, z, y: gy };
+    }
+    const fx = clampW(Math.round(rndFn() * 40 - 20)), fz = clampW(Math.round(rndFn() * 40 - 20));
+    return { x: fx, z: fz, y: Math.min(4, topY(fx, fz)) };
+  }
+  // 문항 위치: 아직 안 푼 문항과 "이미 푼 문항"의 씨앗을 달리해 서로 다른 장소에 생성 (풀면 딴 곳으로!)
+  function quizSpotFor(quizId, index, state) {
+    const salt = (state === 'correct' || state === 'wrong') ? 'solved' : 'pending';
+    return pickQuizSpot(mulberry32(hashStr(quizId + ':' + index + ':' + salt)));
+  }
   function setQuizBlocks(quizId, count, states) {
     for (const child of [...quizGroup.children]) disposeObject(child);
     quizGroup.clear();
+    quizId_ = quizId;
     if (!count) return;
-    const qrnd = mulberry32(hashStr(quizId));
     for (let i = 0; i < count; i++) {
-      const ang = (i / count) * Math.PI * 2 + qrnd() * 0.6;
-      const radius = 8 + qrnd() * 8;
-      const x = Math.round(Math.cos(ang) * radius), z = Math.round(Math.sin(ang) * radius);
-      let y = 1;
-      while (blocks.has(keyOf(x, y, z)) && y < 14) y++;
+      const st = states ? states[i] : 'pending';
+      const spot = quizSpotFor(quizId, i, st);
       const g = new THREE.Group();
       const cube = new THREE.Mesh(
         new THREE.BoxGeometry(1.1, 1.1, 1.1),
         new THREE.MeshLambertMaterial({ color: QUIZ_COLORS.pending, emissive: 0xffcf3f, emissiveIntensity: 0.3 })
       );
+      // 멀리서도 눈에 띄는 빛기둥(비콘) — 넓은 맵에서 문항을 찾아다닐 수 있게
+      const beam = new THREE.Mesh(
+        new THREE.CylinderGeometry(0.13, 0.13, 26, 6),
+        new THREE.MeshBasicMaterial({ color: 0xffe066, transparent: true, opacity: 0.26, depthWrite: false })
+      );
+      beam.position.y = 13;
       const mark = makeTextSprite(`${i + 1}번 ❓`, { size: 26, bg: 'rgba(0,0,0,0.55)' });
       mark.position.y = 1.15;
-      g.add(cube, mark);
-      g.position.set(x, y + 0.8, z);
-      g.userData = { quizIndex: i, cube, mark, baseY: y + 0.8, t: qrnd() * 6 };
+      g.add(cube, beam, mark);
+      g.position.set(spot.x, spot.y + 0.8, spot.z);
+      g.userData = { quizIndex: i, cube, beam, mark, baseY: spot.y + 0.8, t: (i * 1.7) % 6 };
       quizGroup.add(g);
-      updateQuizBlockState(i, states ? states[i] : 'pending');
+      updateQuizBlockState(i, st);
     }
   }
   function updateQuizBlockState(index, state) {
     const g = quizGroup.children.find((c) => c.userData.quizIndex === index);
     if (!g) return;
+    const prev = g.userData.state;
     g.userData.state = state;
     const cube = g.userData.cube;
     cube.material.color.setHex(QUIZ_COLORS[state] || QUIZ_COLORS.pending);
     cube.material.emissive.setHex(state === 'pending' ? 0xffcf3f : state === 'correct' ? 0x1f7d1f : 0x222222);
+    if (g.userData.beam) g.userData.beam.visible = state === 'pending';
     const old = g.userData.mark;
     const label = state === 'correct' ? `${index + 1}번 ✓` : state === 'wrong' ? `${index + 1}번 ✗` : `${index + 1}번 ❓`;
     const mark = makeTextSprite(label, { size: 26, bg: 'rgba(0,0,0,0.55)' });
@@ -1147,6 +1347,14 @@ export function createEngine({ canvas, classSeed, avatarKey, playerName, mapKey 
     g.add(mark);
     g.userData.mark = mark;
     if (state === 'correct') burst(g.position, 0x80e61d, 24);
+    // 방금 푼(정답/오답) 문항은 즉시 다른 장소로 이동 — 재빌드(폴링) 때와 같은 결정적 위치로
+    if (prev === 'pending' && (state === 'correct' || state === 'wrong')) {
+      burst(g.position.clone(), 0xffe066, 14); // 사라지는 연출
+      const spot = quizSpotFor(quizId_, index, state); // state가 correct/wrong → 'solved' 위치 (재빌드와 동일)
+      g.position.set(spot.x, spot.y + 0.8, spot.z);
+      g.userData.baseY = spot.y + 0.8;
+      burst(g.position.clone().add(new THREE.Vector3(0, 0.6, 0)), 0x8fd0ff, 14); // 등장 연출
+    }
   }
   function celebrateQuizBlock(index) {
     const g = quizGroup.children.find((c) => c.userData.quizIndex === index);
