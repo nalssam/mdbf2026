@@ -152,3 +152,55 @@ docker run -p 3000:3000 -e ANTHROPIC_API_KEY=sk-ant-... blockquest
 - 포트는 `PORT` 환경변수로 변경할 수 있습니다.
 - 헬스체크 엔드포인트: `GET /healthz`
 - 학생 QR은 `서버주소/?code=학급코드` 로 연결되므로, 배포 시 학생 기기에서 접근 가능한 주소로 서비스해야 합니다.
+
+---
+
+# 🔌 MCP 서버 설정 (Playwright · Apify)
+
+레포 루트의 `.mcp.json`에 두 개의 MCP 서버가 정의되어 있습니다. Claude Code로 이 레포를 열면 자동으로 잡힙니다.
+
+| 서버 | 패키지 | 용도 |
+|---|---|---|
+| `playwright` | `@playwright/mcp@0.0.78` | 브라우저 자동화 — 배포된 페이지/로컬 서버를 실제로 열어보고 스냅샷·스크린샷·클릭 테스트 |
+| `apify` | `@apify/actors-mcp-server@0.14.1` | Apify Store의 스크래핑 Actor 검색·실행 (수업 자료 수집용) |
+
+## Playwright
+
+별도 준비 없이 동작합니다. 브라우저 실행 파일 경로는 `PLAYWRIGHT_CHROMIUM_PATH`로 덮어쓸 수 있고,
+설정하지 않으면 Claude Code 클라우드 환경에 미리 설치된 Chromium 경로를 사용합니다.
+
+로컬 머신에서 쓸 때는 사용하는 브라우저 경로를 지정하세요.
+
+```bash
+# macOS 예시
+export PLAYWRIGHT_CHROMIUM_PATH="/Applications/Google Chrome.app/Contents/MacOS/Google Chrome"
+```
+
+동작 확인 — 로컬 서버를 띄운 뒤 Claude에게 `http://localhost:3000/` 을 열어보라고 하면 됩니다.
+
+```bash
+npm start
+```
+
+## Apify
+
+`APIFY_TOKEN`이 있어야 서버가 기동합니다. 토큰이 없으면 MCP 연결이 실패합니다.
+
+1. https://console.apify.com/settings/integrations 에서 Personal API token 발급
+2. 환경변수로 주입
+
+```bash
+export APIFY_TOKEN=apify_api_...
+```
+
+토큰은 `.mcp.json`에 직접 적지 말고 반드시 환경변수로 넘기세요 (`.mcp.json`은 Git에 커밋됩니다).
+
+## 네트워크 정책 주의
+
+Claude Code 클라우드 세션은 아웃바운드가 프록시로 제한됩니다. 기본 정책에서는 npm 레지스트리·GitHub 등만
+열려 있고 임의의 외부 사이트는 `CONNECT 403`으로 차단됩니다. 즉 이 환경에서 두 서버는 이렇게 동작합니다.
+
+- Playwright — `localhost` 대상은 정상 동작 (이 레포 앱 테스트에 문제 없음). 외부 사이트는 차단될 수 있음
+- Apify — Apify API 호스트가 허용된 환경에서만 실제 호출 가능
+
+외부 접근이 필요하면 환경의 네트워크 정책을 열거나, 로컬에서 실행하세요.

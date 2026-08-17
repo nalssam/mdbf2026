@@ -1,0 +1,22 @@
+{
+  "mcpServers": {
+    "playwright": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "@playwright/mcp@0.0.78",
+        "--headless",
+        "--isolated",
+        "--executable-path",
+        "${PLAYWRIGHT_CHROMIUM_PATH:-/opt/pw-browsers/chromium-1194/chrome-linux/chrome}"
+      ]
+    },
+    "apify": {
+      "command": "npx",
+      "args": ["-y", "@apify/actors-mcp-server@0.14.1"],
+      "env": {
+        "APIFY_TOKEN": "${APIFY_TOKEN:-}"
+      }
+    }
+  }
+}
