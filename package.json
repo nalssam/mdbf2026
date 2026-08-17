@@ -21,6 +21,7 @@
     "jszip": "^3.10.1",
     "multer": "^2.2.0",
     "pdf-parse": "^1.1.1",
+    "playwright": "^1.62.1",
     "qrcode": "^1.5.4",
     "socket.io": "^4.8.3",
     "three": "^0.185.1",
