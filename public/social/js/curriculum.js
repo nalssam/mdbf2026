@@ -116,7 +116,7 @@ window.MDBF_CURRICULUM = {
             craft:  {
               status: "ready",
               href:   "units/5-2-3/craft/",
-              note:   "탑골 공원 팔각정 — 입체 페이퍼크래프트 도안 (A4 2쪽 · PDF)"
+              note:   "탑골 공원 세트 — 입체 팔각정 + 만세 현장 디오라마 (A4 4쪽 · PDF)"
             }
           }
         },
