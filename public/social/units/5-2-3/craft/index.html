@@ -3,8 +3,8 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>탑골 공원 팔각정 만들기 — 페이퍼크래프트 도안 (5-2-3)</title>
-<meta name="description" content="오려·접어·붙여 만드는 입체 페이퍼크래프트 — 3·1 운동이 시작된 탑골 공원 팔각정과 받침판 (A4 2쪽, 몽당분필 날쌤)">
+<title>탑골 공원 세트 — 페이퍼크래프트 도안 (5-2-3)</title>
+<meta name="description" content="3·1 운동이 시작된 탑골 공원을 만드는 페이퍼크래프트 — 입체 팔각정 전개도와 만세 현장 디오라마 (A4 4쪽, 몽당분필 날쌤)">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;700;900&display=swap" rel="stylesheet">
@@ -110,6 +110,54 @@
 .tl-y { display: block; font-weight: 900; color: var(--gold-print); font-size: 7.6pt; }
 .tl-t { display: block; color: var(--ink); }
 .tl-t b { color: #111; }
+/* ── 디오라마(3~4쪽) ── */
+.piece      { fill: #fff; stroke: none; }
+.gluetab    { fill: #eceff4; stroke: none; }
+.partlab    { font-size: 3.6px; font-weight: 700; fill: #8a93a3; }
+.tablab2b   { font-size: 2.7px; font-weight: 700; fill: #97a0ad; }
+.wall       { fill: #fffdf8; stroke: #b9a184; stroke-width: 0.3; }
+.tile       { fill: #bccbd7; stroke: none; }
+.tile2      { fill: #cfdae3; stroke: none; }
+.tileline   { stroke: #9dadbb; stroke-width: 0.28; }
+.cornice    { fill: #d9dfe5; stroke: none; }
+.sign       { fill: #fff6e2; stroke: #c8931d; stroke-width: 0.35; }
+.signhint   { font-size: 3px; font-weight: 700; fill: #cbb078; }
+.win        { fill: #f4fafd; stroke: #7f93a4; stroke-width: 0.3; }
+.winbar     { stroke: #9aa9b6; stroke-width: 0.26; fill: none; }
+.door       { fill: #f3ece1; stroke: #a98f70; stroke-width: 0.32; }
+.blockface  { fill: #f6f8fa; stroke: none; }
+.lamphead   { fill: #fff6e2; stroke: #b9a184; stroke-width: 0.32; }
+.pole       { fill: #8d97a3; stroke: none; }
+.wirearm    { stroke: #8d97a3; stroke-width: 0.5; fill: none; }
+.wire       { stroke: #a7b1bc; stroke-width: 0.45; fill: none; }
+.tram       { fill: #f6ece1; stroke: #a98f70; stroke-width: 0.3; }
+.tramtop    { fill: #d9dfe5; stroke: none; }
+.wheel      { fill: #e3e7ec; stroke: #6f7b88; stroke-width: 0.4; }
+.hub        { fill: #6f7b88; }
+.spoke      { stroke: #98a3ae; stroke-width: 0.26; }
+.hood       { fill: #e6ecf1; stroke: #7f8b98; stroke-width: 0.35; }
+.seat       { fill: #f3ece1; stroke: #a98f70; stroke-width: 0.32; }
+.shaft      { stroke: #a98f70; stroke-width: 0.55; }
+.flagcloth  { fill: #fff; stroke: #333; stroke-width: 0.35; }
+.standbase  { fill: #f6f8fa; stroke: none; }
+.sky        { fill: #fbfdff; }
+.farhill    { fill: #eef2f5; }
+.farbldg    { fill: #f4f7f9; stroke: #cdd6de; stroke-width: 0.3; }
+.farwin     { fill: #e3eaf0; }
+.walk       { fill: #f7f5f0; }
+.road       { fill: #eceef0; }
+.curb       { stroke: #b9bec4; stroke-width: 0.5; }
+.tramrail   { stroke: #8d97a3; stroke-width: 0.7; }
+.tie        { fill: #dde1e5; }
+.spotmark   { fill: none; stroke: #8fa876; stroke-width: 0.5; stroke-dasharray: 2.4 1.6; }
+.spotlab    { font-size: 3.6px; font-weight: 900; fill: #6f8a5c; }
+.spotlab2   { font-size: 2.9px; font-weight: 700; fill: #8ba377; }
+.bgtitle    { font-size: 6.4px; font-weight: 900; fill: #46536b; }
+.bghint     { font-size: 3.2px; font-weight: 700; fill: #97a0ad; }
+.bghint2    { font-size: 3.4px; font-weight: 700; fill: #7c8794;
+              paint-order: stroke fill; stroke: #fff; stroke-width: 1.6; stroke-linejoin: round; }
+.foldbig    { font-size: 3.4px; font-weight: 700; fill: #6a7a90; }
+
 .spec {
   font-size: 7.2pt; line-height: 1.65; color: var(--ink-dim);
   border-left: 0.8mm solid var(--gold-pale); padding-left: 2.6mm;
@@ -120,11 +168,11 @@
 <body>
 
 <nav class="print-toolbar no-print">
-  <span class="tb-title">✂️ 탑골 공원 팔각정 만들기 — 페이퍼크래프트 도안 (A4 2쪽)</span>
+  <span class="tb-title">✂️ 탑골 공원 세트 — 입체 팔각정 + 만세 현장 디오라마 (A4 4쪽)</span>
   <a class="ghost" href="../../../#/grade/5">← 자료실로</a>
   <a href="craft.pdf" download>⬇ PDF 다운로드</a>
   <button onclick="window.print()">🖨 인쇄하기</button>
-  <span class="print-tip">인쇄 팁: 배율 100%(실제 크기) 필수 · 두꺼운 종이(120g~)에 인쇄하면 더 튼튼해요 · A4 세로 2쪽.</span>
+  <span class="print-tip">인쇄 팁: 배율 100%(실제 크기) 필수 · 두꺼운 종이(120g~)에 인쇄하면 더 튼튼해요 · A4 세로 4쪽 — <b>1~2쪽만</b> 인쇄하면 입체 팔각정, <b>3~4쪽만</b> 인쇄하면 디오라마가 됩니다.</span>
 </nav>
 
 <!-- ═════════════════ 1쪽: 몸체 + 지붕 전개도 ═════════════════ -->
@@ -135,7 +183,7 @@
       <span class="ph-brandname">몽당분필 날쌤<small>초등사회 마무리활동</small></span>
     </div>
     <div class="ph-main">
-      <div class="ph-title">탑골 공원 팔각정 만들기 <span style="font-size:9pt;font-weight:700;color:#888;">— 몸체 · 지붕 전개도 (1/2)</span></div>
+      <div class="ph-title">탑골 공원 팔각정 만들기 <span style="font-size:9pt;font-weight:700;color:#888;">— 몸체 · 지붕 전개도 (1/4)</span></div>
       <div class="ph-sub">1919년 3월 1일, 만세의 함성이 시작된 자리 · 완성 크기 약 57 × 71mm · 준비물: 가위 · 풀 · 자</div>
       <div class="ph-chips">
         <span class="chip">5학년 2학기 · 5-2-3</span>
@@ -199,7 +247,7 @@
 
   <footer class="print-foot">
     <span>몽당분필 날쌤 · 초등사회 마무리활동 — 일제의 침략과 광복을 위한 노력(5-2-3)</span>
-    <span>탑골 공원 팔각정 페이퍼크래프트 · 1 / 2</span>
+    <span>탑골 공원 세트 · 1 / 4 — 입체 팔각정</span>
   </footer>
 </div></section>
 
@@ -211,7 +259,7 @@
       <span class="ph-brandname">몽당분필 날쌤<small>초등사회 마무리활동</small></span>
     </div>
     <div class="ph-main">
-      <div class="ph-title">탑골 공원 받침판 <span style="font-size:9pt;font-weight:700;color:#888;">— 받침판 · 팻말 · 태극기 (2/2)</span></div>
+      <div class="ph-title">탑골 공원 받침판 <span style="font-size:9pt;font-weight:700;color:#888;">— 받침판 · 팻말 · 태극기 (2/4)</span></div>
       <div class="ph-sub">팔각정을 받침판 위에 세우고, 팻말과 태극기를 놓으면 1919년 3월 1일의 그 자리가 완성돼요.</div>
       <div class="ph-chips">
         <span class="chip">5학년 2학기 · 5-2-3</span>
@@ -257,7 +305,76 @@
 
   <footer class="print-foot">
     <span>몽당분필 날쌤 · 초등사회 마무리활동 — 일제의 침략과 광복을 위한 노력(5-2-3)</span>
-    <span>탑골 공원 팔각정 페이퍼크래프트 · 2 / 2</span>
+    <span>탑골 공원 세트 · 2 / 4 — 입체 팔각정</span>
+  </footer>
+</div></section>
+
+<!-- ═════════════════ 3쪽: 디오라마 부품판 ═════════════════ -->
+<section class="a4-page"><div class="pc">
+  <header class="print-head" style="margin-bottom:1mm;">
+    <div class="ph-brand">
+      <svg width="34" height="34" viewBox="0 0 34 34"><rect x="5" y="12" width="24" height="10" rx="2.5" fill="#fff" stroke="#c8931d" stroke-width="1.6" transform="rotate(-18 17 17)"/><rect x="22.5" y="10.6" width="6" height="10" rx="2" fill="#c8931d" transform="rotate(-18 17 17)"/><path d="M7 26 Q13 23 19 25.5" stroke="#c8931d" stroke-width="1.3" fill="none" stroke-linecap="round"/></svg>
+      <span class="ph-brandname">몽당분필 날쌤<small>초등사회 마무리활동</small></span>
+    </div>
+    <div class="ph-main">
+      <div class="ph-title">만세 현장 디오라마 <span style="font-size:9pt;font-weight:700;color:#888;">— 세워 붙이는 부품판 (3/4)</span></div>
+      <div class="ph-sub">오려서 탭을 접어 4쪽 바닥에 붙이면 1919년 3월 1일 종로 거리가 됩니다 · 준비물: 가위 · 풀</div>
+      <div class="ph-chips">
+        <span class="chip">5학년 2학기 · 5-2-3</span>
+        <span class="chip dim">3~4쪽만 인쇄해도 완성됩니다</span>
+      </div>
+    </div>
+    <div class="craft-legend">
+      <span><svg width="26" height="6"><line x1="1" y1="3" x2="25" y2="3" stroke="#111" stroke-width="2.2"/></svg> 실선 = 자르기</span>
+      <span><svg width="26" height="6"><line x1="1" y1="3" x2="25" y2="3" stroke="#6a7a90" stroke-width="1.4" stroke-dasharray="4 2.6"/></svg> 점선 = 접기</span>
+      <span><svg width="26" height="10"><rect x="1" y="1" width="24" height="8" fill="#eceff4" stroke="#111" stroke-width="1"/></svg> 회색 = 풀칠</span>
+    </div>
+  </header>
+
+  <div class="abs" style="left:0; top:34mm;">
+<svg viewBox="0 0 190 236" xmlns="http://www.w3.org/2000/svg" style="width:190mm;height:236mm;display:block">
+<rect class="piece" x="0" y="6" width="76" height="60" rx="1"/><path class="tile" d="M0,30 Q38,8 76,30 L73,35 Q38,15 3,35 Z"/><path class="tile2" d="M3,35 Q38,15 73,35 Z"/><line class="tileline" x1="8.83" y1="32.41" x2="8.83" y2="35"/><line class="tileline" x1="14.67" y1="30" x2="14.67" y2="35"/><line class="tileline" x1="20.5" y1="27.93" x2="20.5" y2="35"/><line class="tileline" x1="26.33" y1="26.34" x2="26.33" y2="35"/><line class="tileline" x1="32.17" y1="25.34" x2="32.17" y2="35"/><line class="tileline" x1="38" y1="25" x2="38" y2="35"/><line class="tileline" x1="43.83" y1="25.34" x2="43.83" y2="35"/><line class="tileline" x1="49.67" y1="26.34" x2="49.67" y2="35"/><line class="tileline" x1="55.5" y1="27.93" x2="55.5" y2="35"/><line class="tileline" x1="61.33" y1="30" x2="61.33" y2="35"/><line class="tileline" x1="67.17" y1="32.41" x2="67.17" y2="35"/><rect class="sign" x="13" y="36" width="50" height="9" rx="1"/><text class="signhint" x="38" y="41.8" text-anchor="middle">가게 이름을 써 보세요</text><rect class="wall" x="4" y="46" width="68" height="20"/><rect class="win" x="9" y="49" width="19" height="12" rx="0.6"/><line class="winbar" x1="13.75" y1="49" x2="13.75" y2="61"/><line class="winbar" x1="18.5" y1="49" x2="18.5" y2="61"/><line class="winbar" x1="23.25" y1="49" x2="23.25" y2="61"/><line class="winbar" x1="9" y1="55" x2="28" y2="55"/><rect class="win" x="48" y="49" width="19" height="12" rx="0.6"/><line class="winbar" x1="52.75" y1="49" x2="52.75" y2="61"/><line class="winbar" x1="57.5" y1="49" x2="57.5" y2="61"/><line class="winbar" x1="62.25" y1="49" x2="62.25" y2="61"/><line class="winbar" x1="48" y1="55" x2="67" y2="55"/><rect class="door" x="29" y="49" width="18" height="17" rx="0.6"/><line class="winbar" x1="38" y1="49" x2="38" y2="66"/><rect class="gluetab" x="0" y="66" width="76" height="9"/><text class="tablab" x="38" y="71.6" text-anchor="middle">풀칠</text><text class="partlab" x="38" y="79.4" text-anchor="middle">종로 한옥 상점</text><rect class="piece" x="82" y="6" width="60" height="60" rx="1"/><rect class="cornice" x="82" y="9" width="60" height="5" rx="0.8"/><rect class="wall" x="84" y="14" width="56" height="52"/><rect class="cornice" x="84" y="36" width="56" height="3"/><rect class="win" x="88" y="19" width="9" height="13" rx="0.6"/><line class="winbar" x1="92.5" y1="19" x2="92.5" y2="32"/><rect class="win" x="100" y="19" width="9" height="13" rx="0.6"/><line class="winbar" x1="104.5" y1="19" x2="104.5" y2="32"/><rect class="win" x="112" y="19" width="9" height="13" rx="0.6"/><line class="winbar" x1="116.5" y1="19" x2="116.5" y2="32"/><rect class="win" x="124" y="19" width="9" height="13" rx="0.6"/><line class="winbar" x1="128.5" y1="19" x2="128.5" y2="32"/><rect class="win" x="88" y="41" width="9" height="13" rx="0.6"/><line class="winbar" x1="92.5" y1="41" x2="92.5" y2="54"/><rect class="win" x="100" y="41" width="9" height="13" rx="0.6"/><line class="winbar" x1="104.5" y1="41" x2="104.5" y2="54"/><rect class="win" x="112" y="41" width="9" height="13" rx="0.6"/><line class="winbar" x1="116.5" y1="41" x2="116.5" y2="54"/><rect class="win" x="124" y="41" width="9" height="13" rx="0.6"/><line class="winbar" x1="128.5" y1="41" x2="128.5" y2="54"/><rect class="door" x="104" y="50" width="16" height="16" rx="0.6"/><line class="winbar" x1="112" y1="50" x2="112" y2="66"/><rect class="gluetab" x="82" y="66" width="60" height="9"/><text class="tablab" x="112" y="71.6" text-anchor="middle">풀칠</text><text class="partlab" x="112" y="79.4" text-anchor="middle">2층 근대 건물</text><path class="piece" d="M148,50 L148,47 L150.7,43 L150.7,23 L147.2,22 L146.6,15.5 L148.6,12.5 L147.6,10 L152,7 L156.4,10 L155.4,12.5 L157.4,15.5 L156.8,22 L153.3,23 L153.3,43 L156,47 L156,50 L156,58 L148,58 Z"/><path class="lamphead" d="M148.6,12.5 L155.4,12.5 L156.8,21.6 L147.2,21.6 Z"/><line class="winbar" x1="152" y1="23" x2="152" y2="43"/><path class="gluetab" d="M148,50 L156,50 L156,58 L148,58 Z"/><text class="tablab" x="152" y="55.1" text-anchor="middle">풀칠</text><path class="piece" d="M163,50 L163,47 L165.7,43 L165.7,23 L162.2,22 L161.6,15.5 L163.6,12.5 L162.6,10 L167,7 L171.4,10 L170.4,12.5 L172.4,15.5 L171.8,22 L168.3,23 L168.3,43 L171,47 L171,50 L171,58 L163,58 Z"/><path class="lamphead" d="M163.6,12.5 L170.4,12.5 L171.8,21.6 L162.2,21.6 Z"/><line class="winbar" x1="167" y1="23" x2="167" y2="43"/><path class="gluetab" d="M163,50 L171,50 L171,58 L163,58 Z"/><text class="tablab" x="167" y="55.1" text-anchor="middle">풀칠</text><path class="piece" d="M178,50 L178,47 L180.7,43 L180.7,23 L177.2,22 L176.6,15.5 L178.6,12.5 L177.6,10 L182,7 L186.4,10 L185.4,12.5 L187.4,15.5 L186.8,22 L183.3,23 L183.3,43 L186,47 L186,50 L186,58 L178,58 Z"/><path class="lamphead" d="M178.6,12.5 L185.4,12.5 L186.8,21.6 L177.2,21.6 Z"/><line class="winbar" x1="182" y1="23" x2="182" y2="43"/><path class="gluetab" d="M178,50 L186,50 L186,58 L178,58 Z"/><text class="tablab" x="182" y="55.1" text-anchor="middle">풀칠</text><text class="partlab" x="167" y="62.4" text-anchor="middle">가로등 3개</text><path class="piece" d="M5,116 L8.8,109 L8.8,101 C-1,102 -2,92 3.5,90 C2,83 10,81 11,85 C12,81 20,83 18.5,90 C24,92 23,102 13.2,101 L13.2,109 L17,116 L17,124 L5,124 Z"/><line class="winbar" x1="11" y1="102" x2="11" y2="114"/><path class="gluetab" d="M5,116 L17,116 L17,124 L5,124 Z"/><text class="tablab" x="11" y="121.1" text-anchor="middle">풀칠</text><path class="piece" d="M30,116 L33.8,109 L33.8,101 C24,102 23,92 28.5,90 C27,83 35,81 36,85 C37,81 45,83 43.5,90 C49,92 48,102 38.2,101 L38.2,109 L42,116 L42,124 L30,124 Z"/><line class="winbar" x1="36" y1="102" x2="36" y2="114"/><path class="gluetab" d="M30,116 L42,116 L42,124 L30,124 Z"/><text class="tablab" x="36" y="121.1" text-anchor="middle">풀칠</text><path class="piece" d="M55,116 L58.8,109 L58.8,101 C49,102 48,92 53.5,90 C52,83 60,81 61,85 C62,81 70,83 68.5,90 C74,92 73,102 63.2,101 L63.2,109 L67,116 L67,124 L55,124 Z"/><line class="winbar" x1="61" y1="102" x2="61" y2="114"/><path class="gluetab" d="M55,116 L67,116 L67,124 L55,124 Z"/><text class="tablab" x="61" y="121.1" text-anchor="middle">풀칠</text><text class="partlab" x="36" y="128.4" text-anchor="middle">가로수 3그루</text><rect class="piece" x="74" y="82" width="72" height="34" rx="1"/><rect class="tramtop" x="76" y="90" width="68" height="6" rx="2.4"/><rect class="tram" x="76" y="95" width="68" height="15"/><rect class="pole" x="109.2" y="84" width="1.6" height="6"/><line class="wirearm" x1="110" y1="84.4" x2="130" y2="82.6"/><rect class="win" x="80" y="98" width="9.4" height="9" rx="0.6"/><rect class="win" x="92" y="98" width="9.4" height="9" rx="0.6"/><rect class="win" x="104" y="98" width="9.4" height="9" rx="0.6"/><rect class="win" x="116" y="98" width="9.4" height="9" rx="0.6"/><rect class="win" x="128" y="98" width="9.4" height="9" rx="0.6"/><rect class="door" x="131" y="98" width="9" height="12" rx="0.6"/><circle class="wheel" cx="89" cy="112.8" r="3.4"/><circle class="hub" cx="89" cy="112.8" r="1.1"/><circle class="wheel" cx="125" cy="112.8" r="3.4"/><circle class="hub" cx="125" cy="112.8" r="1.1"/><rect class="gluetab" x="74" y="116" width="72" height="8"/><text class="tablab" x="110" y="121.1" text-anchor="middle">풀칠</text><text class="partlab" x="110" y="128.4" text-anchor="middle">경성 전차</text><rect class="piece" x="150" y="82" width="40" height="34" rx="1"/><path class="hood" d="M158,101 L158,92 q0,-7 8,-7 l7,0 q8,0 8,7 l0,9 Z"/><rect class="seat" x="157" y="100" width="26" height="7" rx="1"/><line class="shaft" x1="157" y1="103" x2="151" y2="96"/><line class="shaft" x1="157" y1="106" x2="151" y2="99"/><circle class="wheel" cx="172" cy="109" r="7.2"/><line class="spoke" x1="172" y1="109" x2="178.8" y2="109"/><line class="spoke" x1="172" y1="109" x2="176.81" y2="113.81"/><line class="spoke" x1="172" y1="109" x2="172" y2="115.8"/><line class="spoke" x1="172" y1="109" x2="167.19" y2="113.81"/><line class="spoke" x1="172" y1="109" x2="165.2" y2="109"/><line class="spoke" x1="172" y1="109" x2="167.19" y2="104.19"/><line class="spoke" x1="172" y1="109" x2="172" y2="102.2"/><line class="spoke" x1="172" y1="109" x2="176.81" y2="104.19"/><circle class="hub" cx="172" cy="109" r="1.5"/><rect class="gluetab" x="150" y="116" width="40" height="8"/><text class="tablab" x="170" y="121.1" text-anchor="middle">풀칠</text><text class="partlab" x="170" y="128.4" text-anchor="middle">인력거</text><rect class="blockface" x="0" y="132" width="13" height="36"/><rect class="blockface" x="13" y="132" width="13" height="36"/><rect class="blockface" x="26" y="132" width="13" height="36"/><rect class="blockface" x="39" y="132" width="13" height="36"/><rect class="gluetab" x="52" y="132" width="6" height="36"/><text class="tablab" transform="rotate(90 55 150)" x="55" y="151.1" text-anchor="middle">풀칠</text><rect class="blockface" x="62" y="132" width="13" height="36"/><rect class="blockface" x="75" y="132" width="13" height="36"/><rect class="blockface" x="88" y="132" width="13" height="36"/><rect class="blockface" x="101" y="132" width="13" height="36"/><rect class="gluetab" x="114" y="132" width="6" height="36"/><text class="tablab" transform="rotate(90 117 150)" x="117" y="151.1" text-anchor="middle">풀칠</text><text class="partlab" x="58" y="172.4" text-anchor="middle">▲ 입체 블록 — 접어 상자로 만들면 뒤쪽 조각을 높일 수 있어요</text><rect class="piece" x="128" y="132" width="26" height="34" rx="1"/><rect class="pole" x="131" y="135" width="1.8" height="30"/><rect class="flagcloth" x="132.8" y="136" width="18" height="12" rx="0.6"/><circle class="taegeuk-r" cx="141.8" cy="142" r="3.2"/><path class="taegeuk-b" d="M138.6,142 a3.2,3.2 0 0 1 6.4,0 a1.6,1.6 0 0 1 -3.2,0 a1.6,1.6 0 0 0 -3.2,0 Z" transform="rotate(-34 141.8 142)"/><rect class="trigram" x="134.3" y="137.1" width="3" height="0.55"/><rect class="trigram" x="134.3" y="138" width="3" height="0.55"/><rect class="trigram" x="134.3" y="138.9" width="3" height="0.55"/><rect class="trigram" x="146.3" y="137.1" width="3" height="0.55"/><rect class="trigram" x="146.3" y="138" width="3" height="0.55"/><rect class="trigram" x="146.3" y="138.9" width="3" height="0.55"/><rect class="trigram" x="134.3" y="145.1" width="3" height="0.55"/><rect class="trigram" x="134.3" y="146" width="3" height="0.55"/><rect class="trigram" x="134.3" y="146.9" width="3" height="0.55"/><rect class="trigram" x="146.3" y="145.1" width="3" height="0.55"/><rect class="trigram" x="146.3" y="146" width="3" height="0.55"/><rect class="trigram" x="146.3" y="146.9" width="3" height="0.55"/><rect class="gluetab" x="128" y="166" width="26" height="8"/><text class="tablab" x="141" y="171.1" text-anchor="middle">풀칠</text><rect class="piece" x="158" y="132" width="26" height="34" rx="1"/><rect class="pole" x="161" y="135" width="1.8" height="30"/><rect class="flagcloth" x="162.8" y="136" width="18" height="12" rx="0.6"/><circle class="taegeuk-r" cx="171.8" cy="142" r="3.2"/><path class="taegeuk-b" d="M168.6,142 a3.2,3.2 0 0 1 6.4,0 a1.6,1.6 0 0 1 -3.2,0 a1.6,1.6 0 0 0 -3.2,0 Z" transform="rotate(-34 171.8 142)"/><rect class="trigram" x="164.3" y="137.1" width="3" height="0.55"/><rect class="trigram" x="164.3" y="138" width="3" height="0.55"/><rect class="trigram" x="164.3" y="138.9" width="3" height="0.55"/><rect class="trigram" x="176.3" y="137.1" width="3" height="0.55"/><rect class="trigram" x="176.3" y="138" width="3" height="0.55"/><rect class="trigram" x="176.3" y="138.9" width="3" height="0.55"/><rect class="trigram" x="164.3" y="145.1" width="3" height="0.55"/><rect class="trigram" x="164.3" y="146" width="3" height="0.55"/><rect class="trigram" x="164.3" y="146.9" width="3" height="0.55"/><rect class="trigram" x="176.3" y="145.1" width="3" height="0.55"/><rect class="trigram" x="176.3" y="146" width="3" height="0.55"/><rect class="trigram" x="176.3" y="146.9" width="3" height="0.55"/><rect class="gluetab" x="158" y="166" width="26" height="8"/><text class="tablab" x="171" y="171.1" text-anchor="middle">풀칠</text><text class="partlab" x="157" y="178.4" text-anchor="middle">태극기</text><path class="piece" d="M14,222 L12.4,209 L15,198.4 L8.4,187 L4.4,183.8 L14.4,194 L18.6,193.4 A6,6 0 1 1 23.4,193.4 L27.6,194 L37.6,183.8 L33.6,187 L27,198.4 L29.6,209 L28,222 L28,230 L14,230 Z"/><line class="winbar" x1="21" y1="209" x2="21" y2="221"/><line class="winbar" x1="16.6" y1="195.4" x2="25.4" y2="195.4"/><path class="gluetab" d="M14,222 L28,222 L28,230 L14,230 Z"/><text class="tablab" x="21" y="227.1" text-anchor="middle">풀칠</text><path class="piece" d="M48,222 L44,209 L49,198.4 L42.4,187 L38.4,183.8 L48.4,194 L52.6,193.4 A6,6 0 1 1 57.4,193.4 L61.6,194 L71.6,183.8 L67.6,187 L61,198.4 L66,209 L62,222 L62,230 L48,230 Z"/><line class="winbar" x1="55" y1="209" x2="55" y2="221"/><line class="winbar" x1="50.6" y1="195.4" x2="59.4" y2="195.4"/><path class="gluetab" d="M48,222 L62,222 L62,230 L48,230 Z"/><text class="tablab" x="55" y="227.1" text-anchor="middle">풀칠</text><path class="piece" d="M82,222 L80.4,209 L83,197.2 L78.4,185.8 L74.4,182.6 L82.4,192.8 L86.6,192.2 A5.4,5.4 0 1 1 91.4,192.2 L95.6,192.8 L103.6,182.6 L99.6,185.8 L95,197.2 L97.6,209 L96,222 L96,230 L82,230 Z"/><line class="winbar" x1="89" y1="209" x2="89" y2="221"/><line class="winbar" x1="84.6" y1="194.2" x2="93.4" y2="194.2"/><path class="gluetab" d="M82,222 L96,222 L96,230 L82,230 Z"/><text class="tablab" x="89" y="227.1" text-anchor="middle">풀칠</text><path class="piece" d="M116,222 L114.4,209 L117,198.4 L110.4,187 L106.4,183.8 L116.4,194 L120.6,193.4 A6,6 0 1 1 125.4,193.4 L129.6,194 L139.6,183.8 L135.6,187 L129,198.4 L131.6,209 L130,222 L130,230 L116,230 Z"/><line class="winbar" x1="123" y1="209" x2="123" y2="221"/><line class="winbar" x1="118.6" y1="195.4" x2="127.4" y2="195.4"/><path class="gluetab" d="M116,222 L130,222 L130,230 L116,230 Z"/><text class="tablab" x="123" y="227.1" text-anchor="middle">풀칠</text><text class="partlab" x="72" y="234.4" text-anchor="middle">만세를 부르는 사람들 — 얼굴과 옷은 직접 그려 보세요</text><rect class="standbase" x="146" y="180" width="20" height="24"/><text class="tablab2b" x="156" y="186.4" text-anchor="middle">조각 뒤에</text><text class="tablab2b" x="156" y="189.8" text-anchor="middle">풀칠</text><text class="tablab2b" x="156" y="198.4" text-anchor="middle">바닥에 풀칠</text><rect class="standbase" x="168" y="180" width="20" height="24"/><text class="tablab2b" x="178" y="186.4" text-anchor="middle">조각 뒤에</text><text class="tablab2b" x="178" y="189.8" text-anchor="middle">풀칠</text><text class="tablab2b" x="178" y="198.4" text-anchor="middle">바닥에 풀칠</text><text class="partlab" x="168" y="208.4" text-anchor="middle">▲ 받침대 (여분)</text><line class="foldline" x1="0" y1="66" x2="76" y2="66"/><line class="foldline" x1="82" y1="66" x2="142" y2="66"/><line class="foldline" x1="148" y1="50" x2="156" y2="50"/><line class="foldline" x1="163" y1="50" x2="171" y2="50"/><line class="foldline" x1="178" y1="50" x2="186" y2="50"/><line class="foldline" x1="5" y1="116" x2="17" y2="116"/><line class="foldline" x1="30" y1="116" x2="42" y2="116"/><line class="foldline" x1="55" y1="116" x2="67" y2="116"/><line class="foldline" x1="74" y1="116" x2="146" y2="116"/><line class="foldline" x1="150" y1="116" x2="190" y2="116"/><line class="foldline" x1="13" y1="132" x2="13" y2="168"/><line class="foldline" x1="26" y1="132" x2="26" y2="168"/><line class="foldline" x1="39" y1="132" x2="39" y2="168"/><line class="foldline" x1="52" y1="132" x2="52" y2="168"/><line class="foldline" x1="75" y1="132" x2="75" y2="168"/><line class="foldline" x1="88" y1="132" x2="88" y2="168"/><line class="foldline" x1="101" y1="132" x2="101" y2="168"/><line class="foldline" x1="114" y1="132" x2="114" y2="168"/><line class="foldline" x1="128" y1="166" x2="154" y2="166"/><line class="foldline" x1="158" y1="166" x2="184" y2="166"/><line class="foldline" x1="14" y1="222" x2="28" y2="222"/><line class="foldline" x1="48" y1="222" x2="62" y2="222"/><line class="foldline" x1="82" y1="222" x2="96" y2="222"/><line class="foldline" x1="116" y1="222" x2="130" y2="222"/><line class="foldline" x1="146" y1="192" x2="166" y2="192"/><line class="foldline" x1="168" y1="192" x2="188" y2="192"/><rect class="cutline2" fill="none" x="0" y="6" width="76" height="69" rx="1"/><rect class="cutline2" fill="none" x="82" y="6" width="60" height="69" rx="1"/><path class="cutline2" fill="none" d="M148,50 L148,47 L150.7,43 L150.7,23 L147.2,22 L146.6,15.5 L148.6,12.5 L147.6,10 L152,7 L156.4,10 L155.4,12.5 L157.4,15.5 L156.8,22 L153.3,23 L153.3,43 L156,47 L156,50 L156,58 L148,58 Z"/><path class="cutline2" fill="none" d="M163,50 L163,47 L165.7,43 L165.7,23 L162.2,22 L161.6,15.5 L163.6,12.5 L162.6,10 L167,7 L171.4,10 L170.4,12.5 L172.4,15.5 L171.8,22 L168.3,23 L168.3,43 L171,47 L171,50 L171,58 L163,58 Z"/><path class="cutline2" fill="none" d="M178,50 L178,47 L180.7,43 L180.7,23 L177.2,22 L176.6,15.5 L178.6,12.5 L177.6,10 L182,7 L186.4,10 L185.4,12.5 L187.4,15.5 L186.8,22 L183.3,23 L183.3,43 L186,47 L186,50 L186,58 L178,58 Z"/><path class="cutline2" fill="none" d="M5,116 L8.8,109 L8.8,101 C-1,102 -2,92 3.5,90 C2,83 10,81 11,85 C12,81 20,83 18.5,90 C24,92 23,102 13.2,101 L13.2,109 L17,116 L17,124 L5,124 Z"/><path class="cutline2" fill="none" d="M30,116 L33.8,109 L33.8,101 C24,102 23,92 28.5,90 C27,83 35,81 36,85 C37,81 45,83 43.5,90 C49,92 48,102 38.2,101 L38.2,109 L42,116 L42,124 L30,124 Z"/><path class="cutline2" fill="none" d="M55,116 L58.8,109 L58.8,101 C49,102 48,92 53.5,90 C52,83 60,81 61,85 C62,81 70,83 68.5,90 C74,92 73,102 63.2,101 L63.2,109 L67,116 L67,124 L55,124 Z"/><rect class="cutline2" fill="none" x="74" y="82" width="72" height="42" rx="1"/><rect class="cutline2" fill="none" x="150" y="82" width="40" height="42" rx="1"/><rect class="cutline2" fill="none" x="0" y="132" width="58" height="36" rx="0.8"/><rect class="cutline2" fill="none" x="62" y="132" width="58" height="36" rx="0.8"/><rect class="cutline2" fill="none" x="128" y="132" width="26" height="42" rx="1"/><rect class="cutline2" fill="none" x="158" y="132" width="26" height="42" rx="1"/><path class="cutline2" fill="none" d="M14,222 L12.4,209 L15,198.4 L8.4,187 L4.4,183.8 L14.4,194 L18.6,193.4 A6,6 0 1 1 23.4,193.4 L27.6,194 L37.6,183.8 L33.6,187 L27,198.4 L29.6,209 L28,222 L28,230 L14,230 Z"/><path class="cutline2" fill="none" d="M48,222 L44,209 L49,198.4 L42.4,187 L38.4,183.8 L48.4,194 L52.6,193.4 A6,6 0 1 1 57.4,193.4 L61.6,194 L71.6,183.8 L67.6,187 L61,198.4 L66,209 L62,222 L62,230 L48,230 Z"/><path class="cutline2" fill="none" d="M82,222 L80.4,209 L83,197.2 L78.4,185.8 L74.4,182.6 L82.4,192.8 L86.6,192.2 A5.4,5.4 0 1 1 91.4,192.2 L95.6,192.8 L103.6,182.6 L99.6,185.8 L95,197.2 L97.6,209 L96,222 L96,230 L82,230 Z"/><path class="cutline2" fill="none" d="M116,222 L114.4,209 L117,198.4 L110.4,187 L106.4,183.8 L116.4,194 L120.6,193.4 A6,6 0 1 1 125.4,193.4 L129.6,194 L139.6,183.8 L135.6,187 L129,198.4 L131.6,209 L130,222 L130,230 L116,230 Z"/><rect class="cutline2" fill="none" x="146" y="180" width="20" height="24" rx="1"/><rect class="cutline2" fill="none" x="168" y="180" width="20" height="24" rx="1"/>
+</svg>
+  </div>
+
+  <footer class="print-foot">
+    <span>몽당분필 날쌤 · 초등사회 마무리활동 — 일제의 침략과 광복을 위한 노력(5-2-3)</span>
+    <span>탑골 공원 세트 · 3 / 4 — 만세 현장 디오라마</span>
+  </footer>
+</div></section>
+
+<!-- ═════════════════ 4쪽: 디오라마 배경판 ═════════════════ -->
+<section class="a4-page"><div class="pc">
+  <header class="print-head" style="margin-bottom:1mm; padding-bottom:2mm;">
+    <div class="ph-brand">
+      <svg width="34" height="34" viewBox="0 0 34 34"><rect x="5" y="12" width="24" height="10" rx="2.5" fill="#fff" stroke="#c8931d" stroke-width="1.6" transform="rotate(-18 17 17)"/><rect x="22.5" y="10.6" width="6" height="10" rx="2" fill="#c8931d" transform="rotate(-18 17 17)"/><path d="M7 26 Q13 23 19 25.5" stroke="#c8931d" stroke-width="1.3" fill="none" stroke-linecap="round"/></svg>
+      <span class="ph-brandname">몽당분필 날쌤<small>초등사회 마무리활동</small></span>
+    </div>
+    <div class="ph-main">
+      <div class="ph-title">만세 현장 디오라마 <span style="font-size:9pt;font-weight:700;color:#888;">— 접어 세우는 배경판 (4/4)</span></div>
+      <div class="ph-sub">가운데 점선을 접으면 위쪽은 배경, 아래쪽은 바닥이 됩니다.</div>
+    </div>
+    <div class="craft-legend">
+      <span><svg width="26" height="6"><line x1="1" y1="3" x2="25" y2="3" stroke="#111" stroke-width="2.2"/></svg> 실선 = 자르기</span>
+      <span><svg width="26" height="6"><line x1="1" y1="3" x2="25" y2="3" stroke="#6a7a90" stroke-width="1.4" stroke-dasharray="4 2.6"/></svg> 점선 = 접기</span>
+    </div>
+  </header>
+
+  <div class="abs" style="left:0; top:26mm;">
+<svg viewBox="0 0 190 220" xmlns="http://www.w3.org/2000/svg" style="width:190mm;height:220mm;display:block">
+<rect class="sky" x="0" y="0" width="190" height="108"/><path class="farhill" d="M0,37 L26,23 L44,33 L70,19 L96,35 L120,25 L150,37 L190,29 L190,43 L0,43 Z"/><rect class="farbldg" x="4" y="23" width="46" height="44"/><rect class="farwin" x="9" y="29" width="6" height="6"/><rect class="farwin" x="21" y="29" width="6" height="6"/><rect class="farwin" x="33" y="29" width="6" height="6"/><rect class="farwin" x="9" y="40" width="6" height="6"/><rect class="farwin" x="21" y="40" width="6" height="6"/><rect class="farwin" x="33" y="40" width="6" height="6"/><rect class="farwin" x="9" y="51" width="6" height="6"/><rect class="farwin" x="21" y="51" width="6" height="6"/><rect class="farwin" x="33" y="51" width="6" height="6"/><rect class="farbldg" x="56" y="33" width="34" height="34"/><rect class="farwin" x="61" y="39" width="6" height="6"/><rect class="farwin" x="73" y="39" width="6" height="6"/><rect class="farwin" x="61" y="50" width="6" height="6"/><rect class="farwin" x="73" y="50" width="6" height="6"/><rect class="farbldg" x="96" y="17" width="42" height="50"/><rect class="farwin" x="101" y="23" width="6" height="6"/><rect class="farwin" x="113" y="23" width="6" height="6"/><rect class="farwin" x="125" y="23" width="6" height="6"/><rect class="farwin" x="101" y="34" width="6" height="6"/><rect class="farwin" x="113" y="34" width="6" height="6"/><rect class="farwin" x="125" y="34" width="6" height="6"/><rect class="farwin" x="101" y="45" width="6" height="6"/><rect class="farwin" x="113" y="45" width="6" height="6"/><rect class="farwin" x="125" y="45" width="6" height="6"/><rect class="farwin" x="101" y="56" width="6" height="6"/><rect class="farwin" x="113" y="56" width="6" height="6"/><rect class="farwin" x="125" y="56" width="6" height="6"/><rect class="farbldg" x="144" y="29" width="42" height="38"/><rect class="farwin" x="149" y="35" width="6" height="6"/><rect class="farwin" x="161" y="35" width="6" height="6"/><rect class="farwin" x="173" y="35" width="6" height="6"/><rect class="farwin" x="149" y="46" width="6" height="6"/><rect class="farwin" x="161" y="46" width="6" height="6"/><rect class="farwin" x="173" y="46" width="6" height="6"/><rect class="farwin" x="149" y="57" width="6" height="6"/><rect class="farwin" x="161" y="57" width="6" height="6"/><rect class="farwin" x="173" y="57" width="6" height="6"/><rect class="pole" x="37" y="43" width="2" height="25"/><line class="wirearm" x1="31" y1="48" x2="45" y2="48"/><rect class="pole" x="75" y="43" width="2" height="25"/><line class="wirearm" x1="69" y1="48" x2="83" y2="48"/><rect class="pole" x="113" y="43" width="2" height="25"/><line class="wirearm" x1="107" y1="48" x2="121" y2="48"/><path class="wire" d="M0,43 Q20,53 38,48 Q57,57 76,48 Q95,57 114,48 Q150,59 190,45"/><path class="tile" d="M0,76 Q19,65 38,76 L35,80 Q19,69 3,80 Z"/><path class="tile2" d="M3,80 Q19,69 35,80 Z"/><rect class="wall" x="3" y="80" width="32" height="21"/><rect class="sign" x="8" y="82" width="22" height="5.4" rx="0.8"/><rect class="win"  x="7" y="90" width="9" height="8" rx="0.6"/><rect class="door" x="21" y="90" width="10" height="11" rx="0.6"/><path class="tile" d="M38,76 Q57,65 76,76 L73,80 Q57,69 41,80 Z"/><path class="tile2" d="M41,80 Q57,69 73,80 Z"/><rect class="wall" x="41" y="80" width="32" height="21"/><rect class="sign" x="46" y="82" width="22" height="5.4" rx="0.8"/><rect class="win"  x="45" y="90" width="9" height="8" rx="0.6"/><rect class="door" x="59" y="90" width="10" height="11" rx="0.6"/><path class="tile" d="M76,76 Q95,65 114,76 L111,80 Q95,69 79,80 Z"/><path class="tile2" d="M79,80 Q95,69 111,80 Z"/><rect class="wall" x="79" y="80" width="32" height="21"/><rect class="sign" x="84" y="82" width="22" height="5.4" rx="0.8"/><rect class="win"  x="83" y="90" width="9" height="8" rx="0.6"/><rect class="door" x="97" y="90" width="10" height="11" rx="0.6"/><path class="tile" d="M114,76 Q133,65 152,76 L149,80 Q133,69 117,80 Z"/><path class="tile2" d="M117,80 Q133,69 149,80 Z"/><rect class="wall" x="117" y="80" width="32" height="21"/><rect class="sign" x="122" y="82" width="22" height="5.4" rx="0.8"/><rect class="win"  x="121" y="90" width="9" height="8" rx="0.6"/><rect class="door" x="135" y="90" width="10" height="11" rx="0.6"/><path class="tile" d="M152,76 Q171,65 190,76 L187,80 Q171,69 155,80 Z"/><path class="tile2" d="M155,80 Q171,69 187,80 Z"/><rect class="wall" x="155" y="80" width="32" height="21"/><rect class="sign" x="160" y="82" width="22" height="5.4" rx="0.8"/><rect class="win"  x="159" y="90" width="9" height="8" rx="0.6"/><rect class="door" x="173" y="90" width="10" height="11" rx="0.6"/><text class="bgtitle" x="95" y="13" text-anchor="middle">1919. 3. 1.  서울 종로</text><text class="bghint"  x="95" y="20" text-anchor="middle">하늘과 건물을 자유롭게 색칠해 보세요</text><rect class="walk" x="0" y="108" width="190" height="112"/><rect class="road" x="0" y="114" width="190" height="16"/><line class="curb" x1="0" y1="114"  x2="190" y2="114"/><line class="curb" x1="0" y1="130" x2="190" y2="130"/><rect class="tie" x="4" y="117" width="9" height="10"/><rect class="tie" x="20" y="117" width="9" height="10"/><rect class="tie" x="36" y="117" width="9" height="10"/><rect class="tie" x="52" y="117" width="9" height="10"/><rect class="tie" x="68" y="117" width="9" height="10"/><rect class="tie" x="84" y="117" width="9" height="10"/><rect class="tie" x="100" y="117" width="9" height="10"/><rect class="tie" x="116" y="117" width="9" height="10"/><rect class="tie" x="132" y="117" width="9" height="10"/><rect class="tie" x="148" y="117" width="9" height="10"/><rect class="tie" x="164" y="117" width="9" height="10"/><rect class="tie" x="180" y="117" width="9" height="10"/><line class="tramrail" x1="0" y1="118" x2="190" y2="118"/><line class="tramrail" x1="0" y1="126" x2="190" y2="126"/><path class="spotmark" d="M111.84,215.65 L135.65,191.84 L135.65,158.16 L111.84,134.35 L78.16,134.35 L54.35,158.16 L54.35,191.84 L78.16,215.65 Z"/><text class="spotlab"  x="95" y="173" text-anchor="middle">여기에 팔각정을 놓아요</text><text class="spotlab2" x="95" y="178.4" text-anchor="middle">(1~2쪽에서 만든 입체 팔각정 받침판)</text><text class="bghint2" x="185" y="112.6" text-anchor="end">전찻길 — 전차를 세워요</text><text class="bghint2" x="5" y="138"  text-anchor="start">탑골 공원 마당 — 사람들을 세워요</text><text class="foldbig" x="95" y="106" text-anchor="middle">◀ 이 선을 접어 배경은 세우고, 아래쪽은 바닥으로 눕혀요 ▶</text><line class="foldline" x1="0" y1="108" x2="190" y2="108"/><rect class="cutline2" fill="none" x="0" y="0" width="190" height="220" rx="1.5"/>
+</svg>
+  </div>
+
+  <div class="abs usage" style="left:0; top:252mm; width:190mm; padding:2mm 3.2mm;">
+    <h4 style="font-size:8.6pt;">세우는 순서</h4>
+    ① 배경판을 오려 <b>가운데 점선</b>을 접고 바닥이 평평해지도록 놓아요. &nbsp; ② 뒤쪽부터 — 건물 → 가로수·가로등 → 전차·인력거 → 사람 순으로 세워요.<br>
+    ③ <b>입체 블록</b>을 뒤쪽 조각 밑에 받치면 멀고 가까움이 살아나요. &nbsp; ④ 가운데 팔각 자리에 <b>1~2쪽에서 만든 입체 팔각정</b>을 놓으면 완성!
+  </div>
+
+  <footer class="print-foot">
+    <span>몽당분필 날쌤 · 초등사회 마무리활동 — 일제의 침략과 광복을 위한 노력(5-2-3)</span>
+    <span>탑골 공원 세트 · 4 / 4 — 만세 현장 디오라마</span>
   </footer>
 </div></section>
 
