@@ -82,6 +82,11 @@
 .peek .pt { font-size: 8.6pt; font-weight: 900; color: #5a6675; }
 .peek .ps { font-size: 7.2pt; color: #99a3b0; }
 
+/* 교과서 9쪽 '말풍선 3' — 아이가 스스로 묻는 칸 */
+.bubble { position: relative; margin-top: 2.6mm; padding: 1.6mm 2.2mm 0.6mm;
+          border: 0.4mm solid #b9aee8; border-radius: 2.4mm; background: #fbfaff; }
+.bubble .bl { margin-bottom: 0.8mm; }
+.lab.q2 { background: #7a6fd0; }
 .selfcheck { font-size: 7.8pt; line-height: 1.7; color: #55606d; }
 .selfcheck b { color: var(--blue-print); }
 </style>
@@ -224,8 +229,8 @@
   </div>
 
   <div class="abs selfcheck" style="left:0; top:172mm; width:281mm;">
-    <b>짝과 바꾸어 읽기</b> — 짝의 ②번 칸에서 <b>근거가 가장 분명한 짐작</b> 하나에 ☆ 표를 해 주고, 왜 골랐는지 말해 줍니다.
-    &nbsp;·&nbsp; 다음 쪽에서는 <b>유물</b>을 가지고 똑같이 해 봅니다.
+    <b>스스로 확인</b> — ②번에 적은 것 가운데 ①번에서 근거를 찾을 수 있는 짐작 하나에 ☆ 표를 해 두세요.
+    &nbsp;·&nbsp; 다음 쪽에서는 <b>유물</b>을 가지고 똑같이 해 보고, 그때 짝과 생각을 비교합니다.
   </div>
 
   <footer class="print-foot">
@@ -257,7 +262,7 @@
   <!-- ───── 유물 ㉮ ───── -->
   <div class="abs" style="left:0; top:26mm; width:138mm;">
     <div class="relic-cap">유물 ㉮</div>
-    <div class="relic-note">색칠해도 좋아요. 이름은 선생님이 나중에 알려 줍니다.</div>
+    <div class="relic-note">색칠해도 좋아요. 이름은 선생님이 나중에 알려 줍니다. <b>교과서 9쪽 유물과 다르면 교과서 사진을 보고 그려도 좋아요.</b></div>
   </div>
   <div class="abs" style="left:0; top:34mm;">
     <svg viewBox="0 0 62 58" width="62mm" height="58mm">
@@ -278,20 +283,25 @@
       <!-- 날 쪽 지그재그(뗀 자국) -->
       <path d="M22,46 l2.4,2 l1.8,-1.6 l2.2,2.2 l2.6,-1.8 l2.4,2 l2,-1.8 l2.6,1.6 l2,-2.6"
             fill="none" stroke="#8a8072" stroke-width="0.5"/>
-      <text x="31" y="57" font-size="2.6" fill="#a39786" text-anchor="middle" font-weight="700">길이 약 20cm · 돌</text>
+      <text x="31" y="57" font-size="2.6" fill="#a39786" text-anchor="middle" font-weight="700">길이 약 20cm</text>
     </svg>
   </div>
 
   <div class="abs" style="left:66mm; top:34mm; width:72mm;">
     <div style="margin-bottom:1mm"><span class="lab obs">관찰</span>
-      <span class="capt">모양 · 재료 · 남아 있는 흔적</span></div>
+      <span class="capt">모양 · 남아 있는 흔적</span></div>
     <div class="lines tight"><div></div><div></div></div>
     <div style="margin:2.4mm 0 1mm"><span class="lab q">① 무엇으로 만들었을까?</span></div>
     <div class="lines tight"><div></div></div>
     <div style="margin:2.4mm 0 1mm"><span class="lab inf">② 어떤 용도로 썼을까?</span></div>
     <div class="lines tight"><div></div></div>
     <div style="margin:2.4mm 0 1mm"><span class="lab evd">③ 그렇게 생각한 근거는?</span></div>
-    <div class="lines tight"><div></div><div></div></div>
+    <div class="lines tight"><div></div></div>
+    <div class="bubble">
+      <div class="bl"><span class="lab q2">④ 더 알고 싶은 점</span>
+        <span class="capt">— 누가 사용하였을까? · 어떻게 만들었을까?</span></div>
+      <div class="lines tight"><div></div></div>
+    </div>
   </div>
 
   <!-- 세로 구분선 (상자 대신 가는 선 하나) -->
@@ -300,7 +310,7 @@
   <!-- ───── 유물 ㉯ ───── -->
   <div class="abs" style="left:146mm; top:26mm; width:135mm;">
     <div class="relic-cap">유물 ㉯</div>
-    <div class="relic-note">색칠해도 좋아요. 이름은 선생님이 나중에 알려 줍니다.</div>
+    <div class="relic-note">색칠해도 좋아요. 이름은 선생님이 나중에 알려 줍니다. <b>교과서 9쪽 유물과 다르면 교과서 사진을 보고 그려도 좋아요.</b></div>
   </div>
   <div class="abs" style="left:146mm; top:34mm;">
     <svg viewBox="0 0 62 58" width="62mm" height="58mm">
@@ -320,31 +330,36 @@
                  M30,26 l3,3.4 l-3,3.4 M34,26 l3,3.4 l-3,3.4 M38,26 l3,3.4 l-3,3.4"/>
         <path d="M20,37 l-2,4 M24,37 l-2,4 M28,37 l-2,4 M32,37 l-2,4 M36,37 l-2,4 M40,37 l-2,4"/>
       </g>
-      <text x="31" y="56.6" font-size="2.6" fill="#a39786" text-anchor="middle" font-weight="700">높이 약 40cm · 흙을 구워 만듦</text>
+      <text x="31" y="56.6" font-size="2.6" fill="#a39786" text-anchor="middle" font-weight="700">높이 약 40cm</text>
     </svg>
   </div>
 
   <div class="abs" style="left:212mm; top:34mm; width:69mm;">
     <div style="margin-bottom:1mm"><span class="lab obs">관찰</span>
-      <span class="capt">모양 · 재료 · 남아 있는 흔적</span></div>
+      <span class="capt">모양 · 남아 있는 흔적</span></div>
     <div class="lines tight"><div></div><div></div></div>
     <div style="margin:2.4mm 0 1mm"><span class="lab q">① 무엇으로 만들었을까?</span></div>
     <div class="lines tight"><div></div></div>
     <div style="margin:2.4mm 0 1mm"><span class="lab inf">② 어떤 용도로 썼을까?</span></div>
     <div class="lines tight"><div></div></div>
     <div style="margin:2.4mm 0 1mm"><span class="lab evd">③ 그렇게 생각한 근거는?</span></div>
-    <div class="lines tight"><div></div><div></div></div>
+    <div class="lines tight"><div></div></div>
+    <div class="bubble">
+      <div class="bl"><span class="lab q2">④ 더 알고 싶은 점</span>
+        <span class="capt">— 누가 사용하였을까? · 어떻게 만들었을까?</span></div>
+      <div class="lines tight"><div></div></div>
+    </div>
   </div>
 
   <!-- ───── 알고 싶은 것 ───── -->
-  <div class="abs" style="left:0; top:128mm; width:168mm;">
+  <div class="abs" style="left:0; top:138mm; width:168mm;">
     <div class="step"><span class="no">5</span><span class="tx">이 단원에서 알고 싶은 것</span>
       <span class="sub">— 교과서 7쪽</span></div>
     <div class="lines tight"><div></div><div></div><div></div></div>
   </div>
 
   <!-- ───── 단원 미리 보기 ───── -->
-  <div class="abs" style="left:174mm; top:128mm; width:107mm;">
+  <div class="abs" style="left:174mm; top:138mm; width:107mm;">
     <div class="step"><span class="no">6</span><span class="tx">앞으로 만날 사람들</span>
       <span class="sub">— 미리 보기</span></div>
     <div class="peek">
@@ -357,11 +372,17 @@
     </div>
   </div>
 
-  <div class="abs" style="left:0; top:166mm; width:281mm;">
-    <div class="selfcheck" style="margin-bottom:1.6mm">
-      <b>오늘의 한 줄</b> — 유물 하나만 보고도 옛사람의 생활을 짐작할 수 있었던 까닭은 무엇일까요?
+  <div class="abs" style="left:0; top:165mm; width:281mm;">
+    <div class="step" style="margin-bottom:1mm"><span class="no">7</span>
+      <span class="tx">두 유물을 사용한 사람들은 어떻게 살았을까?</span>
+      <span class="sub">— ①~④를 토대로 생활 모습을 상상하여 써 보고, 친구들과 비교해 봅시다 (교과서 9쪽)</span></div>
+    <div style="display:flex; gap:4mm;">
+      <div style="flex:1"><div class="lines tight"><div></div><div></div></div></div>
+      <div style="flex:1">
+        <div class="capt" style="margin-bottom:0.6mm">친구 생각 — 짝의 답을 한 줄 옮겨 적기</div>
+        <div class="lines tight"><div></div></div>
+      </div>
     </div>
-    <div class="lines tight"><div></div><div></div></div>
   </div>
 
   <footer class="print-foot">

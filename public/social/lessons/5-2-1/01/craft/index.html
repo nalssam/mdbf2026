@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>탁자식 고인돌 만들기 — 페이퍼크래프트 도안 (5-2 1단원 1차시)</title>
-<meta name="description" content="오려·접어·붙여 세우는 탁자식 고인돌 — 굄돌 셋과 덮개돌, 그리고 거대한 돌을 올린 네 단계를 손으로 재현하는 도안 (A4 2쪽, 몽당분필 날쌤)">
+<meta name="description" content="오려·접어·붙여 세우는 탁자식 고인돌 — 굄돌 셋과 덮개돌, 그리고 거대한 돌을 올린 네 단계를 손으로 재현하는 도안 (A4 3쪽, 몽당분필 날쌤)">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;700;900&display=swap" rel="stylesheet">
@@ -22,7 +22,7 @@
 /* 전개도 선 규약 — SVG 1 단위 = 1mm 이므로 굵기도 mm 값으로 직접 지정 */
 .cutline   { stroke: #111; stroke-width: 0.6; fill: none; stroke-linecap: square; }
 .foldline  { stroke: #6a7a90; stroke-width: 0.32; fill: none; stroke-dasharray: 2.6 1.7; }
-.tab       { fill: url(#glue); stroke: #111; stroke-width: 0.35; }
+.tab       { fill: url(#glue); stroke: none; }
 
 /* 돌·나무·흙 면 */
 .stone      { fill: #dfe2e0; stroke: none; }
@@ -141,7 +141,7 @@
     <rect class="stoneside" x="39" y="91" width="112" height="12"/>
     <rect class="stoneside" x="27" y="19" width="12" height="72"/>
     <rect class="stoneside" x="151" y="19" width="12" height="72"/>
-    <path class="cutline" d="M39,7 L151,7 L151,19 L163,19 L163,91 L151,91 L151,103 L39,103 L39,91 L27,91 L27,19 L39,19 Z"/>
+    <path class="cutline" d="M39,7 L151,7 L151,19 L152.4,7 L161.6,7 L163,19 L163,91 L161.6,103 L152.4,103 L151,91 L151,103 L39,103 L39,91 L37.6,103 L28.4,103 L27,91 L27,19 L28.4,7 L37.6,7 L39,19 Z"/>
     <path class="tab" d="M27,19 L28.4,7 L37.6,7 L39,19 Z"/>
     <path class="tab" d="M27,91 L28.4,103 L37.6,103 L39,91 Z"/>
     <path class="tab" d="M151,19 L152.4,7 L161.6,7 L163,19 Z"/>
@@ -165,6 +165,7 @@
     <line class="foldline" x1="4" y1="124" x2="26" y2="124"/>
     <text class="facelab2" x="15" y="116.4" text-anchor="middle">윗면</text>
     <path class="tab" d="M84,124 L90,125.4 L90,164.6 L84,166 Z"/>
+    <line class="foldline" x1="84" y1="124" x2="84" y2="166"/>
     <path class="grain" d="M7,132.4 q20,-2.4 40,0 t37,0"/>
     <path class="grain" d="M7,140.8 q20,2.4 40,0 t37,0"/>
     <path class="grain" d="M7,149.2 q20,-2.4 40,0 t37,0"/>
@@ -183,6 +184,7 @@
     <line class="foldline" x1="96" y1="124" x2="118" y2="124"/>
     <text class="facelab2" x="107" y="116.4" text-anchor="middle">윗면</text>
     <path class="tab" d="M176,124 L182,125.4 L182,164.6 L176,166 Z"/>
+    <line class="foldline" x1="176" y1="124" x2="176" y2="166"/>
     <path class="grain" d="M99,132.4 q20,-2.4 40,0 t37,0"/>
     <path class="grain" d="M99,140.8 q20,2.4 40,0 t37,0"/>
     <path class="grain" d="M99,149.2 q20,-2.4 40,0 t37,0"/>
@@ -201,6 +203,7 @@
     <line class="foldline" x1="4" y1="185" x2="56" y2="185"/>
     <text class="facelab2" x="30" y="178.4" text-anchor="middle">윗면</text>
     <path class="tab" d="M140,185 L146,186.4 L146,225.6 L140,227 Z"/>
+    <line class="foldline" x1="140" y1="185" x2="140" y2="227"/>
     <path class="grain" d="M8,195.5 q34,-2.4 68,0 t64,0"/>
     <path class="grain" d="M8,206 q34,2.4 68,0 t64,0"/>
     <path class="grain" d="M8,216.5 q34,-2.4 68,0 t64,0"/>
@@ -289,30 +292,30 @@
     <rect class="footprint" x="122" y="69" width="22" height="18" rx="1.4"/>
     <text class="fplab" x="133" y="79.3" text-anchor="middle">굄돌 ㉯</text>
     <text class="rowcap" x="4" y="106">통나무 굴림대 3개 — 둥글게 말아 빗금 탭을 붙이세요</text>
-    <rect class="wood" x="8" y="109" width="28.27" height="46"/>
-    <line class="woodgrain" x1="15.07" y1="112" x2="15.07" y2="152"/>
-    <line class="woodgrain" x1="22.14" y1="112" x2="22.14" y2="152"/>
-    <line class="woodgrain" x1="29.2" y1="112" x2="29.2" y2="152"/>
-    <path class="tab" d="M36.27,109 L41.77,110.4 L41.77,153.6 L36.27,155 Z"/>
-    <path class="cutline" d="M8,109 L36.27,109 L41.77,110.4 L41.77,153.6 L36.27,155 L8,155 Z"/>
-    <line class="foldline" x1="36.27" y1="109" x2="36.27" y2="155"/>
-    <text class="facelab2" x="22.14" y="132" text-anchor="middle" transform="rotate(-90 22.14 132)">통나무 1</text>
-    <rect class="wood" x="53.77" y="109" width="28.27" height="46"/>
-    <line class="woodgrain" x1="60.84" y1="112" x2="60.84" y2="152"/>
-    <line class="woodgrain" x1="67.91" y1="112" x2="67.91" y2="152"/>
-    <line class="woodgrain" x1="74.97" y1="112" x2="74.97" y2="152"/>
-    <path class="tab" d="M82.04,109 L87.54,110.4 L87.54,153.6 L82.04,155 Z"/>
-    <path class="cutline" d="M53.77,109 L82.04,109 L87.54,110.4 L87.54,153.6 L82.04,155 L53.77,155 Z"/>
-    <line class="foldline" x1="82.04" y1="109" x2="82.04" y2="155"/>
-    <text class="facelab2" x="67.91" y="132" text-anchor="middle" transform="rotate(-90 67.91 132)">통나무 2</text>
-    <rect class="wood" x="99.54" y="109" width="28.27" height="46"/>
-    <line class="woodgrain" x1="106.61" y1="112" x2="106.61" y2="152"/>
-    <line class="woodgrain" x1="113.68" y1="112" x2="113.68" y2="152"/>
-    <line class="woodgrain" x1="120.74" y1="112" x2="120.74" y2="152"/>
-    <path class="tab" d="M127.81,109 L133.31,110.4 L133.31,153.6 L127.81,155 Z"/>
-    <path class="cutline" d="M99.54,109 L127.81,109 L133.31,110.4 L133.31,153.6 L127.81,155 L99.54,155 Z"/>
-    <line class="foldline" x1="127.81" y1="109" x2="127.81" y2="155"/>
-    <text class="facelab2" x="113.68" y="132" text-anchor="middle" transform="rotate(-90 113.68 132)">통나무 3</text>
+    <rect class="wood" x="4" y="109" width="50.27" height="46"/>
+    <line class="woodgrain" x1="16.57" y1="112" x2="16.57" y2="152"/>
+    <line class="woodgrain" x1="29.14" y1="112" x2="29.14" y2="152"/>
+    <line class="woodgrain" x1="41.7" y1="112" x2="41.7" y2="152"/>
+    <path class="tab" d="M54.27,109 L59.77,110.4 L59.77,153.6 L54.27,155 Z"/>
+    <path class="cutline" d="M4,109 L54.27,109 L59.77,110.4 L59.77,153.6 L54.27,155 L4,155 Z"/>
+    <line class="foldline" x1="54.27" y1="109" x2="54.27" y2="155"/>
+    <text class="facelab2" x="29.14" y="132" text-anchor="middle" transform="rotate(-90 29.14 132)">통나무 1</text>
+    <rect class="wood" x="67.77" y="109" width="50.27" height="46"/>
+    <line class="woodgrain" x1="80.34" y1="112" x2="80.34" y2="152"/>
+    <line class="woodgrain" x1="92.91" y1="112" x2="92.91" y2="152"/>
+    <line class="woodgrain" x1="105.47" y1="112" x2="105.47" y2="152"/>
+    <path class="tab" d="M118.04,109 L123.54,110.4 L123.54,153.6 L118.04,155 Z"/>
+    <path class="cutline" d="M67.77,109 L118.04,109 L123.54,110.4 L123.54,153.6 L118.04,155 L67.77,155 Z"/>
+    <line class="foldline" x1="118.04" y1="109" x2="118.04" y2="155"/>
+    <text class="facelab2" x="92.91" y="132" text-anchor="middle" transform="rotate(-90 92.91 132)">통나무 2</text>
+    <rect class="wood" x="131.54" y="109" width="50.27" height="46"/>
+    <line class="woodgrain" x1="144.11" y1="112" x2="144.11" y2="152"/>
+    <line class="woodgrain" x1="156.68" y1="112" x2="156.68" y2="152"/>
+    <line class="woodgrain" x1="169.24" y1="112" x2="169.24" y2="152"/>
+    <path class="tab" d="M181.81,109 L187.31,110.4 L187.31,153.6 L181.81,155 Z"/>
+    <path class="cutline" d="M131.54,109 L181.81,109 L187.31,110.4 L187.31,153.6 L181.81,155 L131.54,155 Z"/>
+    <line class="foldline" x1="181.81" y1="109" x2="181.81" y2="155"/>
+    <text class="facelab2" x="156.68" y="132" text-anchor="middle" transform="rotate(-90 156.68 132)">통나무 3</text>
     <text class="rowcap" x="4" y="162">흙 경사로 2개 — 밑에 달린 빗금 발을 뒤로 접어 세우세요 (고인돌 쪽이 높습니다)</text>
     <path class="soil" d="M68,165 L68,199 L6,199 Z"/>
     <line class="soilgrain" x1="66" y1="171.8" x2="55.6" y2="171.8"/>
@@ -321,7 +324,7 @@
     <line class="soilgrain" x1="66" y1="192.2" x2="18.4" y2="192.2"/>
     <path class="tab" d="M6,199 L7.4,209 L66.6,209 L68,199 Z"/>
     <line class="foldline" x1="6" y1="199" x2="68" y2="199"/>
-    <path class="cutline" d="M68,165 L68,199 L6,199 Z" fill="none"/>
+    <path class="cutline" d="M68,165 L68,199 L66.6,209 L7.4,209 L6,199 Z" fill="none"/>
     <text class="facelab2" x="48" y="193" text-anchor="middle">흙 경사로</text>
     <path class="soil" d="M122,165 L122,199 L184,199 Z"/>
     <line class="soilgrain" x1="124" y1="171.8" x2="134.4" y2="171.8"/>
@@ -330,7 +333,7 @@
     <line class="soilgrain" x1="124" y1="192.2" x2="171.6" y2="192.2"/>
     <path class="tab" d="M122,199 L123.4,209 L182.6,209 L184,199 Z"/>
     <line class="foldline" x1="122" y1="199" x2="184" y2="199"/>
-    <path class="cutline" d="M122,165 L122,199 L184,199 Z" fill="none"/>
+    <path class="cutline" d="M122,165 L122,199 L123.4,209 L182.6,209 L184,199 Z" fill="none"/>
     <text class="facelab2" x="142" y="193" text-anchor="middle">흙 경사로</text>
     <rect class="card" x="2" y="213" width="44" height="30" rx="2.6"/>
     <rect class="cutline" x="2" y="213" width="44" height="30" rx="2.6" fill="none"/>
@@ -429,9 +432,9 @@
     <h4>해 보기 — 이 거대한 돌을 어떻게 올렸을까?</h4>
     순서 카드 ①~④를 섞어 놓고, 받침판·통나무·흙 경사로를 직접 움직이며 <b>차례를 맞혀 보세요.</b>
     맞혀 본 다음에 카드를 뒤집어 확인하지 말고, <b>왜 그 순서라고 생각했는지 근거를 먼저 말해 봅니다.</b><br>
-    <b>①</b> 통나무를 덮개돌 아래에 두면 무엇이 쉬워질까요? &nbsp;<b>②</b> 흙 경사로는 왜 필요했을까요?
+    <b>①</b> 통나무 셋을 나란히 놓고 그 위에 덮개돌을 <b>얹어</b> 살짝 밀어 보세요 — 무엇이 쉬워질까요? &nbsp;<b>②</b> 흙 경사로는 왜 필요했을까요?
     &nbsp;<b>③</b> 흙은 마지막에 왜 치웠을까요?<br>
-    <span style="color:#777">※ 카드의 순서는 고인돌을 세운 방법으로 널리 받아들여지는 설명입니다. 직접 해 보고 나서 모둠의 생각과 비교해 보세요.</span>
+    <span style="color:#777">※ 교과서 6〕7쪽 발문 「어떻게 만들었을까요?」의 예시 답에도 <b>「동그란 무언가를 바퀴로 활용하여」</b>가 나옵니다. 통나무가 바로 그것입니다.<br>※ 카드의 순서는 고인돌을 세운 방법으로 널리 받아들여지는 설명입니다. 직접 해 보고 나서 모둠의 생각과 비교해 보세요.</span>
   </div>
 
   <div class="abs usage" style="left:0; top:216mm; width:190mm;">
