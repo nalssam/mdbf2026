@@ -128,6 +128,33 @@
       '</details>';
   }
 
+  // 차시별 "수업 꾸러미" 목록 — unit.lessons 가 있을 때만 표시 (단원 자료 3종과 별개)
+  function lessonsHTML(unit) {
+    var L = unit.lessons || [];
+    if (!L.length) return '';
+    var ready = L.filter(function (l) { return l.status === 'ready' && l.href; }).length;
+    var rows = L.map(function (l) {
+      var ok = l.status === 'ready' && l.href;
+      var inner =
+        '<span class="ls-no">' + esc(l.no) + '차시</span>' +
+        '<span class="ls-body">' +
+          '<span class="ls-title">' + esc(l.title) + '</span>' +
+          (l.note ? '<span class="ls-note">' + esc(l.note) + '</span>' : '') +
+        '</span>' +
+        (l.book ? '<span class="ls-book">' + esc(l.book) + '</span>' : '') +
+        '<span class="ls-go">' + (ok ? '수업 꾸러미 열기 →' : '준비 중') + '</span>';
+      return ok
+        ? '<a class="ls-row ready" href="' + esc(l.href) + '">' + inner + '</a>'
+        : '<div class="ls-row pending" aria-disabled="true">' + inner + '</div>';
+    }).join('');
+    return '' +
+      '<div class="lessons">' +
+        '<div class="ls-head"><span class="ls-badge">📦 차시별 수업 꾸러미</span>' +
+          '<span class="ls-meta">40분 한 덩어리 · 공개 ' + ready + '개</span></div>' +
+        rows +
+      '</div>';
+  }
+
   function unitHTML(unit) {
     var tiles = Object.keys(types()).map(function (k) { return tileHTML(unit, k); }).join('');
     return '' +
@@ -137,6 +164,7 @@
           '<span class="unit-title">' + esc(unit.title) + '</span>' +
         '</div>' +
         '<div class="tiles">' + tiles + '</div>' +
+        lessonsHTML(unit) +
         standardsHTML(unit) +
       '</div>';
   }

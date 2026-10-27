@@ -1,0 +1,627 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>1차시 수업 꾸러미 — 고인돌, 누가 어떻게? | 초등사회 교육콘텐츠 클라우드 @nalssam</title>
+<meta name="description" content="비상교육 초등 사회 5-2 「유적과 유물로 살펴본 옛사람들의 생활」 1차시 40분 수업 꾸러미 — 도입 영상·페이퍼크래프트·비주얼싱킹 학습지·쌤퀴즈·쌤보드·역사관을 한 덩어리로 묶었습니다.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;700;900&display=swap" rel="stylesheet">
+<style>
+:root{
+  --ink:#2b3a55; --ink-mid:#54658a; --ink-dim:#8a99b8;
+  --gold:#f5b528; --gold-deep:#d8930c;
+  --mint:#43cea3; --mint-deep:#1f9b73;
+  --blue:#5aa8ff; --blue-deep:#2f74c8;
+  --lav:#a99af0; --coral:#ff8b8b;
+  --card:#fff; --line:#e2ecf8; --bg:#f3f8ff;
+  --shadow:0 10px 26px rgba(84,120,170,.13);
+  --r:20px; --r-sm:12px;
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+body{
+  font-family:"Pretendard","Apple SD Gothic Neo","Noto Sans KR","Malgun Gothic",sans-serif;
+  color:var(--ink); line-height:1.7; background:var(--bg);
+  background-image:
+    radial-gradient(1000px 420px at 10% -8%, #fff 0%, transparent 60%),
+    radial-gradient(860px 380px at 92% 2%, #fff8e6 0%, transparent 62%);
+  background-attachment:fixed;
+  -webkit-text-size-adjust:100%;
+}
+.wrap{max-width:1040px;margin:0 auto;padding:0 18px 80px;}
+a{color:var(--blue-deep);}
+
+/* ── 상단 ── */
+.topbar{
+  position:sticky;top:0;z-index:20;backdrop-filter:blur(8px);
+  background:rgba(255,255,255,.86);border-bottom:1px solid var(--line);
+}
+.topbar .in{max-width:1040px;margin:0 auto;padding:10px 18px;display:flex;align-items:center;gap:10px;flex-wrap:wrap;}
+.topbar .bk{font-size:14px;font-weight:700;text-decoration:none;color:var(--ink-mid);}
+.topbar .sp{margin-left:auto;display:flex;gap:8px;flex-wrap:wrap;}
+.btn{
+  display:inline-flex;align-items:center;gap:6px;font-size:14px;font-weight:800;
+  text-decoration:none;border:0;cursor:pointer;border-radius:999px;padding:8px 16px;
+  background:var(--gold);color:#3a2a00;font-family:inherit;
+}
+.btn.ghost{background:#fff;color:var(--ink-mid);border:1.5px solid var(--line);}
+.btn.mint{background:var(--mint);color:#06342a;}
+
+/* ── 히어로 ── */
+.hero{
+  margin:22px 0 10px;padding:26px 28px;border-radius:var(--r);background:var(--card);
+  box-shadow:var(--shadow);display:flex;gap:22px;align-items:flex-start;flex-wrap:wrap;
+}
+.hero .art{flex:0 0 110px;}
+.hero .art img{width:110px;height:auto;display:block;}
+.hero .cp{flex:1 1 420px;min-width:280px;}
+.kicker{font-size:13px;font-weight:800;color:var(--gold-deep);letter-spacing:.2px;}
+h1{font-size:30px;font-weight:900;letter-spacing:-.6px;line-height:1.25;margin:2px 0 6px;}
+h1 .q{color:var(--gold-deep);}
+.lede{font-size:15.5px;color:var(--ink-mid);}
+.chips{display:flex;gap:7px;flex-wrap:wrap;margin-top:12px;}
+.chip{font-size:12.5px;font-weight:800;border-radius:999px;padding:4px 12px;background:#f0f6ff;color:var(--blue-deep);}
+.chip.g{background:#fff6e0;color:var(--gold-deep);}
+.chip.m{background:#e6f9f2;color:var(--mint-deep);}
+
+/* ── 섹션 ── */
+section{margin-top:30px;}
+h2{
+  font-size:21px;font-weight:900;letter-spacing:-.3px;margin-bottom:4px;
+  display:flex;align-items:center;gap:9px;
+}
+h2 .ic{font-size:20px;}
+.sub{font-size:14px;color:var(--ink-dim);margin-bottom:14px;}
+.card{background:var(--card);border-radius:var(--r);box-shadow:var(--shadow);padding:22px 24px;}
+
+/* ── 목표 상자 ── */
+.goal{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:14px;}
+.goal > div{border-left:4px solid var(--line);padding-left:13px;}
+.goal .gl{font-size:12.5px;font-weight:800;color:var(--ink-dim);}
+.goal .gv{font-size:15px;font-weight:700;}
+.goal .g1{border-color:var(--gold);} .goal .g2{border-color:var(--mint);} .goal .g3{border-color:var(--blue);}
+
+/* ── 40분 타임라인 ── */
+table.flow{width:100%;border-collapse:collapse;font-size:14.5px;}
+table.flow th{
+  text-align:left;font-size:12.5px;color:var(--ink-dim);font-weight:800;
+  padding:0 10px 8px;border-bottom:2px solid var(--line);
+}
+table.flow td{padding:11px 10px;border-bottom:1px solid var(--line);vertical-align:top;}
+table.flow tr:last-child td{border-bottom:0;}
+.ph{font-weight:900;white-space:nowrap;}
+.ph.i{color:var(--blue-deep);} .ph.d{color:var(--gold-deep);} .ph.o{color:var(--mint-deep);}
+.min{font-weight:900;color:var(--ink-mid);white-space:nowrap;}
+.tool{font-size:12.5px;font-weight:800;color:var(--ink-dim);}
+.bar{height:7px;border-radius:4px;background:var(--line);overflow:hidden;display:flex;margin:4px 0 16px;}
+.bar i{display:block;height:100%;}
+
+/* ── 단계 상세 ── */
+.stepcard{background:var(--card);border-radius:var(--r);box-shadow:var(--shadow);padding:20px 24px;margin-bottom:14px;}
+.stephead{display:flex;align-items:baseline;gap:10px;flex-wrap:wrap;margin-bottom:10px;}
+.stephead .n{
+  font-size:13px;font-weight:900;border-radius:999px;padding:3px 11px;background:#f0f6ff;color:var(--blue-deep);
+}
+.stephead .n.g{background:#fff6e0;color:var(--gold-deep);}
+.stephead .n.m{background:#e6f9f2;color:var(--mint-deep);}
+.stephead .t{font-size:18px;font-weight:900;letter-spacing:-.3px;}
+.stephead .m2{font-size:13px;font-weight:800;color:var(--ink-dim);margin-left:auto;}
+.ask{
+  background:#fffdf5;border-left:4px solid var(--gold);border-radius:0 var(--r-sm) var(--r-sm) 0;
+  padding:11px 15px;margin:10px 0;font-size:15px;
+}
+.ask b{color:var(--gold-deep);}
+.ans{font-size:14px;color:var(--ink-mid);padding-left:15px;border-left:2px dotted var(--line);margin:8px 0 8px 4px;}
+.ans b{color:var(--mint-deep);}
+ul.do{margin:8px 0 0 20px;font-size:14.5px;}
+ul.do li{margin-bottom:5px;}
+.note{font-size:13.5px;color:var(--ink-dim);margin-top:9px;}
+
+/* ── 자료 타일 ── */
+.tiles{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:14px;}
+.tile{
+  display:block;text-decoration:none;color:inherit;background:var(--card);border-radius:var(--r);
+  box-shadow:var(--shadow);padding:20px 22px;border:2px solid transparent;transition:.15s;
+}
+.tile:hover{border-color:var(--gold);transform:translateY(-2px);}
+.tile .em{font-size:30px;line-height:1;}
+.tile .tt{font-size:17px;font-weight:900;margin-top:7px;}
+.tile .td{font-size:13.5px;color:var(--ink-mid);margin-top:3px;}
+.tile .go{font-size:13px;font-weight:800;color:var(--gold-deep);margin-top:9px;}
+
+/* ── 복사 블록 ── */
+.copybox{position:relative;margin-top:10px;}
+.copybox pre{
+  background:#0f1830;color:#dbe6ff;border-radius:var(--r-sm);padding:16px 18px;
+  font-family:"Noto Sans KR",ui-monospace,monospace;font-size:13.5px;line-height:1.75;
+  white-space:pre-wrap;word-break:break-word;overflow:auto;max-height:420px;
+}
+.copybox .cp{position:absolute;top:9px;right:9px;font-size:12.5px;padding:5px 12px;}
+details.qz{border:1.5px solid var(--line);border-radius:var(--r-sm);padding:10px 14px;margin-bottom:9px;background:#fff;}
+details.qz summary{font-weight:800;cursor:pointer;font-size:15px;}
+details.qz .a{font-size:14px;color:var(--mint-deep);font-weight:800;margin-top:6px;}
+details.qz .w{font-size:13.5px;color:var(--ink-dim);}
+
+/* ── 교사용 해설 ── */
+.teacher{background:#fff8f8;border:1.5px solid #ffd9d9;border-radius:var(--r);padding:20px 24px;}
+.teacher h3{font-size:16px;font-weight:900;color:#c45b5b;margin-bottom:8px;}
+.teacher p{font-size:14.5px;margin-bottom:9px;}
+.warn{background:#fffbe8;border:1.5px solid #ffe59e;border-radius:var(--r-sm);padding:12px 15px;font-size:14px;margin-top:10px;}
+.warn b{color:var(--gold-deep);}
+
+/* ── 링크 목록 ── */
+.links{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:10px;}
+.links a{
+  display:flex;gap:9px;align-items:center;text-decoration:none;color:inherit;
+  background:#fff;border:1.5px solid var(--line);border-radius:var(--r-sm);padding:11px 14px;font-size:14px;font-weight:700;
+}
+.links a:hover{border-color:var(--blue);}
+.links .e{font-size:18px;}
+.links small{display:block;font-weight:400;color:var(--ink-dim);font-size:12.5px;}
+
+footer{margin-top:44px;padding-top:20px;border-top:1px solid var(--line);font-size:13px;color:var(--ink-dim);text-align:center;}
+
+@media print{
+  .topbar,.btn,.copybox .cp{display:none!important;}
+  body{background:#fff;}
+  .card,.stepcard,.tile{box-shadow:none;border:1px solid #ddd;}
+  section{break-inside:avoid;}
+}
+@media (max-width:640px){
+  h1{font-size:24px;}
+  .hero{padding:20px;}
+  .card,.stepcard,.teacher{padding:17px 16px;}
+  table.flow{font-size:13.5px;}
+}
+</style>
+</head>
+<body>
+
+<div class="topbar"><div class="in">
+  <a class="bk" href="../../../">← 초등사회 교육콘텐츠 클라우드</a>
+  <div class="sp">
+    <a class="btn ghost" href="worksheet/">🔎 학습지</a>
+    <a class="btn ghost" href="craft/">✂️ 페이퍼크래프트</a>
+    <button class="btn" onclick="window.print()">🖨 꾸러미 인쇄</button>
+  </div>
+</div></div>
+
+<div class="wrap">
+
+  <!-- ─────────── 히어로 ─────────── -->
+  <div class="hero">
+    <div class="art"><img src="../../../img/mascot.png" alt="몽당분필 날쌤" onerror="this.parentNode.style.display='none'"></div>
+    <div class="cp">
+      <div class="kicker">5학년 2학기 · 1단원 1차시 · 수업 꾸러미</div>
+      <h1>고인돌, 누가 <span class="q">어떻게</span>?</h1>
+      <p class="lede">
+        단원의 첫 시간입니다. 아직 아는 것이 없어도 괜찮습니다.
+        이 40분은 <b>옛사람의 생활을 알아내는 방법</b>, 곧 <b>추론</b>을 손에 쥐어 주는 시간입니다.
+      </p>
+      <div class="chips">
+        <span class="chip g">비상교육 초등 사회 5-2</span>
+        <span class="chip">1. 유적과 유물로 살펴본 옛사람들의 생활</span>
+        <span class="chip">교과서 6~9쪽</span>
+        <span class="chip m">40분 한 덩어리</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- ─────────── 학습 정보 ─────────── -->
+  <section>
+    <h2><span class="ic">🎯</span>이 시간에 닿을 곳</h2>
+    <div class="card">
+      <div class="goal">
+        <div class="g1">
+          <div class="gl">학습 목표</div>
+          <div class="gv">1단원과 1주제에서 학습할 내용을 예상할 수 있다.</div>
+        </div>
+        <div class="g2">
+          <div class="gl">핵심 기능 — 추론</div>
+          <div class="gv">이미 아는 정보를 근거로 삼아 다른 판단을 이끌어 내는 것 <span style="font-weight:400;color:var(--ink-dim)">(교과서 8쪽)</span></div>
+        </div>
+        <div class="g3">
+          <div class="gl">관련 성취기준 (2022 개정 · 참고)</div>
+          <div class="gv">[6사04-01]</div>
+        </div>
+      </div>
+      <div class="warn">
+        <b>도입 차시의 선</b> — 이 시간에는 <b>구석기·신석기·청동기라는 이름을 가르치지 않습니다.</b>
+        아이들이 아직 배우지 않은 지식을 묻지 않는 것이 이 꾸러미의 원칙입니다.
+        학습지에서도 유물을 <b>㉮ · ㉯</b> 로만 부르고, 이름은 다음 차시부터 하나씩 만나게 됩니다.
+        아이가 먼저 "주먹도끼 아니에요?" 하고 말한다면, 맞다 틀리다 하지 말고 <b>"왜 그렇게 생각했어?"</b> 로 돌려주세요.
+      </div>
+    </div>
+  </section>
+
+  <!-- ─────────── 40분 흐름 ─────────── -->
+  <section>
+    <h2><span class="ic">⏱</span>40분 한눈에 보기</h2>
+    <p class="sub">도입 8분 · 전개 28분 · 정리 4분</p>
+    <div class="bar">
+      <i style="width:12.5%;background:var(--blue)"></i>
+      <i style="width:7.5%;background:var(--blue);opacity:.65"></i>
+      <i style="width:30%;background:var(--gold)"></i>
+      <i style="width:30%;background:var(--gold);opacity:.7"></i>
+      <i style="width:10%;background:var(--gold);opacity:.45"></i>
+      <i style="width:10%;background:var(--mint)"></i>
+    </div>
+    <div class="card">
+      <table class="flow">
+        <thead><tr><th style="width:62px">단계</th><th style="width:48px">시간</th><th>하는 일</th><th style="width:186px">쓰는 도구</th></tr></thead>
+        <tbody>
+          <tr>
+            <td class="ph i">도입</td><td class="min">5분</td>
+            <td><b>박물관에서 만난 유물들</b> — 주제 도입 영상을 보고, 유물이 왜 유리장 안에 있는지 이야기합니다.</td>
+            <td class="tool">비바샘 영상 콘텐츠</td>
+          </tr>
+          <tr>
+            <td class="ph i">도입</td><td class="min">3분</td>
+            <td>교과서 6쪽 <b>고인돌</b> 사진. “이 거대한 돌을 어떻게 올렸을까?” 첫 생각을 한 줄씩 올립니다.</td>
+            <td class="tool">쌤보드</td>
+          </tr>
+          <tr>
+            <td class="ph d">전개 ①</td><td class="min">12분</td>
+            <td><b>탁자식 고인돌 만들기</b>. 모둠에서 조각을 나눠 세우고, 순서 카드 ①~④를 직접 움직여 맞혀 봅니다.</td>
+            <td class="tool">페이퍼크래프트 (A4 3쪽)</td>
+          </tr>
+          <tr>
+            <td class="ph d">전개 ②</td><td class="min">12분</td>
+            <td><b>유물 탐정 수첩</b>. 관찰한 것과 추론한 것을 <b>나누어</b> 적고, 반드시 근거를 함께 씁니다.</td>
+            <td class="tool">비주얼싱킹 학습지 (A4 가로 2쪽)</td>
+          </tr>
+          <tr>
+            <td class="ph d">전개 ③</td><td class="min">4분</td>
+            <td><b>키키무 역사관</b>에서 앞으로 만날 시대를 눈으로만 훑습니다. 설명하지 않고 궁금증만 남깁니다.</td>
+            <td class="tool">에듀테크 테마관 (역사관)</td>
+          </tr>
+          <tr>
+            <td class="ph o">정리</td><td class="min">4분</td>
+            <td><b>쌤퀴즈</b> 8문항으로 ‘추론’을 확인하고, 교과서 7쪽 <b>알고 싶은 것</b>을 쌤보드에 올립니다.</td>
+            <td class="tool">쌤퀴즈 · 쌤보드</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- ─────────── 자료 내려받기 ─────────── -->
+  <section>
+    <h2><span class="ic">📦</span>수업에 쓸 자료</h2>
+    <p class="sub">둘 다 브라우저에서 바로 열리고, 인쇄 버튼을 누르면 PDF로 저장됩니다.</p>
+    <div class="tiles">
+      <a class="tile" href="worksheet/">
+        <div class="em">🔎</div>
+        <div class="tt">유물 탐정 수첩</div>
+        <div class="td">A4 <b>가로</b> 2쪽 · 비주얼싱킹 학습지<br>관찰 → 추론 → 근거의 세 칸, 4컷 순서 그리기, 단원 미리 보기</div>
+        <div class="go">열어 보기 / 인쇄 →</div>
+      </a>
+      <a class="tile" href="craft/">
+        <div class="em">✂️</div>
+        <div class="tt">탁자식 고인돌 만들기</div>
+        <div class="td">A4 3쪽 · 페이퍼크래프트 도안<br>굄돌 셋 · 덮개돌 · 받침판 · 통나무 굴림대 · 흙 경사로 · 순서 카드</div>
+        <div class="go">열어 보기 / 인쇄 →</div>
+      </a>
+    </div>
+  </section>
+
+  <!-- ─────────── 단계별 상세 ─────────── -->
+  <section>
+    <h2><span class="ic">🗺</span>단계별로 자세히</h2>
+    <p class="sub">발문과 예시 답변입니다. 예시 답변은 ‘정답’이 아니라 <b>아이 말을 받아 주는 방향</b>으로 읽어 주세요.</p>
+
+    <div class="stepcard">
+      <div class="stephead"><span class="n">도입 ①</span><span class="t">왜 유리장 안에 있을까</span><span class="m2">5분 · 영상</span></div>
+      <p>비바샘 1단원 1차시 주제 도입 영상 <b>「박물관에서 만난 유물들」</b>을 함께 봅니다.</p>
+      <div class="ask">🗣 <b>발문</b> — 박물관에 있는 물건들은 왜 유리장 안에 들어 있을까요?</div>
+      <div class="ans">
+        <b>예시</b> — 아주 오래되어서 / 하나밖에 없어서 / 부서지면 다시 만들 수 없어서<br>
+        → <b>받아 주기</b> : “다시 만들 수 없다”는 말을 붙잡아 주세요. 그래서 남아 있는 것 하나하나가 <b>단서</b>가 됩니다.
+      </div>
+      <div class="ask">🗣 <b>이어서</b> — 그럼 이 물건들은 우리에게 무엇을 알려 줄 수 있을까요?</div>
+      <div class="note">※ 영상이 준비되지 않았다면, 교실 뒤편 물건 하나(예: 낡은 실내화)를 들고 “이걸 보고 주인에 대해 뭘 알 수 있을까?”로 대신해도 똑같이 열립니다.</div>
+    </div>
+
+    <div class="stepcard">
+      <div class="stephead"><span class="n">도입 ②</span><span class="t">이 거대한 돌을 어떻게?</span><span class="m2">3분 · 쌤보드</span></div>
+      <p>교과서 <b>6쪽 고인돌</b> 사진을 크게 띄웁니다. 아직 아무 설명도 하지 않습니다.</p>
+      <div class="ask">🗣 <b>발문</b> — 옛사람들은 이렇게 거대한 고인돌을 어떻게 만들었을까요? <span style="font-size:13.5px;color:var(--ink-dim)">(교과서 6쪽 말풍선 그대로)</span></div>
+      <div class="ans">
+        <b>예시</b> — 여러 사람이 같이 들었다 / 밧줄로 끌었다 / 코끼리를 썼다 / 기계가 있었다<br>
+        → <b>받아 주기</b> : 틀린 생각도 지우지 말고 그대로 남겨 두세요. 전개 ①에서 <b>직접 해 보고</b> 스스로 지웁니다.
+      </div>
+      <ul class="do">
+        <li>쌤보드에 한 줄씩 올리게 하고, <b>지우지 않은 채로</b> 수업 끝까지 띄워 둡니다.</li>
+        <li>정리 단계에서 다시 보며 “처음 생각과 달라진 것”을 찾게 합니다.</li>
+      </ul>
+    </div>
+
+    <div class="stepcard">
+      <div class="stephead"><span class="n g">전개 ①</span><span class="t">손으로 세워 보는 고인돌</span><span class="m2">12분 · 페이퍼크래프트</span></div>
+      <ul class="do">
+        <li><b>모둠 분업</b> — 굄돌 ㉮ · 굄돌 ㉯ · 막음돌 · 덮개돌을 한 사람씩 맡으면 6~7분에 끝납니다.</li>
+        <li>다 세운 뒤 <b>순서 카드 ①~④를 섞어</b> 놓고, 받침판·통나무·흙 경사로를 움직이며 차례를 맞히게 합니다.</li>
+        <li><b>카드를 뒤집어 확인하기 전에</b> 왜 그 순서라고 생각했는지 근거를 먼저 말하게 하는 것이 핵심입니다.</li>
+      </ul>
+      <div class="ask">🗣 <b>발문</b> — 통나무를 덮개돌 아래에 두면 무엇이 쉬워질까요? 흙 경사로는 왜 필요했을까요?</div>
+      <div class="ans">
+        <b>예시</b> — 통나무가 구르니까 끌기 쉬워진다 / 높은 곳까지 바로 들 수 없으니 비스듬히 올린다<br>
+        → <b>이어 가기</b> : “그럼 흙은 왜 마지막에 치웠을까?” 까지 가면 네 단계가 아이들 입에서 완성됩니다.
+      </div>
+      <div class="note">※ 시간이 빠듯하면 ①~② (오리기·접기)를 전날 과제로 보내거나, 만들기를 생략하고 <b>받침판 + 순서 카드만</b>으로 5분 활동을 해도 목표는 닿습니다.</div>
+    </div>
+
+    <div class="stepcard">
+      <div class="stephead"><span class="n g">전개 ②</span><span class="t">유물 탐정 수첩</span><span class="m2">12분 · 학습지</span></div>
+      <p>학습지 1쪽은 <b>고인돌</b>, 2쪽은 <b>유물 두 점</b>입니다. 두 쪽 모두 구조가 같습니다 — <b>관찰 → 추론 → 근거</b>.</p>
+      <div class="ask">🗣 <b>가장 중요한 한 마디</b> — “<b>보이는 것</b>과 <b>짐작한 것</b>을 다른 칸에 적어 봅시다.”</div>
+      <div class="ans">
+        아이들은 처음에 1번 칸(관찰)에 “무거워 보인다”, “옛날 거다” 같은 <b>짐작</b>을 적습니다.<br>
+        → <b>되돌리기</b> : “그건 눈에 보이는 거야, 네 머릿속에서 나온 거야?” 한 번만 물어 주면 스스로 옮깁니다.<br>
+        이 구분이 되는 순간이 <b>추론</b>을 배운 순간입니다.
+      </div>
+      <div class="ask">🗣 <b>3번 칸</b> — “나는 ＜　　　＞ 라고 짐작했다. 왜냐하면 ＜　　　＞ 이 보이기 때문이다.”</div>
+      <div class="note">※ 2쪽의 유물에는 <b>이름을 쓰지 않았습니다.</b> 이름을 모른 채로 용도를 짐작해 보는 것이 이 활동의 전부입니다. 이름은 다음 차시들에서 하나씩 돌려줍니다.</div>
+    </div>
+
+    <div class="stepcard">
+      <div class="stephead"><span class="n g">전개 ③</span><span class="t">역사관에서 미리 보기</span><span class="m2">4분 · 에듀테크 테마관</span></div>
+      <p>비바샘 <b>키키무(키워드에 키워드를 무는) 역사관</b>을 띄우고, 시대 필터를 <b>선사 시대</b>에 맞춰 함께 훑습니다. 설명하지 않고 <b>눈으로만</b> 지나갑니다.</p>
+      <div class="links" style="margin-top:10px">
+        <a href="https://e.vivasam.com/themeplace/keywordHistory/theater?searchTimeLevel=1&amp;searchHistoryType=1&amp;searchChannelType=1&amp;searchMuseumType=1" target="_blank" rel="noopener">
+          <span class="e">🎬</span><span>역사 극장<small>선사 시대 필터로 열립니다</small></span></a>
+        <a href="https://e.vivasam.com/themeplace/keywordHistory/vrExperience?searchTimeLevel=1&amp;searchHistoryType=1&amp;searchChannelType=1&amp;searchMuseumType=1" target="_blank" rel="noopener">
+          <span class="e">🥽</span><span>VR 체험<small>유적을 둘러보기</small></span></a>
+        <a href="https://e.vivasam.com/themeplace/keywordHistory/historyChannel?searchTimeLevel=5&amp;searchHistoryType=1&amp;searchChannelType=1&amp;searchMuseumType=1" target="_blank" rel="noopener">
+          <span class="e">📺</span><span>역사 채널<small>짧은 영상 모음</small></span></a>
+        <a href="https://e.vivasam.com/themeplace/keywordHistory/historyCalendar?searchTimeLevel=5&amp;searchHistoryType=1&amp;searchChannelType=1&amp;searchMuseumType=1" target="_blank" rel="noopener">
+          <span class="e">📅</span><span>역사 달력<small>오늘은 무슨 날</small></span></a>
+      </div>
+      <div class="note">※ 비바샘 로그인이 필요합니다. 링크가 열리지 않으면 비바샘 → 에듀테크 → 테마관 → 역사관 순으로 들어가면 같은 화면입니다.</div>
+    </div>
+
+    <div class="stepcard">
+      <div class="stephead"><span class="n m">정리</span><span class="t">확인하고, 궁금증을 남기고</span><span class="m2">4분 · 쌤퀴즈 · 쌤보드</span></div>
+      <ul class="do">
+        <li><b>쌤퀴즈 8문항</b>(아래 복사용)으로 ‘관찰과 추론의 구분’만 확인합니다. 시대 이름은 묻지 않습니다.</li>
+        <li>교과서 7쪽 <b>“이 단원을 배우면서 알고 싶은 것”</b>을 쌤보드에 한 줄씩 올립니다. 이 글은 단원 마지막 차시에 다시 꺼냅니다.</li>
+        <li>도입 ②에서 띄워 둔 첫 생각으로 돌아가 <b>달라진 점</b>을 한 명만 말하게 하고 마칩니다.</li>
+      </ul>
+      <div class="ask">🗣 <b>차시 예고</b> — 다음 시간에는 <b>돌을 떼어 도구를 만들던 사람들</b>의 생활 모습을 살펴보겠습니다.</div>
+    </div>
+  </section>
+
+  <!-- ─────────── 쌤퀴즈 ─────────── -->
+  <section>
+    <h2><span class="ic">❓</span>쌤퀴즈 8문항</h2>
+    <p class="sub">모두 교과서 6~9쪽과 오늘 활동 안에서만 답할 수 있는 문항입니다. 배우지 않은 시대 이름은 한 번도 묻지 않습니다.</p>
+
+    <details class="qz"><summary>1. (O/X) ‘추론’은 아무 근거 없이 마음대로 상상하는 것이다.</summary>
+      <div class="a">답 : X</div><div class="w">추론은 <b>이미 아는 정보를 근거로 삼아</b> 판단을 이끌어 내는 것입니다. (교과서 8쪽)</div></details>
+
+    <details class="qz"><summary>2. (객관식) 다음 중 고인돌 사진을 보고 ‘관찰한 것’은 무엇인가요?</summary>
+      <div class="w">① 덮개돌 아래에 돌기둥이 서 있다 &nbsp; ② 힘센 우두머리의 무덤일 것이다<br>
+        ③ 많은 사람이 함께 일했을 것이다 &nbsp; ④ 돌을 멀리서 가져왔을 것이다</div>
+      <div class="a">답 : ①</div><div class="w">②③④는 보이는 것을 근거로 <b>짐작한 것(추론)</b>입니다.</div></details>
+
+    <details class="qz"><summary>3. (O/X) 고인돌은 옛사람의 무덤이다.</summary>
+      <div class="a">답 : O</div><div class="w">교과서 6쪽에 그대로 나옵니다.</div></details>
+
+    <details class="qz"><summary>4. (단답) 이미 아는 정보를 근거로 삼아 다른 판단을 이끌어 내는 것을 무엇이라고 하나요?</summary>
+      <div class="a">답 : 추론</div></details>
+
+    <details class="qz"><summary>5. (객관식) 유물을 보고 쓰임새를 짐작할 때 가장 좋은 근거는 무엇인가요?</summary>
+      <div class="w">① 내 기분 &nbsp; ② 유물의 모양과 쓰인 흔적 &nbsp; ③ 친구가 한 말 &nbsp; ④ 색이 예쁜지</div>
+      <div class="a">답 : ②</div></details>
+
+    <details class="qz"><summary>6. (O/X) 이번 단원에서는 유적과 유물을 가지고 옛사람들의 생활 모습을 살펴본다.</summary>
+      <div class="a">답 : O</div><div class="w">단원 제목 그대로입니다. (교과서 7쪽 단원 미리 보기)</div></details>
+
+    <details class="qz"><summary>7. (객관식) 다음 시간에 살펴볼 내용은 무엇인가요?</summary>
+      <div class="w">① 돌을 떼어 도구를 만들던 사람들의 생활 모습 &nbsp; ② 조선의 건국<br>
+        ③ 일제의 침략 &nbsp; ④ 6·25 전쟁</div>
+      <div class="a">답 : ①</div></details>
+
+    <details class="qz"><summary>8. (O/X) 흙으로 구워 만든 그릇을 보면, 그 시대 사람들이 무엇을 담아 두었는지 짐작해 볼 수 있다.</summary>
+      <div class="a">답 : O</div><div class="w">유물의 <b>모양과 쓰인 흔적</b>이 곧 근거가 됩니다.</div></details>
+
+    <div class="copybox">
+      <button class="btn cp" onclick="cp(this,'quiz')">복사</button>
+      <pre id="quiz">1. (O/X) ‘추론’은 아무 근거 없이 마음대로 상상하는 것이다.  → X
+2. (객관식) 고인돌 사진을 보고 ‘관찰한 것’은?
+   ① 덮개돌 아래에 돌기둥이 서 있다
+   ② 힘센 우두머리의 무덤일 것이다
+   ③ 많은 사람이 함께 일했을 것이다
+   ④ 돌을 멀리서 가져왔을 것이다  → ①
+3. (O/X) 고인돌은 옛사람의 무덤이다.  → O
+4. (단답) 이미 아는 정보를 근거로 삼아 다른 판단을 이끌어 내는 것을 무엇이라고 하나요?  → 추론
+5. (객관식) 유물을 보고 쓰임새를 짐작할 때 가장 좋은 근거는?
+   ① 내 기분  ② 유물의 모양과 쓰인 흔적  ③ 친구가 한 말  ④ 색이 예쁜지  → ②
+6. (O/X) 이번 단원에서는 유적과 유물을 가지고 옛사람들의 생활 모습을 살펴본다.  → O
+7. (객관식) 다음 시간에 살펴볼 내용은?
+   ① 돌을 떼어 도구를 만들던 사람들의 생활 모습
+   ② 조선의 건국  ③ 일제의 침략  ④ 6·25 전쟁  → ①
+8. (O/X) 흙으로 구워 만든 그릇을 보면, 그 시대 사람들이 무엇을 담아 두었는지 짐작해 볼 수 있다.  → O</pre>
+    </div>
+  </section>
+
+  <!-- ─────────── 쌤보드 ─────────── -->
+  <section>
+    <h2><span class="ic">🧩</span>쌤보드 질문 2개</h2>
+    <p class="sub">도입에서 하나, 정리에서 하나. 같은 보드에 두 칸으로 열어 두면 아이들이 변화를 스스로 봅니다.</p>
+    <div class="copybox">
+      <button class="btn cp" onclick="cp(this,'board')">복사</button>
+      <pre id="board">[도입 · 열기] 교과서 6쪽 고인돌 사진을 보세요.
+옛사람들은 이렇게 거대한 돌을 어떻게 올렸을까요? 생각을 한 줄로 적어 봅시다.
+— 지우지 않습니다. 수업이 끝날 때 다시 봅니다.
+
+[정리 · 닫기] 이 단원을 배우면서 가장 알고 싶은 것 한 가지를 적어 봅시다. (교과서 7쪽)
+— 이 글은 단원 마지막 시간에 다시 꺼내 볼 거예요.</pre>
+    </div>
+  </section>
+
+  <!-- ─────────── 교사용 해설 ─────────── -->
+  <section>
+    <h2><span class="ic">🔐</span>교사용 해설</h2>
+    <p class="sub">아이들에게는 보여 주지 않는 부분입니다.</p>
+    <div class="teacher">
+      <h3>학습지 2쪽 유물 ㉮ · ㉯ 는 무엇인가</h3>
+      <p>
+        ㉮ 는 <b>주먹도끼</b>(뗀석기), ㉯ 는 <b>빗살무늬 토기</b>로 그렸습니다.
+        둘 다 다음 두 차시에서 정식으로 만나는 유물이라, 오늘은 이름 없이 <b>모양과 흔적만</b> 보게 했습니다.
+      </p>
+      <p>
+        ㉮ 의 지도 포인트는 <b>가장자리의 들쭉날쭉한 자국</b>입니다. “저절로 생긴 모양일까, 누가 만든 모양일까?”
+        한 번만 물으면 아이들이 ‘사람이 일부러 깨뜨렸다’까지 갑니다. 그러면 ‘자르거나 찍는 데 썼겠다’는 추론이 따라옵니다.<br>
+        ㉯ 의 지도 포인트는 <b>뾰족한 바닥</b>입니다. “이 그릇은 식탁 위에 세울 수 있을까?” → “못 세운다” → “그럼 어디에 놓았을까?” → <b>땅에 꽂아 두었다</b>.
+        여기까지 오면 ‘무언가를 담아 보관했다’가 아이 입에서 나옵니다.
+      </p>
+      <div class="warn">
+        <b>확인해 주세요</b> — 교과서 9쪽에 실제로 실린 유물 사진 두 점이 위와 다를 수 있습니다.
+        (도안을 만들 때 교과서 PDF의 이미지를 직접 열어 보지 못해, 차시 PPT의 예시 답변과 단원 전개 순서를 근거로 <b>추정</b>해 넣었습니다.)
+        다른 유물이라면 학습지의 그림만 바꾸면 되고, <b>관찰 → 추론 → 근거</b> 의 틀은 어떤 유물에도 그대로 씁니다.
+      </div>
+      <h3 style="margin-top:14px">자주 나오는 장면 셋</h3>
+      <p>
+        <b>① “정답이 뭐예요?”</b> — 오늘은 정답을 주지 않는 시간이라고 분명히 말해 주세요.
+        대신 <b>근거가 분명한 생각</b>과 그렇지 않은 생각을 가려 주는 것으로 평가를 대신합니다.
+      </p>
+      <p>
+        <b>② 관찰 칸에 추론을 적는 아이</b> — 가장 흔하고, 가장 중요한 장면입니다. 고쳐 주지 말고
+        “그건 눈으로 본 거야, 머리로 생각한 거야?” 한 번만 물어 주세요. 거의 모든 아이가 스스로 옮깁니다.
+      </p>
+      <p>
+        <b>③ 이미 아는 아이</b> — 학원이나 책에서 이름을 알고 온 아이가 꼭 있습니다. 그 아이에게는
+        <b>“이름 말고, 그렇게 생각한 근거를 모둠에 설명해 줘”</b> 라는 역할을 주면 수업이 무너지지 않습니다.
+      </p>
+      <h3 style="margin-top:14px">평가 — 보아야 할 한 가지</h3>
+      <p>
+        성취 여부는 <b>학습지 1쪽 3번 칸</b> 하나로 봅니다.
+        “나는 ＜　＞ 라고 짐작했다. 왜냐하면 ＜　＞ 이 보이기 때문이다.” 의 뒷칸에
+        <b>①번 관찰 칸에 적은 말이 들어가 있으면</b> 추론이 성립한 것입니다.
+      </p>
+    </div>
+  </section>
+
+  <!-- ─────────── 나눔 ─────────── -->
+  <section>
+    <h2><span class="ic">📣</span>나눔용 글</h2>
+    <p class="sub">인디스쿨 · 블로그 · 인스타그램에 올릴 글과, ‘나의 레이스’ 설계 의도입니다. 그대로 붙여 넣고 링크만 확인해 주세요.</p>
+
+    <h3 style="font-size:16px;font-weight:900;margin:16px 0 0">① 인디스쿨 · 블로그</h3>
+    <div class="copybox">
+      <button class="btn cp" onclick="cp(this,'share1')">복사</button>
+      <pre id="share1">[5-2 사회 1단원 1차시] 고인돌, 누가 어떻게? — 40분 수업 꾸러미 통째로 나눕니다
+
+5학년 2학기 사회 첫 시간은 늘 애매합니다. 가르칠 지식은 아직 없고, 단원 미리 보기만 하기에는 40분이 깁니다.
+그래서 이 차시의 목표를 '추론을 손에 쥐어 주는 것' 하나로 잡았습니다.
+교과서 8쪽에 나오는 바로 그 용어입니다 — 이미 아는 정보를 근거로 삼아 다른 판단을 이끌어 내는 것.
+
+흐름은 이렇습니다.
+· 도입(8분) — 주제 도입 영상 + 교과서 6쪽 고인돌 사진으로 "이 거대한 돌을 어떻게 올렸을까?" 첫 생각 모으기
+· 전개(28분) — 탁자식 고인돌을 직접 세워 보고 순서 맞히기 → 유물 탐정 수첩으로 관찰·추론·근거 나누어 적기 → 역사관으로 단원 미리 보기
+· 정리(4분) — 쌤퀴즈로 '관찰과 추론의 구분' 확인 + 알고 싶은 것 남기기
+
+함께 쓰는 자료 두 가지를 같이 올립니다.
+① 비주얼싱킹 학습지 「유물 탐정 수첩」 (A4 가로 2쪽) — 관찰 / 추론 / 근거 세 칸과 4컷 순서 그리기
+② 페이퍼크래프트 「탁자식 고인돌 만들기」 (A4 3쪽) — 굄돌 셋과 덮개돌, 통나무 굴림대와 흙 경사로, 순서 카드
+
+이 차시에서 지킨 선이 하나 있습니다. 구석기·신석기·청동기라는 이름을 한 번도 쓰지 않았습니다.
+아직 배우지 않은 지식을 묻지 않는 것, 그것이 도입 차시의 몫이라고 보았기 때문입니다.
+학습지에서도 유물을 ㉮ · ㉯ 로만 부르고, 아이들은 이름을 모른 채로 용도를 짐작합니다.
+
+수업 꾸러미 전체 (40분 흐름 · 발문과 예시 답변 · 쌤퀴즈 8문항 · 쌤보드 질문 · 교사용 해설)
+→ https://nalssam.github.io/mdbf2026/social/lessons/5-2-1/01/
+
+학습지와 도안은 위 페이지에서 바로 인쇄하거나 PDF로 저장하실 수 있습니다. 모두 무료이고, 수정해서 쓰셔도 됩니다.
+써 보시고 아이들 반응이 어땠는지 댓글로 알려 주시면 다음 차시에 반영하겠습니다.
+
+— 몽당분필 날쌤 @nalssam</pre>
+    </div>
+
+    <h3 style="font-size:16px;font-weight:900;margin:16px 0 0">② 인스타그램</h3>
+    <div class="copybox">
+      <button class="btn cp" onclick="cp(this,'share2')">복사</button>
+      <pre id="share2">5학년 2학기 사회 첫 시간, 무엇을 가르치세요?
+
+저는 지식 대신 '추론'을 가르칩니다.
+교과서 8쪽에 나오는 그 말 — 이미 아는 정보를 근거로 삼아 다른 판단을 이끌어 내는 것.
+
+아이들은 탁자식 고인돌을 직접 세워 보고,
+이름도 모르는 유물 두 점을 앞에 두고 묻습니다.
+"무엇으로 만들었을까? 어떤 용도였을까? 왜 그렇게 생각했지?"
+
+구석기도, 신석기도, 청동기도 오늘은 한 번도 말하지 않습니다.
+아직 배우지 않은 걸 묻지 않는 것이 도입 차시의 몫이니까요.
+
+40분 꾸러미 통째로 열어 두었습니다.
+흐름 · 발문 · 예시 답변 · 쌤퀴즈 8문항 · 학습지 · 페이퍼크래프트 전부 무료입니다.
+프로필 링크에서 → 5학년 2학기 → 1단원 1차시
+
+#초등사회 #5학년2학기사회 #고인돌 #비주얼싱킹 #페이퍼크래프트 #수업나눔 #몽당분필 #비바샘 #수업연구대회</pre>
+    </div>
+
+    <h3 style="font-size:16px;font-weight:900;margin:16px 0 0">③ ‘나의 레이스’ 설계 의도</h3>
+    <div class="copybox">
+      <button class="btn cp" onclick="cp(this,'share3')">복사</button>
+      <pre id="share3">학습자 중심 교육입니다.
+
+1단원 1차시는 가르칠 지식이 아직 없는 도입 차시입니다. 그래서 이 40분의 목표를 '옛사람들의 생활을 알아내는 방법'
+자체에 두었습니다. 교과서 8쪽에 제시된 용어 '추론' — 이미 아는 정보를 근거로 삼아 다른 판단을 이끌어 내는 것 —
+을 아이들이 직접 해 보는 것이 이번 차시의 전부입니다.
+
+예를 들어 아이들은 탁자식 고인돌 페이퍼크래프트를 모둠별로 세운 뒤, 섞어 놓은 순서 카드를 직접 움직이며
+거대한 덮개돌이 어떻게 굄돌 위로 올라갔는지를 맞혀 봅니다. 카드를 뒤집어 확인하기 전에 '왜 그 순서라고
+생각했는지' 근거를 먼저 말하게 하는 것이 핵심입니다. 이어지는 비주얼싱킹 학습지 「유물 탐정 수첩」에서는
+관찰한 것과 추론한 것을 각각 다른 칸에 나누어 적고, 마지막 칸에서 그 둘을 하나의 문장으로 연결하게 했습니다.
+정리 단계에서는 쌤퀴즈로 '관찰과 추론의 구분'만을 확인하고, 교과서 7쪽의 '알고 싶은 것'을 쌤보드에 남겨
+단원 마지막 차시에 다시 꺼낼 수 있도록 설계하였습니다.
+
+이 차시를 설계하면서 지킨 원칙이 하나 있습니다. 구석기·신석기·청동기라는 시대 이름을 한 번도 사용하지
+않았다는 점입니다. 아직 배우지 않은 지식을 묻는 순간 아이들은 추론을 멈추고 기억을 꺼내려 하기 때문입니다.
+학습지의 유물에도 이름을 붙이지 않고 ㉮ · ㉯ 로만 제시하여, 이름을 모르는 상태에서 모양과 흔적만으로
+용도를 짐작해 보도록 하였습니다. 정확한 것을 알려 주는 일은 교사의 몫이고, 비워 두어야 할 자리를 비워 두는
+일 또한 교사의 몫이라고 생각합니다.
+
+아울러 영상 콘텐츠, 페이퍼크래프트, 비주얼싱킹 학습지, 쌤퀴즈, 쌤보드, 에듀테크 테마관(역사관)을 40분 안에
+적절히 배치하여 도입부터 정리까지가 하나의 덩어리로 이어지도록 구성하였습니다. 수업 꾸러미 전체는 아래
+주소에서 누구나 열람하고 내려받을 수 있도록 공개하였습니다.
+
+https://nalssam.github.io/mdbf2026/social/lessons/5-2-1/01/</pre>
+    </div>
+  </section>
+
+  <footer>
+    몽당분필 날쌤 · 초등사회 교육콘텐츠 클라우드 <b>@nalssam</b><br>
+    비상교육 초등 사회 5-2 · 1단원 1차시 수업 꾸러미 · 자유롭게 쓰고 고쳐 쓰셔도 됩니다
+  </footer>
+</div>
+
+<script>
+function cp(btn, id) {
+  var el = document.getElementById(id);
+  if (!el) return;
+  var txt = el.textContent;
+  var done = function () {
+    var old = btn.textContent;
+    btn.textContent = '복사됨 ✓';
+    setTimeout(function () { btn.textContent = old; }, 1600);
+  };
+  if (navigator.clipboard && navigator.clipboard.writeText) {
+    navigator.clipboard.writeText(txt).then(done, function () { fallback(txt, done); });
+  } else { fallback(txt, done); }
+}
+function fallback(txt, done) {
+  var ta = document.createElement('textarea');
+  ta.value = txt;
+  ta.style.position = 'fixed';
+  ta.style.left = '-9999px';
+  document.body.appendChild(ta);
+  ta.select();
+  try { document.execCommand('copy'); done(); } catch (e) { /* 복사 불가 — 사용자가 직접 선택 */ }
+  document.body.removeChild(ta);
+}
+</script>
+</body>
+</html>

@@ -269,6 +269,35 @@ a.tile.ready .t-label::after{content:" →";color:var(--mint-deep);}
 .tile.pending .t-status{color:var(--ink-dim);background:#eef2f8;}
 
 /* ---------- 관련 성취기준 (참고) ---------- */
+/* ── 차시별 수업 꾸러미 목록 (unit.lessons) ───────────────────────────── */
+.lessons{margin-top:14px;border-top:1px dashed var(--line);padding-top:11px;}
+.ls-head{display:flex;align-items:center;gap:8px;margin-bottom:8px;}
+.ls-badge{color:var(--gold-deep);font-weight:800;font-size:13px;}
+.ls-meta{font-size:11.5px;color:var(--ink-dim);}
+.ls-row{
+  display:flex;align-items:center;gap:12px;text-decoration:none;color:inherit;
+  border:1.5px solid var(--line);border-radius:var(--r-sm);padding:10px 14px;
+  margin-bottom:7px;background:#fff;transition:.15s;
+}
+.ls-row:last-child{margin-bottom:0;}
+.ls-row.ready:hover{border-color:var(--gold);transform:translateX(2px);}
+.ls-row.pending{opacity:.55;background:#fafcff;}
+.ls-no{
+  flex:0 0 auto;font-size:12px;font-weight:900;color:var(--gold-deep);
+  background:#fff6e0;border-radius:999px;padding:3px 10px;white-space:nowrap;
+}
+.ls-row.pending .ls-no{color:var(--ink-dim);background:#eef3fa;}
+.ls-body{flex:1 1 auto;min-width:0;}
+.ls-title{display:block;font-weight:800;font-size:14.5px;}
+.ls-note{display:block;font-size:12px;color:var(--ink-dim);line-height:1.5;}
+.ls-book{flex:0 0 auto;font-size:11.5px;color:var(--ink-dim);white-space:nowrap;}
+.ls-go{flex:0 0 auto;font-size:12.5px;font-weight:800;color:var(--gold-deep);white-space:nowrap;}
+.ls-row.pending .ls-go{color:var(--ink-dim);}
+@media (max-width:620px){
+  .ls-row{flex-wrap:wrap;gap:6px 10px;}
+  .ls-book{order:3;} .ls-go{order:4;margin-left:auto;}
+}
+
 .std{margin-top:14px;border-top:1px dashed var(--line);padding-top:11px;}
 .std>summary{
   list-style:none;cursor:pointer;display:flex;align-items:center;gap:8px;flex-wrap:wrap;
