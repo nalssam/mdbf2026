@@ -1,0 +1,395 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>유물 탐정 수첩 — 비주얼싱킹 학습지 (5-2 1단원 1차시)</title>
+<meta name="description" content="고인돌과 유물을 보고 '관찰한 것'과 '추론한 것'을 나누어 적는 1차시 비주얼싱킹 학습지 (A4 가로 2쪽, 몽당분필 날쌤)">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;700;900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../../../../templates/print/print-base.css?v=1">
+<style>
+/* ── 1차시 전용 (유물 탐정 수첩) — A4 가로 ── */
+@page { size: A4 landscape; margin: 0; }
+.a4-page { width: 297mm; height: 210mm; }
+.a4-page .pc { position: absolute; inset: 8mm; }
+
+.abs { position: absolute; }
+.print-head { gap: 4mm; padding-bottom: 2.4mm; margin-bottom: 0; }
+.ph-brand { display: flex; align-items: center; gap: 2.5mm; }
+.ph-brand .ph-mascot { display: block; height: 14mm; width: auto; }
+.print-head .ph-title { font-size: 16pt; }
+
+/* 돋보기 모양 번호 뱃지 */
+.step { display: flex; align-items: center; gap: 1.6mm; margin-bottom: 1.4mm; }
+.step .no {
+  flex: 0 0 auto; width: 6mm; height: 6mm; border-radius: 50%;
+  background: var(--gold-print); color: #fff; font-weight: 900; font-size: 9pt;
+  display: flex; align-items: center; justify-content: center;
+}
+.step .tx { font-size: 10.5pt; font-weight: 900; letter-spacing: -0.2pt; }
+.step .sub { font-size: 7.6pt; color: var(--ink-dim); font-weight: 400; margin-left: 1mm; }
+
+/* 쓰는 칸 — 테두리 상자 없이 밑줄만 (검은 박스를 쓰지 않는 것이 이 자료실 규칙) */
+.lines > div { border-bottom: 0.3mm solid #b9c3cf; height: 7.4mm; }
+.lines.tight > div { height: 6.4mm; }
+
+/* 색 라벨 — 상자 대신 색으로 영역을 구분한다 */
+.lab {
+  display: inline-block; font-size: 8pt; font-weight: 900; color: #fff;
+  border-radius: 2.4mm; padding: 0.5mm 2.6mm;
+}
+.lab.obs  { background: #3f6fbf; }
+.lab.inf  { background: #d08a12; }
+.lab.evd  { background: #3aa377; }
+.lab.q    { background: #7a6fd0; }
+.capt { font-size: 7.6pt; color: var(--ink-dim); line-height: 1.5; }
+
+/* 추론 사다리 화살표 (사용자 요청: 상자는 없애되 화살표는 남긴다) */
+.arrow { stroke: #9aa7b8; stroke-width: 0.6mm; fill: none; }
+.arrowhead { fill: #9aa7b8; }
+
+/* 용어 띠 */
+.term {
+  border-left: 1.1mm solid var(--gold-print); background: #fffdf5;
+  padding: 2mm 3mm; font-size: 8.4pt; line-height: 1.55;
+}
+.term b { color: var(--gold-print); }
+.term .src { color: #999; font-size: 7.2pt; }
+
+/* 유물 자리 */
+.relic-cap { font-size: 9pt; font-weight: 900; color: #5a6675; }
+.relic-note { font-size: 7.2pt; color: #99a3b0; }
+
+/* 4컷 순서 칸 */
+.strip4 { display: flex; gap: 2.6mm; }
+.strip4 > div { flex: 1; }
+.cell {
+  border: 0.4mm dashed #b9c3cf; border-radius: 2mm; height: 32mm; background: #fcfdff;
+  position: relative;
+}
+.cell .cno {
+  position: absolute; top: 1mm; left: 1.4mm; font-size: 8pt; font-weight: 900; color: #c3ccd8;
+}
+.cell-cap { font-size: 7pt; color: var(--ink-dim); text-align: center; margin-top: 0.8mm; }
+
+/* 미리 보기 띠 */
+.peek { display: flex; gap: 2.4mm; }
+.peek > div {
+  flex: 1; border-bottom: 0.7mm solid #dfe5ec; padding-bottom: 1.4mm;
+}
+.peek .pt { font-size: 8.6pt; font-weight: 900; color: #5a6675; }
+.peek .ps { font-size: 7.2pt; color: #99a3b0; }
+
+/* 교과서 9쪽 '말풍선 3' — 아이가 스스로 묻는 칸 */
+.bubble { position: relative; margin-top: 2.6mm; padding: 1.6mm 2.2mm 0.6mm;
+          border: 0.4mm solid #b9aee8; border-radius: 2.4mm; background: #fbfaff; }
+.bubble .bl { margin-bottom: 0.8mm; }
+.lab.q2 { background: #7a6fd0; }
+.selfcheck { font-size: 7.8pt; line-height: 1.7; color: #55606d; }
+.selfcheck b { color: var(--blue-print); }
+</style>
+</head>
+<body>
+
+<div class="print-toolbar no-print">
+  <span class="tb-title">🔎 유물 탐정 수첩 — 1단원 1차시 비주얼싱킹 학습지</span>
+  <button onclick="window.print()">인쇄 / PDF 저장</button>
+  <a class="ghost" href="../">← 1차시 수업 꾸러미</a>
+  <a class="ghost" href="../../../../">자료실</a>
+  <p class="print-tip">A4 <b>가로</b> 2쪽입니다. 인쇄 설정에서 용지 방향이 <b>가로</b>인지 확인해 주세요.</p>
+</div>
+
+<!-- ═════════════════════════ 1쪽 : 돌에게 묻다 ═════════════════════════ -->
+<section class="a4-page"><div class="pc">
+
+  <header class="print-head">
+    <div class="ph-brand">
+      <img class="ph-mascot" src="../../../../img/mascot.png" alt="몽당분필 날쌤" onerror="this.style.display='none'">
+      <div class="ph-brandname">몽당분필 날쌤<small>초등사회 교육콘텐츠 클라우드</small></div>
+    </div>
+    <div class="ph-main">
+      <div class="ph-title">유물 탐정 수첩 ① — 돌에게 묻다</div>
+      <div class="ph-sub">보이는 것과, 보이는 것을 근거로 짐작한 것을 나누어 적어 봅시다</div>
+      <div class="ph-chips">
+        <span class="chip">5학년 2학기 · 1단원 1차시</span>
+        <span class="chip">유적과 유물로 살펴본 옛사람들의 생활</span>
+        <span class="chip dim">교과서 6~8쪽</span>
+      </div>
+    </div>
+    <div class="name-date">반 <span class="nd-line"></span><br>이름 <span class="nd-line"></span></div>
+  </header>
+
+  <!-- 고인돌 그림 -->
+  <div class="abs" style="left:0; top:26mm; width:104mm;">
+    <svg viewBox="0 0 104 62" width="104mm" height="62mm">
+      <!-- 하늘·땅 -->
+      <rect x="0" y="0" width="104" height="48" fill="#f3f7fb"/>
+      <path d="M0,48 Q26,43 52,47 T104,45 L104,62 L0,62 Z" fill="#eef3e8"/>
+      <line x1="0" y1="48" x2="104" y2="48" stroke="#cfdcc4" stroke-width="0.4"/>
+      <!-- 먼 산 -->
+      <path d="M0,48 L16,33 L30,48 Z" fill="#e3e9f0"/>
+      <path d="M22,48 L42,28 L62,48 Z" fill="#dde5ee"/>
+      <path d="M58,48 L78,34 L96,48 Z" fill="#e3e9f0"/>
+      <!-- 탁자식 고인돌 : 굄돌 2 + 덮개돌 -->
+      <path d="M26,47 L26,30 L38,30 L38,47 Z" fill="#d7dbd9" stroke="#8d9794" stroke-width="0.45"/>
+      <path d="M38,30 L42,27 L42,44 L38,47 Z" fill="#c1c8c5" stroke="#8d9794" stroke-width="0.45"/>
+      <path d="M62,47 L62,30 L74,30 L74,47 Z" fill="#d7dbd9" stroke="#8d9794" stroke-width="0.45"/>
+      <path d="M74,30 L78,27 L78,44 L74,47 Z" fill="#c1c8c5" stroke="#8d9794" stroke-width="0.45"/>
+      <!-- 덮개돌 -->
+      <path d="M18,30 L84,30 L84,24 L18,24 Z" fill="#cfd4d2" stroke="#7c8784" stroke-width="0.5"/>
+      <path d="M18,24 L24,19 L90,19 L84,24 Z" fill="#e8ebe9" stroke="#7c8784" stroke-width="0.5"/>
+      <path d="M84,24 L90,19 L90,25 L84,30 Z" fill="#b9c1be" stroke="#7c8784" stroke-width="0.5"/>
+      <!-- 돌 결 -->
+      <path d="M24,27 q16,-1.6 32,0 t26,-0.4" fill="none" stroke="#b4bcb9" stroke-width="0.3"/>
+      <path d="M28,35 q4,-1 8,0" fill="none" stroke="#b4bcb9" stroke-width="0.3"/>
+      <path d="M64,38 q4,-1 8,0" fill="none" stroke="#b4bcb9" stroke-width="0.3"/>
+      <!-- 사람(크기 비교) -->
+      <g stroke="#8fa0b5" stroke-width="0.5" fill="none">
+        <circle cx="93" cy="38" r="1.5" fill="#8fa0b5" stroke="none"/>
+        <path d="M93,39.6 L93,44 M93,40.8 L91,42.6 M93,40.8 L95,42.6 M93,44 L91.4,47 M93,44 L94.6,47"/>
+      </g>
+      <text x="93" y="50.4" font-size="2.6" fill="#8fa0b5" font-weight="700" text-anchor="middle">사람 크기</text>
+      <!-- 풀 -->
+      <g stroke="#a9c195" stroke-width="0.3" fill="none">
+        <path d="M8,52 l-1.2,-2.6 M8,52 l0,-3.2 M8,52 l1.2,-2.6"/>
+        <path d="M50,54 l-1.2,-2.6 M50,54 l0,-3.2 M50,54 l1.2,-2.6"/>
+        <path d="M70,56 l-1.2,-2.6 M70,56 l0,-3.2 M70,56 l1.2,-2.6"/>
+        <path d="M98,53 l-1.2,-2.6 M98,53 l0,-3.2 M98,53 l1.2,-2.6"/>
+      </g>
+      <text x="52" y="60.6" font-size="3" fill="#8b9593" font-weight="700" text-anchor="middle">교과서 6쪽 · 고인돌</text>
+    </svg>
+  </div>
+
+  <div class="abs capt" style="left:0; top:89mm; width:104mm;">
+    이 사진 속 돌은 옛사람의 <b>무덤</b>입니다. 덮개돌 하나의 무게가 수십 톤이 넘는 것도 있습니다.
+  </div>
+
+  <!-- ① 관찰 -->
+  <div class="abs" style="left:112mm; top:26mm; width:80mm;">
+    <div class="step"><span class="no">1</span><span class="tx">눈에 보이는 것</span></div>
+    <div style="margin-bottom:1.6mm"><span class="lab obs">관찰</span>
+      <span class="capt">사진에 <b>진짜로 보이는</b> 것만 적어요.</span></div>
+    <div class="lines"><div></div><div></div><div></div><div></div></div>
+  </div>
+
+  <!-- 화살표 -->
+  <div class="abs" style="left:192mm; top:46mm;">
+    <svg viewBox="0 0 16 12" width="16mm" height="12mm">
+      <path class="arrow" d="M1,6 L11,6"/>
+      <path class="arrowhead" d="M11,3.4 L15,6 L11,8.6 Z"/>
+    </svg>
+  </div>
+
+  <!-- ② 추론 -->
+  <div class="abs" style="left:209mm; top:26mm; width:72mm;">
+    <div class="step"><span class="no">2</span><span class="tx">그래서 짐작한 것</span></div>
+    <div style="margin-bottom:1.6mm"><span class="lab inf">추론</span>
+      <span class="capt">보이는 것을 <b>근거로</b> 짐작해요.</span></div>
+    <div class="lines"><div></div><div></div><div></div><div></div></div>
+  </div>
+
+  <!-- 아래로 가는 화살표 -->
+  <div class="abs" style="left:240mm; top:70mm;">
+    <svg viewBox="0 0 12 14" width="12mm" height="14mm">
+      <path class="arrow" d="M6,1 L6,9"/>
+      <path class="arrowhead" d="M3.4,9 L6,13 L8.6,9 Z"/>
+    </svg>
+  </div>
+
+  <!-- ③ 근거 -->
+  <div class="abs" style="left:112mm; top:86mm; width:169mm;">
+    <div class="step"><span class="no">3</span><span class="tx">왜 그렇게 생각했나요?</span>
+      <span class="sub">— 2번에서 고른 짐작 하나를 골라, 그 근거를 ①에서 찾아 적어 봅시다</span></div>
+    <div style="margin-bottom:1.4mm">
+      <span class="lab evd">근거</span>
+      <span class="capt">나는 &lt;<b>　　　　　　　　　　　　　</b>&gt; 라고 짐작했다. 왜냐하면 &lt;<b>　　　　　　　　　　　　　</b>&gt; 이 보이기 때문이다.</span>
+    </div>
+    <div class="lines"><div></div><div></div></div>
+  </div>
+
+  <!-- 용어 -->
+  <div class="abs term" style="left:0; top:100mm; width:104mm;">
+    <b>추론</b> — 이미 아는 정보를 근거로 삼아 다른 판단을 이끌어 내는 것.
+    <span class="src">(교과서 8쪽)</span><br>
+    <span class="capt">탐정은 상상하지 않고 <b>추론</b>합니다. 역사를 공부하는 것도 이와 같습니다.</span>
+  </div>
+
+  <!-- 4컷 -->
+  <div class="abs" style="left:0; top:124mm; width:281mm;">
+    <div class="step"><span class="no">4</span><span class="tx">이 거대한 돌을 어떻게 올렸을까?</span>
+      <span class="sub">— 고인돌을 세우는 차례를 네 칸에 그림으로 그려 봅시다 (말풍선이나 글을 같이 써도 좋아요)</span></div>
+    <div class="strip4">
+      <div><div class="cell"><span class="cno">①</span></div><div class="cell-cap">맨 처음</div></div>
+      <div><div class="cell"><span class="cno">②</span></div><div class="cell-cap">그다음</div></div>
+      <div><div class="cell"><span class="cno">③</span></div><div class="cell-cap">그다음</div></div>
+      <div><div class="cell"><span class="cno">④</span></div><div class="cell-cap">마지막</div></div>
+    </div>
+  </div>
+
+  <div class="abs selfcheck" style="left:0; top:172mm; width:281mm;">
+    <b>스스로 확인</b> — ②번에 적은 것 가운데 ①번에서 근거를 찾을 수 있는 짐작 하나에 ☆ 표를 해 두세요.
+    &nbsp;·&nbsp; 다음 쪽에서는 <b>유물</b>을 가지고 똑같이 해 보고, 그때 짝과 생각을 비교합니다.
+  </div>
+
+  <footer class="print-foot">
+    <span>몽당분필 날쌤 · 초등사회 교육콘텐츠 클라우드 — 5학년 2학기 1단원 1차시</span>
+    <span>유물 탐정 수첩 · 1 / 2</span>
+  </footer>
+</div></section>
+
+<!-- ═════════════════════════ 2쪽 : 유물에게 묻다 ═════════════════════════ -->
+<section class="a4-page"><div class="pc">
+
+  <header class="print-head">
+    <div class="ph-brand">
+      <img class="ph-mascot" src="../../../../img/mascot.png" alt="몽당분필 날쌤" onerror="this.style.display='none'">
+      <div class="ph-brandname">몽당분필 날쌤<small>초등사회 교육콘텐츠 클라우드</small></div>
+    </div>
+    <div class="ph-main">
+      <div class="ph-title">유물 탐정 수첩 ② — 유물에게 묻다</div>
+      <div class="ph-sub">이름은 아직 몰라도 괜찮습니다. 모양과 흔적만 보고 짐작해 봅시다</div>
+      <div class="ph-chips">
+        <span class="chip">교과서 9쪽 활동</span>
+        <span class="chip">무엇으로 · 어떤 용도 · 왜 그렇게</span>
+        <span class="chip dim">A4 2 / 2쪽</span>
+      </div>
+    </div>
+    <div class="name-date">반 <span class="nd-line"></span><br>이름 <span class="nd-line"></span></div>
+  </header>
+
+  <!-- ───── 유물 ㉮ ───── -->
+  <div class="abs" style="left:0; top:26mm; width:138mm;">
+    <div class="relic-cap">유물 ㉮</div>
+    <div class="relic-note">색칠해도 좋아요. 이름은 선생님이 나중에 알려 줍니다. <b>교과서 9쪽 유물과 다르면 교과서 사진을 보고 그려도 좋아요.</b></div>
+  </div>
+  <div class="abs" style="left:0; top:34mm;">
+    <svg viewBox="0 0 62 58" width="62mm" height="58mm">
+      <rect x="0" y="0" width="62" height="58" fill="#fbfcfd" rx="2"/>
+      <!-- 주먹도끼 : 아몬드꼴 몸돌 + 떼어 낸 자국 + 아래쪽 날 -->
+      <path d="M31,6 C40,12 45,24 44,36 C43,45 37,51 31,53 C25,51 19,45 18,36 C17,24 22,12 31,6 Z"
+            fill="#e8e2d6" stroke="#8a8072" stroke-width="0.6"/>
+      <g fill="none" stroke="#b5aa98" stroke-width="0.36">
+        <path d="M31,7 L24,17 L31,21 L38,17 Z"/>
+        <path d="M24,17 L19.6,28 L27,30 L31,21 Z"/>
+        <path d="M38,17 L42.4,28 L35,30 L31,21 Z"/>
+        <path d="M19.6,28 L19,38 L26,38 L27,30 Z"/>
+        <path d="M42.4,28 L43,38 L36,38 L35,30 Z"/>
+        <path d="M27,30 L26,38 L31,40 L36,38 L35,30 Z"/>
+        <path d="M19,38 L22,46 L31,40 Z"/>
+        <path d="M43,38 L40,46 L31,40 Z"/>
+      </g>
+      <!-- 날 쪽 지그재그(뗀 자국) -->
+      <path d="M22,46 l2.4,2 l1.8,-1.6 l2.2,2.2 l2.6,-1.8 l2.4,2 l2,-1.8 l2.6,1.6 l2,-2.6"
+            fill="none" stroke="#8a8072" stroke-width="0.5"/>
+      <text x="31" y="57" font-size="2.6" fill="#a39786" text-anchor="middle" font-weight="700">길이 약 20cm</text>
+    </svg>
+  </div>
+
+  <div class="abs" style="left:66mm; top:34mm; width:72mm;">
+    <div style="margin-bottom:1mm"><span class="lab obs">관찰</span>
+      <span class="capt">모양 · 남아 있는 흔적</span></div>
+    <div class="lines tight"><div></div><div></div></div>
+    <div style="margin:2.4mm 0 1mm"><span class="lab q">① 무엇으로 만들었을까?</span></div>
+    <div class="lines tight"><div></div></div>
+    <div style="margin:2.4mm 0 1mm"><span class="lab inf">② 어떤 용도로 썼을까?</span></div>
+    <div class="lines tight"><div></div></div>
+    <div style="margin:2.4mm 0 1mm"><span class="lab evd">③ 그렇게 생각한 근거는?</span></div>
+    <div class="lines tight"><div></div></div>
+    <div class="bubble">
+      <div class="bl"><span class="lab q2">④ 더 알고 싶은 점</span>
+        <span class="capt">— 누가 사용하였을까? · 어떻게 만들었을까?</span></div>
+      <div class="lines tight"><div></div></div>
+    </div>
+  </div>
+
+  <!-- 세로 구분선 (상자 대신 가는 선 하나) -->
+  <div class="abs" style="left:141mm; top:30mm; width:0.3mm; height:92mm; background:#dfe5ec;"></div>
+
+  <!-- ───── 유물 ㉯ ───── -->
+  <div class="abs" style="left:146mm; top:26mm; width:135mm;">
+    <div class="relic-cap">유물 ㉯</div>
+    <div class="relic-note">색칠해도 좋아요. 이름은 선생님이 나중에 알려 줍니다. <b>교과서 9쪽 유물과 다르면 교과서 사진을 보고 그려도 좋아요.</b></div>
+  </div>
+  <div class="abs" style="left:146mm; top:34mm;">
+    <svg viewBox="0 0 62 58" width="62mm" height="58mm">
+      <rect x="0" y="0" width="62" height="58" fill="#fbfcfd" rx="2"/>
+      <!-- 빗살무늬 토기 : 아가리 넓고 바닥이 뾰족한 V자 몸통 -->
+      <path d="M14,10 L48,10 L33.4,47 Q31,52.4 28.6,47 Z" fill="#e5d9c8" stroke="#8a7c66" stroke-width="0.6"/>
+      <!-- 아가리 테두리 -->
+      <path d="M14,10 Q31,13.6 48,10" fill="none" stroke="#8a7c66" stroke-width="0.6"/>
+      <path d="M14,10 Q31,6.6 48,10" fill="none" stroke="#8a7c66" stroke-width="0.5"/>
+      <!-- 빗살무늬 : 아가리 쪽 짧은 빗금 띠 / 가운데 생선뼈 / 아래 사선 -->
+      <g stroke="#a3927a" stroke-width="0.34" fill="none">
+        <path d="M15,15 L47,15"/><path d="M15.6,21 L46.4,21"/>
+        <path d="M16,16 l1.4,4 M19,16 l1.4,4 M22,16 l1.4,4 M25,16 l1.4,4 M28,16 l1.4,4
+                 M31,16 l1.4,4 M34,16 l1.4,4 M37,16 l1.4,4 M40,16 l1.4,4 M43,16 l1.4,4"/>
+        <path d="M17,25 L45,25"/><path d="M19,34 L43,34"/>
+        <path d="M18,26 l3,3.4 l-3,3.4 M22,26 l3,3.4 l-3,3.4 M26,26 l3,3.4 l-3,3.4
+                 M30,26 l3,3.4 l-3,3.4 M34,26 l3,3.4 l-3,3.4 M38,26 l3,3.4 l-3,3.4"/>
+        <path d="M20,37 l-2,4 M24,37 l-2,4 M28,37 l-2,4 M32,37 l-2,4 M36,37 l-2,4 M40,37 l-2,4"/>
+      </g>
+      <text x="31" y="56.6" font-size="2.6" fill="#a39786" text-anchor="middle" font-weight="700">높이 약 40cm</text>
+    </svg>
+  </div>
+
+  <div class="abs" style="left:212mm; top:34mm; width:69mm;">
+    <div style="margin-bottom:1mm"><span class="lab obs">관찰</span>
+      <span class="capt">모양 · 남아 있는 흔적</span></div>
+    <div class="lines tight"><div></div><div></div></div>
+    <div style="margin:2.4mm 0 1mm"><span class="lab q">① 무엇으로 만들었을까?</span></div>
+    <div class="lines tight"><div></div></div>
+    <div style="margin:2.4mm 0 1mm"><span class="lab inf">② 어떤 용도로 썼을까?</span></div>
+    <div class="lines tight"><div></div></div>
+    <div style="margin:2.4mm 0 1mm"><span class="lab evd">③ 그렇게 생각한 근거는?</span></div>
+    <div class="lines tight"><div></div></div>
+    <div class="bubble">
+      <div class="bl"><span class="lab q2">④ 더 알고 싶은 점</span>
+        <span class="capt">— 누가 사용하였을까? · 어떻게 만들었을까?</span></div>
+      <div class="lines tight"><div></div></div>
+    </div>
+  </div>
+
+  <!-- ───── 알고 싶은 것 ───── -->
+  <div class="abs" style="left:0; top:138mm; width:168mm;">
+    <div class="step"><span class="no">5</span><span class="tx">이 단원에서 알고 싶은 것</span>
+      <span class="sub">— 교과서 7쪽</span></div>
+    <div class="lines tight"><div></div><div></div><div></div></div>
+  </div>
+
+  <!-- ───── 단원 미리 보기 ───── -->
+  <div class="abs" style="left:174mm; top:138mm; width:107mm;">
+    <div class="step"><span class="no">6</span><span class="tx">앞으로 만날 사람들</span>
+      <span class="sub">— 미리 보기</span></div>
+    <div class="peek">
+      <div><div class="pt">돌을 떼어</div><div class="ps">도구를 만들던 사람들</div></div>
+      <div><div class="pt">흙을 구워</div><div class="ps">그릇을 만들던 사람들</div></div>
+      <div><div class="pt">청동으로</div><div class="ps">권위를 드러내던 사람들</div></div>
+    </div>
+    <div class="capt" style="margin-top:2mm">
+      다음 시간에는 <b>돌을 떼어 도구를 만들던 사람들</b>의 생활 모습을 살펴봅니다.
+    </div>
+  </div>
+
+  <div class="abs" style="left:0; top:165mm; width:281mm;">
+    <div class="step" style="margin-bottom:1mm"><span class="no">7</span>
+      <span class="tx">두 유물을 사용한 사람들은 어떻게 살았을까?</span>
+      <span class="sub">— ①~④를 토대로 생활 모습을 상상하여 써 보고, 친구들과 비교해 봅시다 (교과서 9쪽)</span></div>
+    <div style="display:flex; gap:4mm;">
+      <div style="flex:1"><div class="lines tight"><div></div><div></div></div></div>
+      <div style="flex:1">
+        <div class="capt" style="margin-bottom:0.6mm">친구 생각 — 짝의 답을 한 줄 옮겨 적기</div>
+        <div class="lines tight"><div></div></div>
+      </div>
+    </div>
+  </div>
+
+  <footer class="print-foot">
+    <span>몽당분필 날쌤 · 초등사회 교육콘텐츠 클라우드 — 5학년 2학기 1단원 1차시</span>
+    <span>유물 탐정 수첩 · 2 / 2</span>
+  </footer>
+</div></section>
+
+</body>
+</html>

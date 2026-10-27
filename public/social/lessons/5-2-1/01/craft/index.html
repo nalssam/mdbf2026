@@ -1,0 +1,462 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>탁자식 고인돌 만들기 — 페이퍼크래프트 도안 (5-2 1단원 1차시)</title>
+<meta name="description" content="오려·접어·붙여 세우는 탁자식 고인돌 — 굄돌 셋과 덮개돌, 그리고 거대한 돌을 올린 네 단계를 손으로 재현하는 도안 (A4 3쪽, 몽당분필 날쌤)">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;700;900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../../../../templates/print/print-base.css?v=1">
+<style>
+/* ── 1차시 전용 (탁자식 고인돌 페이퍼크래프트) ── */
+.abs { position: absolute; }
+.ph-brand { display: flex; align-items: center; gap: 2.5mm; }
+.ph-brand .ph-mascot { display: block; height: 15mm; width: auto; }
+.sheet { display: block; }
+.rowcap     { font-size: 3.6px; font-weight: 700; fill: #8b9593; }
+.legendlab  { font-size: 3.6px; font-weight: 700; fill: #5d6874; }
+.legendlab2 { font-size: 3.2px; font-weight: 700; fill: #b08a1a; }
+
+/* 전개도 선 규약 — SVG 1 단위 = 1mm 이므로 굵기도 mm 값으로 직접 지정 */
+.cutline   { stroke: #111; stroke-width: 0.6; fill: none; stroke-linecap: square; }
+.foldline  { stroke: #6a7a90; stroke-width: 0.32; fill: none; stroke-dasharray: 2.6 1.7; }
+.tab       { fill: url(#glue); stroke: none; }
+
+/* 돌·나무·흙 면 */
+.stone      { fill: #dfe2e0; stroke: none; }
+.stonetop   { fill: #eceeec; stroke: none; }
+.stoneside  { fill: #cfd4d2; stroke: none; }
+.grain      { fill: none; stroke: #b9c0bd; stroke-width: 0.28; }
+.wood       { fill: #e6d4b8; stroke: none; }
+.woodgrain  { stroke: #c9ae84; stroke-width: 0.3; }
+.soil       { fill: #e3d2bb; stroke: none; }
+.soilgrain  { stroke: #c9b495; stroke-width: 0.3; }
+.ground     { fill: #eef3e8; stroke: none; }
+.turf       { fill: none; stroke: #a9c195; stroke-width: 0.32; }
+.capshadow  { fill: none; stroke: #9aa5ad; stroke-width: 0.4; stroke-dasharray: 3.2 2; }
+.footprint  { fill: #fff; stroke: #8fa3b5; stroke-width: 0.4; stroke-dasharray: 2.4 1.6; }
+
+/* 글자 */
+.facelab    { font-size: 4.4px; font-weight: 700; fill: #6e7a79; }
+.facelab2   { font-size: 3.1px; font-weight: 700; fill: #8b9593;
+              paint-order: stroke fill; stroke: #fff; stroke-width: 1.0; stroke-linejoin: round; }
+.platetitle { font-size: 5.4px; font-weight: 900; fill: #4e6b45; }
+.fplab      { font-size: 3.4px; font-weight: 700; fill: #6f8299; }
+.fplab2     { font-size: 3.0px; fill: #94a3b4; }
+.card       { fill: #fffdf4; stroke: none; }
+/* 완성 모습(사투상) */
+.ground3d   { fill: #eef3e8; stroke: #cfdcc4; stroke-width: 0.4; }
+.f3         { fill: #d7dbd9; stroke: #9aa29f; stroke-width: 0.4; }
+.t3         { fill: #eceeec; stroke: #9aa29f; stroke-width: 0.4; }
+.s3         { fill: #c3c9c6; stroke: #9aa29f; stroke-width: 0.4; }
+.fcap       { fill: #cfd4d2; stroke: #7c8784; stroke-width: 0.5; }
+.tcap       { fill: #e8ebe9; stroke: #7c8784; stroke-width: 0.5; }
+.scap       { fill: #b9c1be; stroke: #7c8784; stroke-width: 0.5; }
+.lead       { stroke: #c8931d; stroke-width: 0.3; }
+.leaddot    { fill: #c8931d; }
+.leadlab    { font-size: 4px; font-weight: 700; fill: #a5760a; }
+.cardbig    { font-size: 9px; font-weight: 900; fill: #c8931d; }
+.cardsub    { font-size: 3.5px; font-weight: 700; fill: #4a4a4a; }
+
+/* 안내 박스 */
+.usage {
+  border: 0.5mm solid var(--blue-print); border-radius: 3mm; background: #f7faff;
+  padding: 2.6mm 3.2mm; font-size: 7.6pt; line-height: 1.6;
+}
+.usage h4 { font-size: 9.5pt; font-weight: 900; color: var(--blue-print); margin-bottom: 1mm; }
+.usage b { color: var(--blue-print); }
+.materials {
+  border: 0.45mm dashed #999; border-radius: 3mm; padding: 2mm 3mm;
+  font-size: 7.4pt; line-height: 1.58; background: #fafafa;
+}
+.ask {
+  border: 0.5mm solid var(--gold-print); border-radius: 3mm; background: #fffdf5;
+  padding: 2.6mm 3.2mm; font-size: 7.8pt; line-height: 1.62;
+}
+.ask h4 { font-size: 9.5pt; font-weight: 900; color: var(--gold-print); margin-bottom: 1mm; }
+.ask b { color: var(--gold-print); }
+</style>
+</head>
+<body>
+
+<!-- 문서 전체에서 쓰는 빗금(=풀칠) 패턴 -->
+<svg width="0" height="0" aria-hidden="true" style="position:absolute">
+  <defs>
+    <pattern id="glue" patternUnits="userSpaceOnUse" width="1.8" height="1.8" patternTransform="rotate(45)">
+      <line x1="0" y1="0" x2="0" y2="1.8" stroke="#98a3b0" stroke-width="0.32"/>
+    </pattern>
+    <pattern id="glueLg" patternUnits="userSpaceOnUse" width="5" height="5" patternTransform="rotate(45)">
+      <line x1="0" y1="0" x2="0" y2="5" stroke="#98a3b0" stroke-width="1"/>
+    </pattern>
+  </defs>
+</svg>
+
+<div class="print-toolbar no-print">
+  <span class="tb-title">✂️ 탁자식 고인돌 만들기 — 1단원 1차시 페이퍼크래프트</span>
+  <button onclick="window.print()">인쇄 / PDF 저장</button>
+  <a class="ghost" href="../">← 1차시 수업 꾸러미</a>
+  <a class="ghost" href="../../../../">자료실</a>
+  <p class="print-tip">A4 · <b>실제 크기(100%)</b>로 인쇄하세요. '페이지에 맞추기'를 켜면 조각 크기가 서로 맞지 않습니다. 180g 이상 두꺼운 종이를 권합니다.</p>
+</div>
+
+<!-- ───────────────────────── 1쪽 : 돌 조각 ───────────────────────── -->
+<section class="a4-page"><div class="pc">
+
+  <header class="print-head">
+    <div class="ph-brand"><img class="ph-mascot" src="../../../../img/mascot.png" alt="몽당분필 날쌤"
+      onerror="this.style.display='none'">
+      <div class="ph-brandname">몽당분필 날쌤<small>초등사회 교육콘텐츠 클라우드</small></div>
+    </div>
+    <div class="ph-main">
+      <div class="ph-title">탁자식 고인돌 만들기</div>
+      <div class="ph-sub">굄돌 셋과 덮개돌 — 오려서 상자처럼 접어 세웁니다</div>
+      <div class="ph-chips">
+        <span class="chip">5학년 2학기 · 1단원 1차시</span>
+        <span class="chip">유적과 유물로 살펴본 옛사람들의 생활</span>
+        <span class="chip dim">A4 1 / 3쪽</span>
+      </div>
+    </div>
+    <div class="name-date">모둠 <span class="nd-line"></span><br>이름 <span class="nd-line"></span></div>
+  </header>
+
+  <svg class="sheet" viewBox="0 0 190 227" width="190mm" height="227mm">
+    <line x1="2" y1="3.4" x2="15" y2="3.4" stroke="#111" stroke-width="0.6"/>
+    <text class="legendlab" x="18" y="4.9">실선 = 자르기</text>
+    <line x1="56" y1="3.4" x2="69" y2="3.4" stroke="#6a7a90" stroke-width="0.32" stroke-dasharray="2.6 1.7"/>
+    <text class="legendlab" x="72" y="4.9">점선 = 접기</text>
+    <rect x="104" y="1" width="13" height="4.8" fill="url(#glue)" stroke="#111" stroke-width="0.35"/>
+    <text class="legendlab" x="120" y="4.9">빗금 = 풀칠</text>
+    <text class="legendlab2" x="188" y="4.9" text-anchor="end">실제 크기(100%)로 인쇄하세요</text>
+    <rect class="stonetop" x="39" y="19" width="112" height="72"/>
+    <path class="grain" d="M47,31 q26.88,-3 53.76,0 t41.28,0"/>
+    <path class="grain" d="M47,43 q26.88,3 53.76,0 t41.28,0"/>
+    <path class="grain" d="M47,55 q26.88,-3 53.76,0 t41.28,0"/>
+    <path class="grain" d="M47,67 q26.88,3 53.76,0 t41.28,0"/>
+    <path class="grain" d="M47,79 q26.88,-3 53.76,0 t41.28,0"/>
+    <text class="facelab" x="95" y="54" text-anchor="middle">덮개돌</text>
+    <text class="facelab2" x="95" y="60.4" text-anchor="middle">이 면이 하늘을 봅니다</text>
+    <rect class="stoneside" x="39" y="7" width="112" height="12"/>
+    <rect class="stoneside" x="39" y="91" width="112" height="12"/>
+    <rect class="stoneside" x="27" y="19" width="12" height="72"/>
+    <rect class="stoneside" x="151" y="19" width="12" height="72"/>
+    <path class="cutline" d="M39,7 L151,7 L151,19 L152.4,7 L161.6,7 L163,19 L163,91 L161.6,103 L152.4,103 L151,91 L151,103 L39,103 L39,91 L37.6,103 L28.4,103 L27,91 L27,19 L28.4,7 L37.6,7 L39,19 Z"/>
+    <path class="tab" d="M27,19 L28.4,7 L37.6,7 L39,19 Z"/>
+    <path class="tab" d="M27,91 L28.4,103 L37.6,103 L39,91 Z"/>
+    <path class="tab" d="M151,19 L152.4,7 L161.6,7 L163,19 Z"/>
+    <path class="tab" d="M151,91 L152.4,103 L161.6,103 L163,91 Z"/>
+    <line class="foldline" x1="39" y1="19" x2="151" y2="19"/>
+    <line class="foldline" x1="39" y1="91" x2="151" y2="91"/>
+    <line class="foldline" x1="39" y1="19" x2="39" y2="91"/>
+    <line class="foldline" x1="151" y1="19" x2="151" y2="91"/>
+    <line class="foldline" x1="27" y1="19" x2="39" y2="19"/>
+    <line class="foldline" x1="27" y1="91" x2="39" y2="91"/>
+    <line class="foldline" x1="151" y1="19" x2="163" y2="19"/>
+    <line class="foldline" x1="151" y1="91" x2="163" y2="91"/>
+    <rect class="stone" x="4" y="124" width="22" height="42"/>
+    <rect class="stone" x="26" y="124" width="18" height="42"/>
+    <line class="foldline" x1="26" y1="124" x2="26" y2="166"/>
+    <rect class="stone" x="44" y="124" width="22" height="42"/>
+    <line class="foldline" x1="44" y1="124" x2="44" y2="166"/>
+    <rect class="stone" x="66" y="124" width="18" height="42"/>
+    <line class="foldline" x1="66" y1="124" x2="66" y2="166"/>
+    <rect class="stonetop" x="4" y="106" width="22" height="18"/>
+    <line class="foldline" x1="4" y1="124" x2="26" y2="124"/>
+    <text class="facelab2" x="15" y="116.4" text-anchor="middle">윗면</text>
+    <path class="tab" d="M84,124 L90,125.4 L90,164.6 L84,166 Z"/>
+    <line class="foldline" x1="84" y1="124" x2="84" y2="166"/>
+    <path class="grain" d="M7,132.4 q20,-2.4 40,0 t37,0"/>
+    <path class="grain" d="M7,140.8 q20,2.4 40,0 t37,0"/>
+    <path class="grain" d="M7,149.2 q20,-2.4 40,0 t37,0"/>
+    <path class="grain" d="M7,157.6 q20,2.4 40,0 t37,0"/>
+    <text class="facelab" x="15" y="145" text-anchor="middle">굄돌 ㉮</text>
+    <text class="facelab2" x="55" y="145" text-anchor="middle">밑면은 열어 둡니다</text>
+    <path class="cutline" d="M4,106 L26,106 L26,124 L84,124 L90,125.4 L90,164.6 L84,166 L4,166 Z"/>
+    <rect class="stone" x="96" y="124" width="22" height="42"/>
+    <rect class="stone" x="118" y="124" width="18" height="42"/>
+    <line class="foldline" x1="118" y1="124" x2="118" y2="166"/>
+    <rect class="stone" x="136" y="124" width="22" height="42"/>
+    <line class="foldline" x1="136" y1="124" x2="136" y2="166"/>
+    <rect class="stone" x="158" y="124" width="18" height="42"/>
+    <line class="foldline" x1="158" y1="124" x2="158" y2="166"/>
+    <rect class="stonetop" x="96" y="106" width="22" height="18"/>
+    <line class="foldline" x1="96" y1="124" x2="118" y2="124"/>
+    <text class="facelab2" x="107" y="116.4" text-anchor="middle">윗면</text>
+    <path class="tab" d="M176,124 L182,125.4 L182,164.6 L176,166 Z"/>
+    <line class="foldline" x1="176" y1="124" x2="176" y2="166"/>
+    <path class="grain" d="M99,132.4 q20,-2.4 40,0 t37,0"/>
+    <path class="grain" d="M99,140.8 q20,2.4 40,0 t37,0"/>
+    <path class="grain" d="M99,149.2 q20,-2.4 40,0 t37,0"/>
+    <path class="grain" d="M99,157.6 q20,2.4 40,0 t37,0"/>
+    <text class="facelab" x="107" y="145" text-anchor="middle">굄돌 ㉯</text>
+    <text class="facelab2" x="147" y="145" text-anchor="middle">밑면은 열어 둡니다</text>
+    <path class="cutline" d="M96,106 L118,106 L118,124 L176,124 L182,125.4 L182,164.6 L176,166 L96,166 Z"/>
+    <rect class="stone" x="4" y="185" width="52" height="42"/>
+    <rect class="stone" x="56" y="185" width="16" height="42"/>
+    <line class="foldline" x1="56" y1="185" x2="56" y2="227"/>
+    <rect class="stone" x="72" y="185" width="52" height="42"/>
+    <line class="foldline" x1="72" y1="185" x2="72" y2="227"/>
+    <rect class="stone" x="124" y="185" width="16" height="42"/>
+    <line class="foldline" x1="124" y1="185" x2="124" y2="227"/>
+    <rect class="stonetop" x="4" y="169" width="52" height="16"/>
+    <line class="foldline" x1="4" y1="185" x2="56" y2="185"/>
+    <text class="facelab2" x="30" y="178.4" text-anchor="middle">윗면</text>
+    <path class="tab" d="M140,185 L146,186.4 L146,225.6 L140,227 Z"/>
+    <line class="foldline" x1="140" y1="185" x2="140" y2="227"/>
+    <path class="grain" d="M8,195.5 q34,-2.4 68,0 t64,0"/>
+    <path class="grain" d="M8,206 q34,2.4 68,0 t64,0"/>
+    <path class="grain" d="M8,216.5 q34,-2.4 68,0 t64,0"/>
+    <text class="facelab" x="30" y="206" text-anchor="middle">막음돌 (뒤쪽 굄돌)</text>
+    <path class="cutline" d="M4,169 L56,169 L56,185 L140,185 L146,186.4 L146,225.6 L140,227 L4,227 Z"/>
+  </svg>
+
+  <footer class="print-foot">
+    <span>몽당분필 날쌤 · 초등사회 교육콘텐츠 클라우드 — 5학년 2학기 1단원 1차시</span>
+    <span>탁자식 고인돌 페이퍼크래프트 · 1 / 3</span>
+  </footer>
+</div></section>
+
+<!-- ───────────────── 2쪽 : 받침판 · 통나무 · 흙 경사로 · 순서 카드 ───────────────── -->
+<section class="a4-page"><div class="pc">
+
+  <header class="print-head">
+    <div class="ph-brand"><img class="ph-mascot" src="../../../../img/mascot.png" alt="몽당분필 날쌤"
+      onerror="this.style.display='none'">
+      <div class="ph-brandname">몽당분필 날쌤<small>초등사회 교육콘텐츠 클라우드</small></div>
+    </div>
+    <div class="ph-main">
+      <div class="ph-title">탁자식 고인돌 만들기</div>
+      <div class="ph-sub">받침판과 통나무 — 거대한 돌을 어떻게 올렸는지 손으로 해 봅니다</div>
+      <div class="ph-chips">
+        <span class="chip">5학년 2학기 · 1단원 1차시</span>
+        <span class="chip">유적과 유물로 살펴본 옛사람들의 생활</span>
+        <span class="chip dim">A4 2 / 3쪽</span>
+      </div>
+    </div>
+    <div class="name-date">모둠 <span class="nd-line"></span><br>이름 <span class="nd-line"></span></div>
+  </header>
+
+  <svg class="sheet" viewBox="0 0 190 243" width="190mm" height="243mm">
+    <line x1="2" y1="3.4" x2="15" y2="3.4" stroke="#111" stroke-width="0.6"/>
+    <text class="legendlab" x="18" y="4.9">실선 = 자르기</text>
+    <line x1="56" y1="3.4" x2="69" y2="3.4" stroke="#6a7a90" stroke-width="0.32" stroke-dasharray="2.6 1.7"/>
+    <text class="legendlab" x="72" y="4.9">점선 = 접기</text>
+    <rect x="104" y="1" width="13" height="4.8" fill="url(#glue)" stroke="#111" stroke-width="0.35"/>
+    <text class="legendlab" x="120" y="4.9">빗금 = 풀칠</text>
+    <text class="legendlab2" x="188" y="4.9" text-anchor="end">실제 크기(100%)로 인쇄하세요</text>
+    <rect class="ground" x="10" y="7" width="170" height="92" rx="3"/>
+    <rect class="cutline" x="10" y="7" width="170" height="92" rx="3" fill="none"/>
+    <path class="turf" d="M16,93 l-1.5,-3.6 M16,93 l0,-4.4 M16,93 l1.5,-3.6"/>
+    <path class="turf" d="M20.79,90.6 l-1.5,-3.6 M20.79,90.6 l0,-4.4 M20.79,90.6 l1.5,-3.6"/>
+    <path class="turf" d="M25.58,88.2 l-1.5,-3.6 M25.58,88.2 l0,-4.4 M25.58,88.2 l1.5,-3.6"/>
+    <path class="turf" d="M30.36,93 l-1.5,-3.6 M30.36,93 l0,-4.4 M30.36,93 l1.5,-3.6"/>
+    <path class="turf" d="M35.15,90.6 l-1.5,-3.6 M35.15,90.6 l0,-4.4 M35.15,90.6 l1.5,-3.6"/>
+    <path class="turf" d="M39.94,88.2 l-1.5,-3.6 M39.94,88.2 l0,-4.4 M39.94,88.2 l1.5,-3.6"/>
+    <path class="turf" d="M44.73,93 l-1.5,-3.6 M44.73,93 l0,-4.4 M44.73,93 l1.5,-3.6"/>
+    <path class="turf" d="M49.52,90.6 l-1.5,-3.6 M49.52,90.6 l0,-4.4 M49.52,90.6 l1.5,-3.6"/>
+    <path class="turf" d="M54.3,88.2 l-1.5,-3.6 M54.3,88.2 l0,-4.4 M54.3,88.2 l1.5,-3.6"/>
+    <path class="turf" d="M59.09,93 l-1.5,-3.6 M59.09,93 l0,-4.4 M59.09,93 l1.5,-3.6"/>
+    <path class="turf" d="M63.88,90.6 l-1.5,-3.6 M63.88,90.6 l0,-4.4 M63.88,90.6 l1.5,-3.6"/>
+    <path class="turf" d="M68.67,88.2 l-1.5,-3.6 M68.67,88.2 l0,-4.4 M68.67,88.2 l1.5,-3.6"/>
+    <path class="turf" d="M73.45,93 l-1.5,-3.6 M73.45,93 l0,-4.4 M73.45,93 l1.5,-3.6"/>
+    <path class="turf" d="M78.24,90.6 l-1.5,-3.6 M78.24,90.6 l0,-4.4 M78.24,90.6 l1.5,-3.6"/>
+    <path class="turf" d="M83.03,88.2 l-1.5,-3.6 M83.03,88.2 l0,-4.4 M83.03,88.2 l1.5,-3.6"/>
+    <path class="turf" d="M87.82,93 l-1.5,-3.6 M87.82,93 l0,-4.4 M87.82,93 l1.5,-3.6"/>
+    <path class="turf" d="M92.61,90.6 l-1.5,-3.6 M92.61,90.6 l0,-4.4 M92.61,90.6 l1.5,-3.6"/>
+    <path class="turf" d="M97.39,88.2 l-1.5,-3.6 M97.39,88.2 l0,-4.4 M97.39,88.2 l1.5,-3.6"/>
+    <path class="turf" d="M102.18,93 l-1.5,-3.6 M102.18,93 l0,-4.4 M102.18,93 l1.5,-3.6"/>
+    <path class="turf" d="M106.97,90.6 l-1.5,-3.6 M106.97,90.6 l0,-4.4 M106.97,90.6 l1.5,-3.6"/>
+    <path class="turf" d="M111.76,88.2 l-1.5,-3.6 M111.76,88.2 l0,-4.4 M111.76,88.2 l1.5,-3.6"/>
+    <path class="turf" d="M116.55,93 l-1.5,-3.6 M116.55,93 l0,-4.4 M116.55,93 l1.5,-3.6"/>
+    <path class="turf" d="M121.33,90.6 l-1.5,-3.6 M121.33,90.6 l0,-4.4 M121.33,90.6 l1.5,-3.6"/>
+    <path class="turf" d="M126.12,88.2 l-1.5,-3.6 M126.12,88.2 l0,-4.4 M126.12,88.2 l1.5,-3.6"/>
+    <path class="turf" d="M130.91,93 l-1.5,-3.6 M130.91,93 l0,-4.4 M130.91,93 l1.5,-3.6"/>
+    <path class="turf" d="M135.7,90.6 l-1.5,-3.6 M135.7,90.6 l0,-4.4 M135.7,90.6 l1.5,-3.6"/>
+    <path class="turf" d="M140.48,88.2 l-1.5,-3.6 M140.48,88.2 l0,-4.4 M140.48,88.2 l1.5,-3.6"/>
+    <path class="turf" d="M145.27,93 l-1.5,-3.6 M145.27,93 l0,-4.4 M145.27,93 l1.5,-3.6"/>
+    <path class="turf" d="M150.06,90.6 l-1.5,-3.6 M150.06,90.6 l0,-4.4 M150.06,90.6 l1.5,-3.6"/>
+    <path class="turf" d="M154.85,88.2 l-1.5,-3.6 M154.85,88.2 l0,-4.4 M154.85,88.2 l1.5,-3.6"/>
+    <path class="turf" d="M159.64,93 l-1.5,-3.6 M159.64,93 l0,-4.4 M159.64,93 l1.5,-3.6"/>
+    <path class="turf" d="M164.42,90.6 l-1.5,-3.6 M164.42,90.6 l0,-4.4 M164.42,90.6 l1.5,-3.6"/>
+    <path class="turf" d="M169.21,88.2 l-1.5,-3.6 M169.21,88.2 l0,-4.4 M169.21,88.2 l1.5,-3.6"/>
+    <path class="turf" d="M174,93 l-1.5,-3.6 M174,93 l0,-4.4 M174,93 l1.5,-3.6"/>
+    <text class="platetitle" x="95" y="16" text-anchor="middle">고인돌 자리 — 받침판</text>
+    <text class="fplab2" x="95" y="22.4" text-anchor="middle">굄돌 셋을 점선 자리에 세우고, 그 위에 덮개돌을 얹어요</text>
+    <rect class="capshadow" x="39" y="25" width="112" height="72" rx="2"/>
+    <text class="fplab2" x="95" y="30.2" text-anchor="middle">← 덮개돌이 덮이는 범위 →</text>
+    <rect class="footprint" x="69" y="33" width="52" height="16" rx="1.4"/>
+    <text class="fplab" x="95" y="42.3" text-anchor="middle">막음돌 (뒤)</text>
+    <rect class="footprint" x="46" y="69" width="22" height="18" rx="1.4"/>
+    <text class="fplab" x="57" y="79.3" text-anchor="middle">굄돌 ㉮</text>
+    <rect class="footprint" x="122" y="69" width="22" height="18" rx="1.4"/>
+    <text class="fplab" x="133" y="79.3" text-anchor="middle">굄돌 ㉯</text>
+    <text class="rowcap" x="4" y="106">통나무 굴림대 3개 — 둥글게 말아 빗금 탭을 붙이세요</text>
+    <rect class="wood" x="4" y="109" width="50.27" height="46"/>
+    <line class="woodgrain" x1="16.57" y1="112" x2="16.57" y2="152"/>
+    <line class="woodgrain" x1="29.14" y1="112" x2="29.14" y2="152"/>
+    <line class="woodgrain" x1="41.7" y1="112" x2="41.7" y2="152"/>
+    <path class="tab" d="M54.27,109 L59.77,110.4 L59.77,153.6 L54.27,155 Z"/>
+    <path class="cutline" d="M4,109 L54.27,109 L59.77,110.4 L59.77,153.6 L54.27,155 L4,155 Z"/>
+    <line class="foldline" x1="54.27" y1="109" x2="54.27" y2="155"/>
+    <text class="facelab2" x="29.14" y="132" text-anchor="middle" transform="rotate(-90 29.14 132)">통나무 1</text>
+    <rect class="wood" x="67.77" y="109" width="50.27" height="46"/>
+    <line class="woodgrain" x1="80.34" y1="112" x2="80.34" y2="152"/>
+    <line class="woodgrain" x1="92.91" y1="112" x2="92.91" y2="152"/>
+    <line class="woodgrain" x1="105.47" y1="112" x2="105.47" y2="152"/>
+    <path class="tab" d="M118.04,109 L123.54,110.4 L123.54,153.6 L118.04,155 Z"/>
+    <path class="cutline" d="M67.77,109 L118.04,109 L123.54,110.4 L123.54,153.6 L118.04,155 L67.77,155 Z"/>
+    <line class="foldline" x1="118.04" y1="109" x2="118.04" y2="155"/>
+    <text class="facelab2" x="92.91" y="132" text-anchor="middle" transform="rotate(-90 92.91 132)">통나무 2</text>
+    <rect class="wood" x="131.54" y="109" width="50.27" height="46"/>
+    <line class="woodgrain" x1="144.11" y1="112" x2="144.11" y2="152"/>
+    <line class="woodgrain" x1="156.68" y1="112" x2="156.68" y2="152"/>
+    <line class="woodgrain" x1="169.24" y1="112" x2="169.24" y2="152"/>
+    <path class="tab" d="M181.81,109 L187.31,110.4 L187.31,153.6 L181.81,155 Z"/>
+    <path class="cutline" d="M131.54,109 L181.81,109 L187.31,110.4 L187.31,153.6 L181.81,155 L131.54,155 Z"/>
+    <line class="foldline" x1="181.81" y1="109" x2="181.81" y2="155"/>
+    <text class="facelab2" x="156.68" y="132" text-anchor="middle" transform="rotate(-90 156.68 132)">통나무 3</text>
+    <text class="rowcap" x="4" y="162">흙 경사로 2개 — 밑에 달린 빗금 발을 뒤로 접어 세우세요 (고인돌 쪽이 높습니다)</text>
+    <path class="soil" d="M68,165 L68,199 L6,199 Z"/>
+    <line class="soilgrain" x1="66" y1="171.8" x2="55.6" y2="171.8"/>
+    <line class="soilgrain" x1="66" y1="178.6" x2="43.2" y2="178.6"/>
+    <line class="soilgrain" x1="66" y1="185.4" x2="30.8" y2="185.4"/>
+    <line class="soilgrain" x1="66" y1="192.2" x2="18.4" y2="192.2"/>
+    <path class="tab" d="M6,199 L7.4,209 L66.6,209 L68,199 Z"/>
+    <line class="foldline" x1="6" y1="199" x2="68" y2="199"/>
+    <path class="cutline" d="M68,165 L68,199 L66.6,209 L7.4,209 L6,199 Z" fill="none"/>
+    <text class="facelab2" x="48" y="193" text-anchor="middle">흙 경사로</text>
+    <path class="soil" d="M122,165 L122,199 L184,199 Z"/>
+    <line class="soilgrain" x1="124" y1="171.8" x2="134.4" y2="171.8"/>
+    <line class="soilgrain" x1="124" y1="178.6" x2="146.8" y2="178.6"/>
+    <line class="soilgrain" x1="124" y1="185.4" x2="159.2" y2="185.4"/>
+    <line class="soilgrain" x1="124" y1="192.2" x2="171.6" y2="192.2"/>
+    <path class="tab" d="M122,199 L123.4,209 L182.6,209 L184,199 Z"/>
+    <line class="foldline" x1="122" y1="199" x2="184" y2="199"/>
+    <path class="cutline" d="M122,165 L122,199 L123.4,209 L182.6,209 L184,199 Z" fill="none"/>
+    <text class="facelab2" x="142" y="193" text-anchor="middle">흙 경사로</text>
+    <rect class="card" x="2" y="213" width="44" height="30" rx="2.6"/>
+    <rect class="cutline" x="2" y="213" width="44" height="30" rx="2.6" fill="none"/>
+    <text class="cardbig" x="24" y="225" text-anchor="middle">①</text>
+    <text class="cardsub" x="24" y="233.5" text-anchor="middle">자리를 고르고</text>
+    <text class="cardsub" x="24" y="239" text-anchor="middle">굄돌 셋을 세운다</text>
+    <rect class="card" x="48.5" y="213" width="44" height="30" rx="2.6"/>
+    <rect class="cutline" x="48.5" y="213" width="44" height="30" rx="2.6" fill="none"/>
+    <text class="cardbig" x="70.5" y="225" text-anchor="middle">②</text>
+    <text class="cardsub" x="70.5" y="233.5" text-anchor="middle">굄돌 주위에</text>
+    <text class="cardsub" x="70.5" y="239" text-anchor="middle">흙을 쌓아 언덕을 만든다</text>
+    <rect class="card" x="95" y="213" width="44" height="30" rx="2.6"/>
+    <rect class="cutline" x="95" y="213" width="44" height="30" rx="2.6" fill="none"/>
+    <text class="cardbig" x="117" y="225" text-anchor="middle">③</text>
+    <text class="cardsub" x="117" y="233.5" text-anchor="middle">통나무와 줄로</text>
+    <text class="cardsub" x="117" y="239" text-anchor="middle">덮개돌을 끌어올린다</text>
+    <rect class="card" x="141.5" y="213" width="44" height="30" rx="2.6"/>
+    <rect class="cutline" x="141.5" y="213" width="44" height="30" rx="2.6" fill="none"/>
+    <text class="cardbig" x="163.5" y="225" text-anchor="middle">④</text>
+    <text class="cardsub" x="163.5" y="233.5" text-anchor="middle">쌓았던 흙을</text>
+    <text class="cardsub" x="163.5" y="239" text-anchor="middle">치우면 완성!</text>
+  </svg>
+
+  <footer class="print-foot">
+    <span>몽당분필 날쌤 · 초등사회 교육콘텐츠 클라우드 — 5학년 2학기 1단원 1차시</span>
+    <span>탁자식 고인돌 페이퍼크래프트 · 2 / 3</span>
+  </footer>
+</div></section>
+
+<!-- ───────────────────────── 3쪽 : 만드는 법과 생각할 거리 ───────────────────────── -->
+<section class="a4-page"><div class="pc">
+
+  <header class="print-head">
+    <div class="ph-brand"><img class="ph-mascot" src="../../../../img/mascot.png" alt="몽당분필 날쌤"
+      onerror="this.style.display='none'">
+      <div class="ph-brandname">몽당분필 날쌤<small>초등사회 교육콘텐츠 클라우드</small></div>
+    </div>
+    <div class="ph-main">
+      <div class="ph-title">탁자식 고인돌 만들기</div>
+      <div class="ph-sub">만드는 순서와, 만들고 나서 이야기할 것</div>
+      <div class="ph-chips">
+        <span class="chip">5학년 2학기 · 1단원 1차시</span>
+        <span class="chip">유적과 유물로 살펴본 옛사람들의 생활</span>
+        <span class="chip dim">A4 3 / 3쪽</span>
+      </div>
+    </div>
+    <div class="name-date">모둠 <span class="nd-line"></span><br>이름 <span class="nd-line"></span></div>
+  </header>
+
+  <div class="abs materials" style="left:0; top:30mm; width:190mm;">
+    <b>준비물</b> &nbsp;가위 · 풀 · (있으면) 자와 다 쓴 볼펜 — 접는 선을 볼펜으로 한 번 눌러 두면 훨씬 반듯하게 접힙니다.
+    &nbsp;<b>더 튼튼하게!</b> 얇은 종이라면 오리기 전에 도안을 마분지(과자 상자도 좋아요)에 붙였다가 함께 오리세요. 받침판과 순서 카드는 접지 않고 오리기만 합니다.
+  </div>
+
+  <div class="abs usage" style="left:0; top:48mm; width:190mm;">
+    <h4>만드는 순서</h4>
+    <b>①</b> 1쪽의 네 조각(덮개돌 · 굄돌 ㉮ · 굄돌 ㉯ · 막음돌)을 <b>실선</b>만 따라 오립니다.<br>
+    <b>②</b> <b>점선</b>을 모두 접습니다. 굄돌·막음돌은 네 면을 둘러 기둥을 만들고, 오른쪽 빗금 탭에 풀을 칠해 처음 면 안쪽에 붙입니다. 밑면은 열어 둡니다.<br>
+    <b>③</b> 덮개돌은 윗면을 가운데 두고 네 옆면을 아래로 접은 뒤, 좌·우 옆면에 달린 빗금 탭을 앞·뒤 옆면 <b>안쪽</b>에 붙입니다. 뚜껑처럼 아래가 열린 납작한 상자가 됩니다.<br>
+    <b>④</b> 2쪽 받침판의 점선 자리에 굄돌 ㉮·㉯와 막음돌을 세우고, 그 위에 덮개돌을 <b>얹기만</b> 합니다. 붙이지 않아야 몇 번이고 다시 올려 볼 수 있습니다.<br>
+    <b>⑤</b> 통나무 셋은 둥글게 말아 빗금 탭을 붙이고, 흙 경사로 둘은 밑에 달린 빗금 발을 뒤로 접어 세웁니다.
+    <span style="color:#777">(시간이 모자라면 ①~② 를 집에서 미리 오려 와도 좋고, 모둠에서 조각을 나누어 만들어도 됩니다.)</span>
+  </div>
+
+  <div class="abs" style="left:0; top:100mm; width:190mm; text-align:center;">
+    <svg viewBox="0 0 190 80" width="150mm" height="63mm">
+      <ellipse class="ground3d" cx="90.4" cy="68.4" rx="82" ry="9"/>
+      <path class="s3" d="M130.8,56.8 L123.6,61.6 L123.6,19.6 L130.8,14.8 Z"/>
+      <path class="t3" d="M78.8,14.8 L130.8,14.8 L123.6,19.6 L71.6,19.6 Z"/>
+      <path class="f3" d="M71.6,61.6 L123.6,61.6 L123.6,19.6 L71.6,19.6 Z"/>
+      <path class="s3" d="M129.7,68.2 L121.6,73.6 L121.6,31.6 L129.7,26.2 Z"/>
+      <path class="t3" d="M107.7,26.2 L129.7,26.2 L121.6,31.6 L99.6,31.6 Z"/>
+      <path class="f3" d="M99.6,73.6 L121.6,73.6 L121.6,31.6 L99.6,31.6 Z"/>
+      <path class="s3" d="M67.7,68.2 L59.6,73.6 L59.6,31.6 L67.7,26.2 Z"/>
+      <path class="t3" d="M45.7,26.2 L67.7,26.2 L59.6,31.6 L37.6,31.6 Z"/>
+      <path class="f3" d="M37.6,73.6 L59.6,73.6 L59.6,31.6 L37.6,31.6 Z"/>
+      <path class="scap" d="M164.4,12.4 L132,34 L132,22 L164.4,0.4 Z"/>
+      <path class="tcap" d="M52.4,0.4 L164.4,0.4 L132,22 L20,22 Z"/>
+      <path class="fcap" d="M20,34 L132,34 L132,22 L20,22 Z"/>
+      <line class="lead" x1="108.4" y1="0.4" x2="134.4" y2="9.4"/>
+      <circle class="leaddot" cx="108.4" cy="0.4" r="0.9"/>
+      <text class="leadlab" x="134.4" y="10.7" text-anchor="start">덮개돌</text>
+      <line class="lead" x1="48.6" y1="51.6" x2="34.6" y2="57.6"/>
+      <circle class="leaddot" cx="48.6" cy="51.6" r="0.9"/>
+      <text class="leadlab" x="34.6" y="58.9" text-anchor="end">굄돌 ㉮</text>
+      <line class="lead" x1="123.6" y1="41.6" x2="149.6" y2="49.6"/>
+      <circle class="leaddot" cx="123.6" cy="41.6" r="0.9"/>
+      <text class="leadlab" x="149.6" y="50.9" text-anchor="start">막음돌 (뒤)</text>
+    </svg>
+    <div style="font-size:8pt; font-weight:700; color:#6e7a79; margin-top:0.5mm;">
+      완성한 모습 — 굄돌 ㉮·㉯ 와 막음돌 셋 위에 덮개돌을 <b style="color:#c8931d">얹기만</b> 합니다
+    </div>
+  </div>
+
+  <div class="abs ask" style="left:0; top:174mm; width:190mm;">
+    <h4>해 보기 — 이 거대한 돌을 어떻게 올렸을까?</h4>
+    순서 카드 ①~④를 섞어 놓고, 받침판·통나무·흙 경사로를 직접 움직이며 <b>차례를 맞혀 보세요.</b>
+    맞혀 본 다음에 카드를 뒤집어 확인하지 말고, <b>왜 그 순서라고 생각했는지 근거를 먼저 말해 봅니다.</b><br>
+    <b>①</b> 통나무 셋을 나란히 놓고 그 위에 덮개돌을 <b>얹어</b> 살짝 밀어 보세요 — 무엇이 쉬워질까요? &nbsp;<b>②</b> 흙 경사로는 왜 필요했을까요?
+    &nbsp;<b>③</b> 흙은 마지막에 왜 치웠을까요?<br>
+    <span style="color:#777">※ 교과서 6〕7쪽 발문 「어떻게 만들었을까요?」의 예시 답에도 <b>「동그란 무언가를 바퀴로 활용하여」</b>가 나옵니다. 통나무가 바로 그것입니다.<br>※ 카드의 순서는 고인돌을 세운 방법으로 널리 받아들여지는 설명입니다. 직접 해 보고 나서 모둠의 생각과 비교해 보세요.</span>
+  </div>
+
+  <div class="abs usage" style="left:0; top:216mm; width:190mm;">
+    <h4>만들고 나서 — 돌에게 묻기</h4>
+    <b>①</b> 다 만든 고인돌을 보면, 이 돌을 옮기고 세우는 데 <b>몇 사람</b>이 필요했을 것 같나요? 그렇게 생각한 근거는 무엇인가요?<br>
+    <b>②</b> 그만큼 많은 사람을 불러 모을 수 있었던 사람은 마을에서 <b>어떤 사람</b>이었을까요?<br>
+    <b>③</b> 고인돌은 옛사람의 <b>무덤</b>입니다. 무덤을 이렇게 크게 만든 까닭을 짝과 이야기해 보세요.<br>
+    <span style="color:#777">※ 눈에 보이는 것(관찰)과 그것을 근거로 짐작한 것(추론)을 구분해서 말해 보는 것이 이 시간의 핵심입니다.</span>
+  </div>
+
+  <div class="abs" style="left:0; top:258mm; width:190mm; text-align:center;">
+    <div style="font-size:8pt; color:#666; line-height:1.7;">
+      이 도안은 <b>초등사회 교육콘텐츠 클라우드 @nalssam</b> 의 1단원 1차시 수업 꾸러미에 들어 있습니다.<br>
+      같은 차시의 <b>비주얼싱킹 학습지 「유물 탐정 수첩」</b> 과 함께 쓰면 좋습니다.
+    </div>
+  </div>
+
+  <footer class="print-foot">
+    <span>몽당분필 날쌤 · 초등사회 교육콘텐츠 클라우드 — 5학년 2학기 1단원 1차시</span>
+    <span>만드는 법 · 3 / 3</span>
+  </footer>
+</div></section>
+
+</body>
+</html>
